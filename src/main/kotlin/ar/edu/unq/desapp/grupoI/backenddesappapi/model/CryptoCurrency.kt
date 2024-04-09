@@ -8,7 +8,7 @@ import jakarta.persistence.Id
 import java.time.LocalDateTime
 
 @Entity
-data class CryptoCurrency(
+class CryptoCurrency(
     @Id
     val symbol: Currency,
     var marketPrice: Float,
