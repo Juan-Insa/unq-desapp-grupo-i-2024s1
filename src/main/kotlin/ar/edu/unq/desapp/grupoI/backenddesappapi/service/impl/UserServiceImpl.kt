@@ -6,9 +6,11 @@ import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.UserRepo
 import ar.edu.unq.desapp.grupoI.backenddesappapi.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import kotlin.jvm.optionals.getOrNull
 
 @Service
+@Transactional
 class UserServiceImpl(): UserService {
 
     @Autowired lateinit var userRepository: UserRepository
