@@ -3,8 +3,9 @@ package ar.edu.unq.desapp.grupoI.backenddesappapi.service.impl
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.CryptoCurrency
 import ar.edu.unq.desapp.grupoI.backenddesappapi.service.BinanceProxyService
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
-
+@Service
 class BinanceProxyServiceImpl(): BinanceProxyService  {
 
     val restTemplate: RestTemplate = RestTemplate()
