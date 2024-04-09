@@ -5,4 +5,5 @@ import org.springframework.stereotype.Service
 
 interface CryptoCurrencyService {
     fun getCurrencyValue(symbol: String): CryptoCurrency?
+    fun createCryptoCurrency(cryptoCurrency: CryptoCurrency): CryptoCurrency
 }

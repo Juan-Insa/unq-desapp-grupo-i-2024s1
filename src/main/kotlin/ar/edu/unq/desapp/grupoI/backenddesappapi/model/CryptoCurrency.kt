@@ -1,5 +1,6 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.model
 
+
 import jakarta.persistence.*
 
 @Entity
@@ -13,9 +14,6 @@ class CryptoCurrency(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
-
-    @OneToMany(mappedBy = "crypto_currency", cascade = [CascadeType.ALL])
-    val currencyRates: MutableList<CurrencyRate> = mutableListOf()
 
     fun lastUpdateDateAndTime(lastUpdateDateAndTime: String) {
         this.lastUpdateDateAndTime = lastUpdateDateAndTime

@@ -8,8 +8,8 @@ class CurrencyRate(
 
     @ManyToOne(fetch = FetchType.LAZY)
     val cryptoCurrency: CryptoCurrency,
-    var dateTime: String,
-    var rate: Float
+    var rate: Float,
+    var dateTime: String
 ) {
 
     @Id
