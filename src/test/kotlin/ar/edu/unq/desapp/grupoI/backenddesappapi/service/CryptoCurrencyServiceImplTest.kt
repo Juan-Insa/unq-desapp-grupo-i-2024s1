@@ -34,7 +34,11 @@ class CryptoCurrencyServiceImplTest {
     }
 
     @Test
-    fun `get the current market price of ALICEUSDT currency`(){
+    fun `can get the current market price of ALICEUSDT currency`(){
         val result = cryptoCurrencyService.getCurrencyValue(aliceUSDT.toString())
+        assertNotNull(result)
+        assertEquals(result?.symbol, "ALICEUSDT")
+        assertNotNull(result?.marketPrice)
+        assertNotNull(result?.lastUpdateDateAndTime)
     }
 }
