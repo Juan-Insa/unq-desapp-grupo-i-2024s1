@@ -1,7 +1,7 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.service
 
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.CryptoCurrency
-import ar.edu.unq.desapp.grupoI.backenddesappapi.model.CurrentDateTime
+import ar.edu.unq.desapp.grupoI.backenddesappapi.helpers.CurrentDateTime
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Currency
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*

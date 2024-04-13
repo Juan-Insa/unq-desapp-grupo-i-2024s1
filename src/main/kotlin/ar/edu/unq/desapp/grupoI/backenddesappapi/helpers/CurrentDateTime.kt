@@ -1,4 +1,4 @@
-package ar.edu.unq.desapp.grupoI.backenddesappapi.model
+package ar.edu.unq.desapp.grupoI.backenddesappapi.helpers
 
 import java.text.SimpleDateFormat
 import java.util.Date

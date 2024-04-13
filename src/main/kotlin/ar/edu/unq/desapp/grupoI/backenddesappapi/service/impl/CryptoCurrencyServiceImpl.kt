@@ -1,8 +1,7 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.service.impl
 
-import ar.edu.unq.desapp.grupoI.backenddesappapi.controllers.dto.CryptoCurrencyDTO
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.CryptoCurrency
-import ar.edu.unq.desapp.grupoI.backenddesappapi.model.CurrentDateTime
+import ar.edu.unq.desapp.grupoI.backenddesappapi.helpers.CurrentDateTime
 import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.CryptoCurrencyRepository
 import ar.edu.unq.desapp.grupoI.backenddesappapi.service.BinanceProxyService
 import ar.edu.unq.desapp.grupoI.backenddesappapi.service.CryptoCurrencyService

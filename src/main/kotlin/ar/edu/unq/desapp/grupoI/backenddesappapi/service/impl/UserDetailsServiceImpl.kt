@@ -1,29 +1,23 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.service.impl
 
 import ar.edu.unq.desapp.grupoI.backenddesappapi.exceptions.UserNotFoundException
-import ar.edu.unq.desapp.grupoI.backenddesappapi.model.User
 import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.UserRepository
-import ar.edu.unq.desapp.grupoI.backenddesappapi.service.UserService
+import ar.edu.unq.desapp.grupoI.backenddesappapi.service.UserDetailsService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import kotlin.jvm.optionals.getOrNull
 
 @Service
 @Transactional
-class UserServiceImpl(): UserService {
+class UserDetailsServiceImpl : UserDetailsService {
 
     @Autowired lateinit var userRepository: UserRepository
 
-    override fun getUserByName(name: String): User {
-        return userRepository.findByName(name)
-            .getOrNull() ?: throw UserNotFoundException("could not found user with name `${name}`")
-    }
-
-    override fun registerUser(user: User): User {
-        // validate
-
-        return userRepository.save(user)
+    override fun loadUserByName(name: String): UserDetails {
+        val user = userRepository.findByName(name).getOrNull() ?: throw UserNotFoundException("User with name $name not found")
+        return org.springframework.security.core.userdetails.User(user.name, user.password, emptyList())
     }
 
 }
