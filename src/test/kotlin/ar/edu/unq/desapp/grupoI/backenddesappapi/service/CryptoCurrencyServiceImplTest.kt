@@ -1,6 +1,7 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.service
 
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.CryptoCurrency
+import ar.edu.unq.desapp.grupoI.backenddesappapi.model.CryptoCurrency24hr
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.CurrentDateTime
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.CryptoCurrencyEnum
 import org.junit.jupiter.api.Test
@@ -81,5 +82,37 @@ class CryptoCurrencyServiceImplTest {
             assertEquals(resultadoMockeado, resultado[index])
         }
     }
+    @Test
+    fun `get quotes from last 24 hours of ALICEUSDT`() {
+        val resultadoMockeado = CryptoCurrency24hr(
+            symbol = "ALICEUSDT",
+            priceChange = "-0.18500000",
+            priceChangePercent = "-13.941",
+            weightedAvgPrice = "1.18709191",
+            prevClosePrice = "1.32700000",
+            lastPrice = "1.14200000",
+            lastQty = "216.24000000",
+            bidPrice = "1.13900000",
+            bidQty = "3545.82000000",
+            askPrice = "1.14100000",
+            askQty = "183.54000000",
+            openPrice = "1.32700000",
+            highPrice = "1.38900000",
+            lowPrice = "1.00000000",
+            volume = "7473890.80000000",
+            quoteVolume = "8872195.31346000",
+            openTime = 1712973714376,
+            closeTime = 1713060114376,
+            firstId = 90221045,
+            lastId = 90300230,
+            count = 79186
+        )
+        Mockito.`when`(binanceProxyService.getCrypto24hrCurrencyValue(resultadoMockeado.symbol))
+            .thenReturn(resultadoMockeado)
+        val resultado = cryptoCurrencyService.get24hrCurrencyQuoteFrom("ALICEUSDT")
 
+        assertEquals(resultadoMockeado, resultado)
+        assertEquals(resultadoMockeado.symbol, resultado?.symbol)
+        assertEquals(resultadoMockeado.priceChange, resultado?.priceChange)
+    }
 }

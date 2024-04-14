@@ -2,6 +2,7 @@ package ar.edu.unq.desapp.grupoI.backenddesappapi.service.impl
 
 import ar.edu.unq.desapp.grupoI.backenddesappapi.controllers.dto.CryptoCurrencyDTO
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.CryptoCurrency
+import ar.edu.unq.desapp.grupoI.backenddesappapi.model.CryptoCurrency24hr
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.CryptoCurrencyList
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.CurrentDateTime
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.CryptoCurrencyEnum
@@ -49,5 +50,7 @@ class CryptoCurrencyServiceImpl(): CryptoCurrencyService {
         }
         return cryptos
     }
-
+    override fun get24hrCurrencyQuoteFrom(symbol: String): CryptoCurrency24hr? {
+        return binanceProxyService.getCrypto24hrCurrencyValue(symbol)
+    }
 }
