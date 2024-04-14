@@ -1,6 +1,7 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.service.impl
 
 import ar.edu.unq.desapp.grupoI.backenddesappapi.exceptions.UserNotFoundException
+import ar.edu.unq.desapp.grupoI.backenddesappapi.helpers.UserRegisterValidator
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.User
 import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.UserRepository
 import ar.edu.unq.desapp.grupoI.backenddesappapi.service.UserService
@@ -21,8 +22,11 @@ class UserServiceImpl(): UserService {
     }
 
     override fun registerUser(user: User): User {
-        // validate
-
+        try {
+            UserRegisterValidator.validateUser(user)
+        } catch (e: IllegalArgumentException) {
+            throw IllegalArgumentException(e.message)
+        }
         return userRepository.save(user)
     }
 
