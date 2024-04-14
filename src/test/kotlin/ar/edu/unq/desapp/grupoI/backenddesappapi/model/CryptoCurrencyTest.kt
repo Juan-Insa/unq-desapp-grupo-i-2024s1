@@ -1,13 +1,11 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.model
 
-import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Currency
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test;
 import java.util.*
 
-class CrypyoCurrencyTest {
+class CryptoCurrencyTest {
 
     val formatter = CurrentDateTime.getNewDateFormatter()
     @Test
