@@ -6,4 +6,8 @@ class CryptoCurrencyList {
     fun addCrypto(cripto: CryptoCurrency) {
         cryptos.add(cripto)
     }
+
+    fun getList():  MutableList<CryptoCurrency>{
+        return cryptos
+    }
 }

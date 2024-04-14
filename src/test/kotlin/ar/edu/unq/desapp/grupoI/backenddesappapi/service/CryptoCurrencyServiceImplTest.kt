@@ -51,6 +51,35 @@ class CryptoCurrencyServiceImplTest {
         assertEquals(50.0f, resultado?.marketPrice)
         assertEquals(resultado, resultadoMockeado)
     }
+    @Test
+    fun `get current market price of list of currencies`() {
+        val resultadosMockeados = listOf(
+            CryptoCurrency("ALICEUSDT", 50.0f, "2022-04-13 12:00:00"),
+            CryptoCurrency("MATICUSDT", 60.0f, "2022-04-13 12:00:00"),
+            CryptoCurrency("AXSUSDT", 70.0f, "2022-04-13 12:00:00"),
+            CryptoCurrency("AAVEUSDT", 80.0f, "2022-04-13 12:00:00"),
+            CryptoCurrency("ATOMUSDT", 90.0f, "2022-04-13 12:00:00"),
+            CryptoCurrency("NEOUSDT", 100.0f, "2022-04-13 12:00:00"),
+            CryptoCurrency("DOTUSDT", 110.0f, "2022-04-13 12:00:00"),
+            CryptoCurrency("ETHUSDT", 120.0f, "2022-04-13 12:00:00"),
+            CryptoCurrency("CAKEUSDT", 130.0f, "2022-04-13 12:00:00"),
+            CryptoCurrency("BTCUSDT", 140.0f, "2022-04-13 12:00:00"),
+            CryptoCurrency("BNBUSDT", 150.0f, "2022-04-13 12:00:00"),
+            CryptoCurrency("ADAUSDT", 160.0f, "2022-04-13 12:00:00"),
+            CryptoCurrency("TRXUSDT", 170.0f, "2022-04-13 12:00:00"),
+            CryptoCurrency("AUDIOUSDT", 180.0f, "2022-04-13 12:00:00")
+        )
 
+        resultadosMockeados.forEachIndexed { index, resultadoMockeado ->
+            Mockito.`when`(binanceProxyService.getCryptoCurrencyValue(resultadoMockeado.symbol))
+                .thenReturn(resultadoMockeado)
+        }
+
+        val resultado = cryptoCurrencyService.getAllCurrencyValues().getList()
+
+        resultadosMockeados.forEachIndexed { index, resultadoMockeado ->
+            assertEquals(resultadoMockeado, resultado[index])
+        }
+    }
 
 }
