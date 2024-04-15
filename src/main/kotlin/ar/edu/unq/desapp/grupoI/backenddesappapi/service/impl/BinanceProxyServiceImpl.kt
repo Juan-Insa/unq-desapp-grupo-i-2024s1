@@ -17,6 +17,10 @@ class BinanceProxyServiceImpl(): BinanceProxyService {
     lateinit var binanceApiURL: String
 
     override fun getCryptoCurrencyValue(symbol: String): CryptoCurrency? {
+        if (symbol.isBlank()) {
+            throw IllegalArgumentException("The currency symbol must not be empty")
+        }
+
         val cryptoCurrency = restTemplate.getForObject("$binanceApiURL/ticker/price?symbol=$symbol", CryptoCurrency::class.java)
         return cryptoCurrency
     }

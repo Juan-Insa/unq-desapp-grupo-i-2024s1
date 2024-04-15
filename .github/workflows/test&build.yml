@@ -44,12 +44,27 @@ jobs:
           set +a
         working-directory: ${{ github.workspace }}
 
+      - name: Check Binance API connectivity
+        run: |
+          echo "Checking Binance API connectivity..."
+          curl -v "https://api1.binance.com/api/v3/ticker/price?symbol=BTCUSDT"
+
       - name: Build with Gradle
         run: ./gradlew build --no-daemon
 
   tests:
     needs: build
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:latest
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: backend-desapp-api
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
