@@ -5,13 +5,23 @@ on:
   push:
     branches: [ "main", "ft/user_registration" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ ]
 
   workflow_dispatch:
   
 jobs:
   build:
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:latest
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: backend-desapp-api
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -26,17 +36,17 @@ jobs:
             java-version: '17'
       - name: Set up environment variables
         run: |
-          export SPRING_APPLICATION_NAME=$(grep '^spring.application.name=' src/main/resources/application.properties | cut -d'=' -f2)
-          export SPRINGDOC_API_DOCS_PATH=$(grep '^springdoc.api-docs.path=' src/main/resources/application.properties | cut -d'=' -f2)
-          export SPRING_DATASOURCE_URL=$(grep '^spring.datasource.url=' src/main/resources/application.properties | cut -d'=' -f2)
-          export SPRING_DATASOURCE_USERNAME=$(grep '^spring.datasource.username=' src/main/resources/application.properties | cut -d'=' -f2)
-          export SPRING_DATASOURCE_PASSWORD=$(grep '^spring.datasource.password=' src/main/resources/application.properties | cut -d'=' -f2)
-          export SPRING_DATASOURCE_DRIVER_CLASS=$(grep '^spring.datasource.driver.class=' src/main/resources/application.properties | cut -d'=' -f2)
-          export SPRING_JPA_DATABASE_PLATFORM=$(grep '^spring.jpa.database-platform=' src/main/resources/application.properties | cut -d'=' -f2)
-          export SPRING_JPA_SHOW_SQL=$(grep '^spring.jpa.show-sql=' src/main/resources/application.properties | cut -d'=' -f2)
-          export SPRING_JPA_GENERATE_DDL=$(grep '^spring.jpa.generate-ddl=' src/main/resources/application.properties | cut -d'=' -f2)
-          export SPRING_JPA_HIBERNATE_DDL_AUTO=$(grep '^spring.jpa.hibernate.ddl-auto=' src/main/resources/application.properties | cut -d'=' -f2)
-          export INTEGRATION_BINANCE_API_URL=$(grep '^integration.binance.api.url=' src/main/resources/application.properties | cut -d'=' -f2)
+          export SPRING_APPLICATION_NAME=backend-desapp-api
+          export SPRINGDOC_API_DOCS_PATH=/api-docs
+          export SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/backend-desapp-api?createDatabaseIfNotExist=true&serverTimezone=UTC
+          export SPRING_DATASOURCE_USERNAME=root
+          export SPRING_DATASOURCE_PASSWORD=root
+          export SPRING_DATASOURCE_DRIVER_CLASS=com.mysql.cj.jdbc.Driver
+          export SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.MySQLDialect
+          export SPRING_JPA_SHOW_SQL=true
+          export SPRING_JPA_GENERATE_DDL=true
+          export SPRING_JPA_HIBERNATE_DDL_AUTO=create
+          export INTEGRATION_BINANCE_API_URL=https://api1.binance.com/api/v3/
 
       - name: Build with Gradle
         run: ./gradlew build --no-daemon
