@@ -24,7 +24,9 @@ jobs:
         with:
             distribution: 'adopt'
             java-version: '17'
-
+      - name: Set up environment variables
+        run: |
+          export $(grep -v '^#' application.properties | xargs)
       - name: Build with Gradle
         run: ./gradlew build --no-daemon
 
