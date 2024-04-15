@@ -3,7 +3,7 @@ name: Test & Build
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "ft/user_registration" ]
   pull_request:
     branches: [ "main" ]
 
@@ -26,7 +26,18 @@ jobs:
             java-version: '17'
       - name: Set up environment variables
         run: |
-          export $(grep -v '^#' src/main/resources/application.properties | xargs)
+          export SPRING_APPLICATION_NAME=$(grep '^spring.application.name=' src/main/resources/application.properties | cut -d'=' -f2)
+          export SPRINGDOC_API_DOCS_PATH=$(grep '^springdoc.api-docs.path=' src/main/resources/application.properties | cut -d'=' -f2)
+          export SPRING_DATASOURCE_URL=$(grep '^spring.datasource.url=' src/main/resources/application.properties | cut -d'=' -f2)
+          export SPRING_DATASOURCE_USERNAME=$(grep '^spring.datasource.username=' src/main/resources/application.properties | cut -d'=' -f2)
+          export SPRING_DATASOURCE_PASSWORD=$(grep '^spring.datasource.password=' src/main/resources/application.properties | cut -d'=' -f2)
+          export SPRING_DATASOURCE_DRIVER_CLASS=$(grep '^spring.datasource.driver.class=' src/main/resources/application.properties | cut -d'=' -f2)
+          export SPRING_JPA_DATABASE_PLATFORM=$(grep '^spring.jpa.database-platform=' src/main/resources/application.properties | cut -d'=' -f2)
+          export SPRING_JPA_SHOW_SQL=$(grep '^spring.jpa.show-sql=' src/main/resources/application.properties | cut -d'=' -f2)
+          export SPRING_JPA_GENERATE_DDL=$(grep '^spring.jpa.generate-ddl=' src/main/resources/application.properties | cut -d'=' -f2)
+          export SPRING_JPA_HIBERNATE_DDL_AUTO=$(grep '^spring.jpa.hibernate.ddl-auto=' src/main/resources/application.properties | cut -d'=' -f2)
+          export INTEGRATION_BINANCE_API_URL=$(grep '^integration.binance.api.url=' src/main/resources/application.properties | cut -d'=' -f2)
+
       - name: Build with Gradle
         run: ./gradlew build --no-daemon
 
