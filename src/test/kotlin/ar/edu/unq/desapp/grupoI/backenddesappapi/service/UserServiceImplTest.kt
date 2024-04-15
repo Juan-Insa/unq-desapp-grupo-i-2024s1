@@ -15,5 +15,7 @@ class UserServiceImplTest {
     @Autowired lateinit var userService: UserService
 
     @Test
-    fun `registerUser fails when trying to register`
+    fun `registerUser fails when trying to register`(){
+
+    }
 }
