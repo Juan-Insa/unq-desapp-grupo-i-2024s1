@@ -12,7 +12,7 @@ class UserRegisterValidator {
             validateEmail(user.email)
             validateAdress(user.adress)
             validatePassword(user.password)
-            validateCbu(user.cbu)
+            validateCvu(user.cbu)
             validateCriptoWalletAddress(user.criptoWalletAdress)
         }
 
@@ -46,18 +46,18 @@ class UserRegisterValidator {
             if(password.length < 6) { throw InvalidPasswordException("The password must be at least 6 characters in length" ) }
             if(password.none { it.isUpperCase() }) { throw InvalidPasswordException("The password must contain at least one upper case letter") }
             if(password.none { it.isLowerCase() }) { throw InvalidPasswordException("The password must contain at least one lower case letter") }
-            if(password.none { it.isLetterOrDigit() }) { throw InvalidPasswordException("The password must contain at least one special characte") }
+            if(password.none { !it.isLetterOrDigit() }) { throw InvalidPasswordException("The password must contain at least one special characte") }
         }
 
-        fun validateCbu(cbu: String) {
-            if(cbu.length != 22 && cbu.any { !it.isDigit() }) {
-                throw InvalidCBUException()
+        fun validateCvu(cbu: String) {
+            if(cbu.length != 22 || cbu.any { !it.isDigit() }) {
+                throw InvalidCVUException()
             }
         }
 
         fun validateCriptoWalletAddress(criptoWalletAdress: String) {
-            if(criptoWalletAdress.length != 8 && criptoWalletAdress.any { !it.isDigit() }) {
-                throw InvalidCryptoWalletAdressException()
+            if(criptoWalletAdress.length != 8 || criptoWalletAdress.any { !it.isDigit() }) {
+                throw InvalidCryptoWalletAddressException()
             }
         }
     }

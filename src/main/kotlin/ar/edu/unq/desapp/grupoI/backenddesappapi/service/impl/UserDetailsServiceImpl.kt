@@ -1,4 +1,4 @@
-package ar.edu.unq.desapp.grupoI.backenddesappapi.service.impl
+/*package ar.edu.unq.desapp.grupoI.backenddesappapi.service.impl
 
 import ar.edu.unq.desapp.grupoI.backenddesappapi.exceptions.UserNotFoundException
 import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.UserRepository
@@ -20,4 +20,4 @@ class UserDetailsServiceImpl : UserDetailsService {
         return org.springframework.security.core.userdetails.User(user.name, user.password, emptyList())
     }
 
-}
+}*/

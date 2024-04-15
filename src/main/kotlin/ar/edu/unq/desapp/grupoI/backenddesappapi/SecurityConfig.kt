@@ -1,14 +1,16 @@
-package ar.edu.unq.desapp.grupoI.backenddesappapi
+/*package ar.edu.unq.desapp.grupoI.backenddesappapi
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 
 @Configuration
+@EnableWebSecurity
 class SecurityConfig {
 
     @Bean
@@ -16,24 +18,24 @@ class SecurityConfig {
         http
             .authorizeHttpRequests { authz ->
                 authz
-                    .requestMatchers("/register").permitAll() // Permite acceso sin autenticación al endpoint /register
-                    .anyRequest().authenticated()                      // Establece que las demás solicitudes requieren autenticación
+                    .requestMatchers("/register").permitAll()
+                    .anyRequest().authenticated()
             }
             .formLogin { login ->
                 login
-                    .loginPage("/login") // Página de inicio de sesión personalizada
-                    .permitAll()         // Permite acceso sin autenticación a la página de inicio de sesión
+                    .loginPage("/login")
+                    .permitAll()
             }
             .logout { logout ->
                 logout
-                    .permitAll() // Permite acceso sin autenticación al endpoint de cierre de sesión
+                    .permitAll()
             }
             .sessionManagement { session ->
                 session
-                    .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Política de creación de sesión si es necesario
-                    .invalidSessionUrl("/login")                              // Redirige a /login si la sesión es inválida
-                    .sessionFixation().migrateSession()                       // Migración de sesión para evitar ataques de fijación de sesión
-                    .maximumSessions(1)                                       // Configura la cantidad máxima de sesiones y su manejo al expirar
+                    .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                    .invalidSessionUrl("/login")
+                    .sessionFixation().migrateSession()
+                    .maximumSessions(1)
                         .expiredUrl("/login")
                         .maxSessionsPreventsLogin(false)
             }
@@ -44,4 +46,4 @@ class SecurityConfig {
     fun passwordEncoder(): PasswordEncoder {
         return BCryptPasswordEncoder()
     }
-}
+}*/
