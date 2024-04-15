@@ -26,7 +26,7 @@ jobs:
             java-version: '17'
       - name: Set up environment variables
         run: |
-          export $(grep -v '^#' application.properties | xargs)
+          export $(grep -v '^#' src/main/resources/application.properties | xargs)
       - name: Build with Gradle
         run: ./gradlew build --no-daemon
 
