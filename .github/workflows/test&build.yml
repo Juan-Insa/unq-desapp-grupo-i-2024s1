@@ -40,7 +40,7 @@ jobs:
         run: |
           echo "Reading .env file"
           set -a
-          . src/.env
+          . .env
           set +a
         working-directory: ${{ github.workspace }}
 
