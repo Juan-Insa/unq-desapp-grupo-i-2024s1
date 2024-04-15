@@ -4,7 +4,7 @@ import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Operation
 
 class Intention(
     val user: User,
-    val cryptoAsset: CryptoAsset,
+    val cryptoAsset: CryptoCurrency,
     val amount: Double,
     val operation: Operation,
 ) {
