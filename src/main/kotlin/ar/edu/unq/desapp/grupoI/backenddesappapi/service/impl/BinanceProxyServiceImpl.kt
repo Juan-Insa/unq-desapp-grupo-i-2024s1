@@ -1,10 +1,12 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.service.impl
 
+import ar.edu.unq.desapp.grupoI.backenddesappapi.exceptions.InvalidCryptoCurrencySymbol
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.CryptoCurrency
 import ar.edu.unq.desapp.grupoI.backenddesappapi.service.BinanceProxyService
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
 
 @Service
@@ -17,11 +19,19 @@ class BinanceProxyServiceImpl(): BinanceProxyService {
     lateinit var binanceApiURL: String
 
     override fun getCryptoCurrencyValue(symbol: String): CryptoCurrency? {
+
         if (symbol.isBlank()) {
             throw IllegalArgumentException("The currency symbol must not be empty")
         }
 
-        val cryptoCurrency = restTemplate.getForObject("$binanceApiURL/ticker/price?symbol=$symbol", CryptoCurrency::class.java)
-        return cryptoCurrency
+        try {
+            var cryptoCurrency = restTemplate.getForObject("${binanceApiURL}/ticker/price?symbol=${symbol}", CryptoCurrency::class.java)
+            return cryptoCurrency
+
+        } catch (e: HttpClientErrorException) {
+            throw InvalidCryptoCurrencySymbol("The currency symbol provided is invalid")
+        }
+
+
     }
 }

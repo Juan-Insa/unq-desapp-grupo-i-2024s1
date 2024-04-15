@@ -5,7 +5,7 @@ on:
   push:
     branches: [ "main", "ft/user_registration" ]
   pull_request:
-    branches: [ ]
+    branches: [ "main" ]
 
   workflow_dispatch:
   
@@ -43,6 +43,9 @@ jobs:
           . .env
           set +a
         working-directory: ${{ github.workspace }}
+
+      - name: Check dependencies
+        run: ./gradlew dependencies
 
       - name: Check Binance API connectivity
         run: |

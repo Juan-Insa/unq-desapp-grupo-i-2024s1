@@ -1,15 +1,18 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.service
 
+import ar.edu.unq.desapp.grupoI.backenddesappapi.exceptions.InvalidCryptoCurrencySymbol
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.CryptoCurrency
 import ar.edu.unq.desapp.grupoI.backenddesappapi.helpers.CurrentDateTime
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Currency
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
+import java.lang.IllegalArgumentException
 import java.util.*
 
 @ExtendWith(SpringExtension::class)
@@ -40,5 +43,10 @@ class CryptoCurrencyServiceImplTest {
         assertEquals(result?.symbol, "ALICEUSDT")
         assertNotNull(result?.marketPrice)
         assertNotNull(result?.lastUpdateDateAndTime)
+    }
+
+    @Test
+    fun `when getting a currency value with an invalid symbol it throws an InvalidCryptoCurrencySymbol exception`(){
+        assertThrows<InvalidCryptoCurrencySymbol> { cryptoCurrencyService.getCurrencyValue("invalidCurrency") }
     }
 }
