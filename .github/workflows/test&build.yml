@@ -43,6 +43,7 @@ jobs:
           . .env
           set +a
           echo "Some api env: $SPRING_APPLICATION_NAME"
+          echo "Binance api env: $INTEGRATION_BINANCE_API_URL"
         working-directory: ${{ github.workspace }}
 
       - name: Check dependencies
@@ -50,7 +51,6 @@ jobs:
 
       - name: Check Binance API connectivity
         run: |
-          echo "Binance api env: $INTEGRATION_BINANCE_API_URL"
           echo "Checking Binance API connectivity..."
           curl -v "https://api1.binance.com/api/v3/ticker/price?symbol=BTCUSDT"
 
