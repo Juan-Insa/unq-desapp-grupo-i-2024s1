@@ -42,16 +42,10 @@ jobs:
           set -a
           . .env
           set +a
-          echo "Some api env: $SPRING_APPLICATION_NAME"
-          echo "Binance api env: $INTEGRATION_BINANCE_API_URL"
         working-directory: ${{ github.workspace }}
 
       - name: Check dependencies
         run: ./gradlew dependencies
-      - name: Set up proxy
-        run: |
-          export HTTP_PROXY=http://35.185.196.38:3128
-          export HTTPS_PROXY=https://35.185.196.38:3128
       - name: Check Binance API connectivity
         run: |
           echo "Checking Binance API connectivity..."

@@ -22,11 +22,10 @@ class UserServiceImpl(): UserService {
     }
 
     override fun registerUser(user: User): User {
-        try {
-            UserRegisterValidator.validateUser(user)
-        } catch (e: IllegalArgumentException) {
-            throw IllegalArgumentException(e.message)
+        if (userRepository.existsByEmail(user.email)) {
+            throw IllegalArgumentException("Email is already registered");
         }
+        UserRegisterValidator.validateUser(user)
         return userRepository.save(user)
     }
 
