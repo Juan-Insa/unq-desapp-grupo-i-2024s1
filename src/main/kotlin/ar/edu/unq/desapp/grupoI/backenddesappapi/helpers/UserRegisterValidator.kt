@@ -10,9 +10,9 @@ class UserRegisterValidator {
             validateName(user.name)
             validateLastName(user.lastName)
             validateEmail(user.email)
-            validateAdress(user.adress)
+            validateAdress(user.address)
             validatePassword(user.password)
-            validateCvu(user.cbu)
+            validateCvu(user.cvu)
             validateCriptoWalletAddress(user.criptoWalletAdress)
         }
 

@@ -3,7 +3,7 @@ package ar.edu.unq.desapp.grupoI.backenddesappapi.service.impl
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.CryptoCurrency
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.CryptoCurrency24hr
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.CryptoCurrencyList
-import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.CryptoCurrencyEnum
+import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Asset
 import ar.edu.unq.desapp.grupoI.backenddesappapi.helpers.CurrentDateTime
 import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.CryptoCurrencyRepository
 import ar.edu.unq.desapp.grupoI.backenddesappapi.service.BinanceProxyService
@@ -39,7 +39,7 @@ class CryptoCurrencyServiceImpl(): CryptoCurrencyService {
 
     override fun getAllCurrencyValues(): CryptoCurrencyList {
         val cryptos = CryptoCurrencyList()
-        for(crypto in CryptoCurrencyEnum.values()) {
+        for(crypto in Asset.values()) {
             val formatter = CurrentDateTime.getNewDateFormatter()
             val cripto = binanceProxyService.getCryptoCurrencyValue(crypto.name)
             if (cripto != null) {

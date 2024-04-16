@@ -3,7 +3,7 @@ package ar.edu.unq.desapp.grupoI.backenddesappapi.service
 import ar.edu.unq.desapp.grupoI.backenddesappapi.exceptions.InvalidCryptoCurrencySymbol
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.CryptoCurrency
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.CryptoCurrency24hr
-import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.CryptoCurrencyEnum
+import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Asset
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.TestInstance
@@ -26,7 +26,7 @@ class CryptoCurrencyServiceImplTest {
     private lateinit var binanceProxyService: BinanceProxyService
 
 
-    val aliceUSDT = CryptoCurrencyEnum.ALICEUSDT
+    val aliceUSDT = Asset.ALICEUSDT
 
     @Test
     fun `creating a CryptoCurrency it adds an id`(){
