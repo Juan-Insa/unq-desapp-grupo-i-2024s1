@@ -42,6 +42,7 @@ jobs:
           set -a
           . .env
           set +a
+          echo "Some api env: $SPRING_APPLICATION_NAME"
         working-directory: ${{ github.workspace }}
 
       - name: Check dependencies
