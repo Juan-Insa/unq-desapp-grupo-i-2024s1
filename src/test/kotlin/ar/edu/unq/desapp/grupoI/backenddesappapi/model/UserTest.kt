@@ -31,8 +31,8 @@ class UserTest {
     @Test
     fun `when a User posts an intention it gets added to the ActiveIntentions list`() {
         val asset = Asset.ALICEUSDT
-        val amount = 0.2f
-        val price = 20000.0f
+        val amount = 0.2
+        val price = 20000.0
         val priceInPesos = 50000.0f
         val operation = Operation.SELL
 

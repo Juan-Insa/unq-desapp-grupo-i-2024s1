@@ -1,5 +1,6 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.model
 
+import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Action
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Asset
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Operation
 import jakarta.persistence.Entity
@@ -22,6 +23,7 @@ class User(
 
     ) {
     var operations: Int = 0
+    var currentTransactions: MutableList<Transaction> = mutableListOf()
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,9 +33,9 @@ class User(
         reputation = op(reputation, num)
     }
 
-    fun postIntent(symbol: Asset, amount: Float, price: Float, localPrice: Float, operation: Operation): Intention {
+    fun postIntent(symbol: Asset, amount: Double, price: Double, localPrice: Double, operation: Operation): Intention {
         val intention = Intention(
-            userEmail = this.email,
+            user = this,
             cryptoAsset = symbol,
             amount = amount,
             price = price,
@@ -45,6 +47,13 @@ class User(
 
         return intention
     }
+
+    fun addTransaction(transaction: Transaction) {
+        currentTransactions.add(transaction)
+    }
+
+
+
 
 }
 
