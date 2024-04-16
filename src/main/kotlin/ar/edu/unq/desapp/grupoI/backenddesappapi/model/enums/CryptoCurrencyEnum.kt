@@ -1,6 +1,6 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums
 
-enum class Currency {
+enum class CryptoCurrencyEnum {
     ALICEUSDT,
     MATICUSDT,
     AXSUSDT,
