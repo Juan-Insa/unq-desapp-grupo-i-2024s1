@@ -29,7 +29,7 @@ class BinanceProxyServiceImpl(): BinanceProxyService {
             return cryptoCurrency
 
         } catch (e: HttpClientErrorException) {
-            throw InvalidCryptoCurrencySymbol("${binanceApiURL}The currency symbol provided is invalid")
+            throw InvalidCryptoCurrencySymbol("The currency symbol provided is invalid")
         }
 
 
