@@ -21,7 +21,6 @@ class CryptoCurrencyServiceImpl(): CryptoCurrencyService {
     @Autowired lateinit var cryptoCurrencyRepository: CryptoCurrencyRepository
     @Autowired lateinit var binanceProxyService: BinanceProxyService
 
-    @Cacheable(value= ["cryptoCache"], key = "#symbol")
     override fun getCurrencyValue(symbol: String): CryptoCurrency? {
         val currencyValue = binanceProxyService.getCryptoCurrencyValue(symbol)
         val formatter = CurrentDateTime.getNewDateFormatter()

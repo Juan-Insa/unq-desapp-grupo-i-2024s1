@@ -1,4 +1,4 @@
-package ar.edu.unq.desapp.grupoI.backenddesappapi.controllers.dto
+package ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers.dto
 
 import java.time.LocalDateTime
 

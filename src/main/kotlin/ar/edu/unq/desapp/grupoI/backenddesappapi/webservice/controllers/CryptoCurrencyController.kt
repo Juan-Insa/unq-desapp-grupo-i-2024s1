@@ -1,6 +1,6 @@
-package ar.edu.unq.desapp.grupoI.backenddesappapi.controllers
+package ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers
 
-import ar.edu.unq.desapp.grupoI.backenddesappapi.controllers.dto.CryptoCurrencyDTO
+import ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers.dto.CryptoCurrencyDTO
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.CryptoCurrency
 import ar.edu.unq.desapp.grupoI.backenddesappapi.service.CryptoCurrencyService
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,7 +18,7 @@ class CryptoCurrencyController {
 
     @Autowired lateinit var cryptoCurrencyService: CryptoCurrencyService
 
-    @GetMapping("/crypto/{symbol}")
+    @GetMapping("/{symbol}")
     fun getCryptoCurrencyValue(@PathVariable symbol: String): ResponseEntity<CryptoCurrency> {
         val cryptoCurrency = cryptoCurrencyService.getCurrencyValue(symbol)
         return ResponseEntity.ok().body(cryptoCurrency)
