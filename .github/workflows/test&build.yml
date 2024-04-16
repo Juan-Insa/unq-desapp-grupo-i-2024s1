@@ -3,7 +3,7 @@ name: Test & Build
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "ft/user_registration" ]
   pull_request:
     branches: [ "main" ]
 
@@ -12,6 +12,16 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:latest
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: backend-desapp-api
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -25,11 +35,66 @@ jobs:
             distribution: 'adopt'
             java-version: '17'
 
+      - name: Read .env file
+        id: dotenv
+        run: |
+          echo "Reading .env file"
+          set -a
+          . .env
+          set +a
+        working-directory: ${{ github.workspace }}
+
+      - name: Check dependencies
+        run: ./gradlew dependencies
+      - name: Check Binance API connectivity
+        run: |
+          echo "Checking Binance API connectivity..."
+          curl -v "https://api1.binance.com/api/v3/ticker/price?symbol=BTCUSDT"
+
       - name: Build with Gradle
-        run: ./gradlew build --no-daemon
+        run: |
+          export INTEGRATION_BINANCE_API_URL="https://api1.binance.com/api/v3/"
+          echo "Binance api env: $INTEGRATION_BINANCE_API_URL"
+          ./gradlew build --no-daemon
+
+  tests:
+    needs: build
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:latest
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: backend-desapp-api
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: permissions
+        run: chmod +x gradlew
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+
+      - name: Read .env file
+        id: dotenv
+        run: |
+          echo "Reading .env file"
+          set -a
+          . .env
+          set +a
+        working-directory: ${{ github.workspace }}
+
+      - name: Binance connectivity test
+        run: curl -v https://api1.binance.com/api/v3/
 
       - name: Run tests
         run: ./gradlew test --no-daemon
-        
-      - name: Run a one-line script
-        run: echo Hello, world!
+
