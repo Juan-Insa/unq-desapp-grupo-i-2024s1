@@ -1,4 +1,4 @@
-package ar.edu.unq.desapp.grupoI.backenddesappapi.controllers.dto
+package ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers.dto
 
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.User
 
