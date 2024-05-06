@@ -1,19 +1,19 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.helpers
 
 import ar.edu.unq.desapp.grupoI.backenddesappapi.exceptions.*
-import ar.edu.unq.desapp.grupoI.backenddesappapi.model.User
 
 class UserRegisterValidator {
 
     companion object {
-        fun validateUser(user: User) {
-            validateName(user.name)
-            validateLastName(user.lastName)
-            validateEmail(user.email)
-            validateAdress(user.address)
-            validatePassword(user.password)
-            validateCvu(user.cvu)
-            validateCriptoWalletAddress(user.criptoWalletAdress)
+        fun validateUserData(name: String, lastName: String, email: String, address: String, password: String,
+                             cvu: String, cwAddress: String) {
+            validateName(name)
+            validateLastName(lastName)
+            validateEmail(email)
+            validateAdress(address)
+            validatePassword(password)
+            validateCvu(cvu)
+            validateCriptoWalletAddress(cwAddress)
         }
 
         fun validateName(name: String) {

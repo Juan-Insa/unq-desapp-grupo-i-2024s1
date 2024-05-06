@@ -1,6 +1,6 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.model
 
-import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Action
+import ar.edu.unq.desapp.grupoI.backenddesappapi.helpers.UserRegisterValidator
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Asset
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Operation
 import jakarta.persistence.Entity
@@ -18,12 +18,16 @@ class User(
     var address: String,
     var password: String,
     var cvu: String,
-    var criptoWalletAdress: String,
+    var criptoWalletAddress: String,
     var reputation: Int = 0,
 
     ) {
     var operations: Int = 0
-    var currentTransactions: MutableList<Transaction> = mutableListOf()
+    //var currentTransactions: MutableList<Transaction> = mutableListOf()
+
+    init {
+        UserRegisterValidator.validateUserData(name, lastName, email, address, password, cvu, criptoWalletAddress)
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +39,8 @@ class User(
 
     fun postIntent(symbol: Asset, amount: Double, price: Double, localPrice: Double, operation: Operation): Intention {
         val intention = Intention(
-            user = this,
+            userName = this.name + " " + this.lastName,
+            userEmail = this.email,
             cryptoAsset = symbol,
             amount = amount,
             price = price,
@@ -48,9 +53,9 @@ class User(
         return intention
     }
 
-    fun addTransaction(transaction: Transaction) {
-        currentTransactions.add(transaction)
-    }
+    //fun addTransaction(transaction: Transaction) {
+    //    currentTransactions.add(transaction)
+    //}
 
 
 

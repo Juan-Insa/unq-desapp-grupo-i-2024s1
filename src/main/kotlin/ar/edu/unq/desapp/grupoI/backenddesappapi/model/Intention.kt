@@ -1,11 +1,18 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.model
 
-import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Action
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Asset
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Operation
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import jakarta.persistence.Table
 
+@Entity
+@Table(name = "intention")
 class Intention(
-    val user: User,
+    val userName: String,
+    val userEmail: String,
     val cryptoAsset: Asset,
     val amount: Double,
     val operation: Operation,
@@ -13,27 +20,7 @@ class Intention(
     val price: Double = 0.0,
 ) {
 
-    fun generateTransaction(interestedUser: User) {
-        val destinationAddress : String
-
-        if (this.operation == Operation.SELL) {
-            destinationAddress = interestedUser.cvu
-        } else {
-            destinationAddress = interestedUser.criptoWalletAdress
-        }
-
-        val transaction = Transaction(
-            cryptoAsset= cryptoAsset,
-            nominalAmount = amount,
-            cryptoCurrencyPrice = price,
-            userEmail = interestedUser.email,
-            numberOfOperations = interestedUser.operations,
-            reputation = interestedUser.reputation,
-            destinationAddress = destinationAddress,
-            action = Action.AWAITING
-            )
-
-        user.addTransaction(transaction)
-    }
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long? = null
 }

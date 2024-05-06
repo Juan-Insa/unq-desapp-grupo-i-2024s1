@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -20,8 +21,25 @@ class UserControllerREST {
     @Autowired lateinit var  userService: UserService
 
     @PostMapping("/register")
-    fun registerUser(@RequestBody user: UserDTO): ResponseEntity<User> {
-        val registeredUser = userService.registerUser(user.aModelo())
+    fun registerUser(
+        @RequestParam name: String,
+        @RequestParam lastName: String,
+        @RequestParam email: String,
+        @RequestParam address: String,
+        @RequestParam password: String,
+        @RequestParam cvu: String,
+        @RequestParam criptoWalletAddress: String
+    ): ResponseEntity<User> {
+
+        val registeredUser = userService.registerUser(
+            name,
+            lastName,
+            email,
+            address,
+            password,
+            cvu,
+            criptoWalletAddress
+        )
 
         return ResponseEntity(registeredUser, HttpStatus.CREATED)
     }
