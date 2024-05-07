@@ -20,9 +20,12 @@ class CryptoCurrencyServiceImpl(): CryptoCurrencyService {
 
     @Autowired lateinit var cryptoCurrencyRepository: CryptoCurrencyRepository
     @Autowired lateinit var binanceProxyService: BinanceProxyService
+    override fun getCurrencyValue(symbol: String): Float? {
+        TODO("Not yet implemented")
+    }
 
-    override fun getCurrencyValue(symbol: String): CryptoCurrency? {
-        val currencyValue = binanceProxyService.getCryptoCurrencyValue(symbol)
+    override fun getCryptoCurrency(symbol: String): CryptoCurrency? {
+        val currencyValue = binanceProxyService.getCryptoCurrency(symbol)
         val formatter = CurrentDateTime.getNewDateFormatter()
 
         if (currencyValue != null) {
@@ -32,6 +35,18 @@ class CryptoCurrencyServiceImpl(): CryptoCurrencyService {
         return currencyValue
     }
 
+    override fun isValidPrice(symbol: String, price: Double): Boolean {
+        val currencyValue = getCryptoCurrency(symbol)!!.marketPrice
+
+        val fivePercentDiff = currencyValue * 0.05
+
+        val lowerLimit = currencyValue - fivePercentDiff
+        val upperLimit = currencyValue + fivePercentDiff
+
+        return price in lowerLimit..upperLimit
+    }
+
+
     override fun createCryptoCurrency(cryptoCurrency: CryptoCurrency): CryptoCurrency {
         return cryptoCurrencyRepository.save(cryptoCurrency)
     }
@@ -40,7 +55,7 @@ class CryptoCurrencyServiceImpl(): CryptoCurrencyService {
         val cryptos = CryptoCurrencyList()
         for(crypto in Asset.values()) {
             val formatter = CurrentDateTime.getNewDateFormatter()
-            val cripto = binanceProxyService.getCryptoCurrencyValue(crypto.name)
+            val cripto = binanceProxyService.getCryptoCurrency(crypto.name)
             if (cripto != null) {
                 cripto.lastUpdateDateAndTime(formatter.format(Date()))
                 cryptos.addCrypto(cripto)

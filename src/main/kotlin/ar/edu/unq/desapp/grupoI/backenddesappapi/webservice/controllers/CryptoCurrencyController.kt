@@ -19,8 +19,8 @@ class CryptoCurrencyController {
     @Autowired lateinit var cryptoCurrencyService: CryptoCurrencyService
 
     @GetMapping("/{symbol}")
-    fun getCryptoCurrencyValue(@PathVariable symbol: String): ResponseEntity<CryptoCurrency> {
-        val cryptoCurrency = cryptoCurrencyService.getCurrencyValue(symbol)
+    fun getCryptoCurrency(@PathVariable symbol: String): ResponseEntity<CryptoCurrency> {
+        val cryptoCurrency = cryptoCurrencyService.getCryptoCurrency(symbol)
         return ResponseEntity.ok().body(cryptoCurrency)
     }
 

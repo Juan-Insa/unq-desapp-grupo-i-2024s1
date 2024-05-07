@@ -43,8 +43,8 @@ class CryptoCurrencyServiceImplTest {
     fun `get the current market price of ALICEUSDT currency`(){
         val resultadoMockeado = CryptoCurrency("ALICEUSDT", 50.0f, "2022-04-13 12:00:00")
 
-        Mockito.`when`(binanceProxyService.getCryptoCurrencyValue("ALICEUSDT")).thenReturn(resultadoMockeado)
-        val resultado = cryptoCurrencyService.getCurrencyValue(aliceUSDT.toString())
+        Mockito.`when`(binanceProxyService.getCryptoCurrency("ALICEUSDT")).thenReturn(resultadoMockeado)
+        val resultado = cryptoCurrencyService.getCryptoCurrency(aliceUSDT.toString())
 
         assertNotNull(resultado)
         assertEquals("ALICEUSDT",resultado?.symbol)
@@ -71,7 +71,7 @@ class CryptoCurrencyServiceImplTest {
         )
 
         resultadosMockeados.forEachIndexed { index, resultadoMockeado ->
-            Mockito.`when`(binanceProxyService.getCryptoCurrencyValue(resultadoMockeado.symbol))
+            Mockito.`when`(binanceProxyService.getCryptoCurrency(resultadoMockeado.symbol))
                 .thenReturn(resultadoMockeado)
         }
 
@@ -117,8 +117,37 @@ class CryptoCurrencyServiceImplTest {
 
     @Test
     fun `when getting a currency value with an invalid symbol it throws an InvalidCryptoCurrencySymbol exception`(){
-        Mockito.`when`(binanceProxyService.getCryptoCurrencyValue("invalidCurrency"))
+        Mockito.`when`(binanceProxyService.getCryptoCurrency("invalidCurrency"))
             .thenAnswer { throw InvalidCryptoCurrencySymbol("The currency symbol provided is invalid") }
-        assertThrows<InvalidCryptoCurrencySymbol> { cryptoCurrencyService.getCurrencyValue("invalidCurrency") }
+        assertThrows<InvalidCryptoCurrencySymbol> { cryptoCurrencyService.getCryptoCurrency("invalidCurrency") }
     }
+
+    @Test
+    fun `isValidPrice returns true if the price is within 5% range with the currency price`() {
+        val resultadoMockeado = CryptoCurrency("ALICEUSDT", 50.0f, "2022-04-13 12:00:00")
+
+        Mockito.`when`(binanceProxyService.getCryptoCurrency("ALICEUSDT")).thenReturn(resultadoMockeado)
+
+        assertTrue(cryptoCurrencyService.isValidPrice(aliceUSDT.toString(), 47.5))
+    }
+
+    @Test
+    fun `isValidPrice returns false if the price is lower than 5% range with the currency price`() {
+        val resultadoMockeado = CryptoCurrency("ALICEUSDT", 50.0f, "2022-04-13 12:00:00")
+
+        Mockito.`when`(binanceProxyService.getCryptoCurrency("ALICEUSDT")).thenReturn(resultadoMockeado)
+
+        assertFalse(cryptoCurrencyService.isValidPrice(aliceUSDT.toString(), 47.0))
+    }
+
+    @Test
+    fun `isValidPrice returns false if the price is higher than 5% range with the currency price`() {
+        val resultadoMockeado = CryptoCurrency("ALICEUSDT", 50.0f, "2022-04-13 12:00:00")
+
+        Mockito.`when`(binanceProxyService.getCryptoCurrency("ALICEUSDT")).thenReturn(resultadoMockeado)
+
+        assertFalse(cryptoCurrencyService.isValidPrice(aliceUSDT.toString(), 52.6))
+    }
+
 }
+

@@ -1,5 +1,6 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.service
 
+import ar.edu.unq.desapp.grupoI.backenddesappapi.model.CryptoCurrency
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.Intention
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.User
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Action
@@ -10,8 +11,10 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.context.junit.jupiter.SpringExtension
 
 @ExtendWith(SpringExtension::class)
@@ -24,12 +27,18 @@ class TransactionServiceImplTest {
     @Autowired lateinit var userService: UserService
     @Autowired lateinit var cryptoCurrencyService: CryptoCurrencyService
 
+    @MockBean
+    private lateinit var binanceProxyService: BinanceProxyService
+
     lateinit var intention: Intention
     lateinit var intentionUser: User
     lateinit var interestedUser: User
 
     @BeforeEach
     fun init() {
+        val resultadoMockeado = CryptoCurrency("ALICEUSDT", 50.0f, "2022-04-13 12:00:00")
+        Mockito.`when`(binanceProxyService.getCryptoCurrency("ALICEUSDT")).thenReturn(resultadoMockeado)
+
         intentionUser = userService.registerUser(
             name ="intentionUser",
             lastName = "user",
@@ -55,7 +64,7 @@ class TransactionServiceImplTest {
             cryptoAsset = Asset.ALICEUSDT,
             amount = 0.5,
             operation = Operation.SELL,
-            price = 10000.0
+            price = 49.0
         )
 
     }
@@ -70,7 +79,7 @@ class TransactionServiceImplTest {
         assertEquals(validTransaction.cryptoAsset, Asset.ALICEUSDT)
         assertEquals(validTransaction.destinationAddress, intentionUser.cvu)
         assertEquals(validTransaction.nominalAmount, 0.5)
-        assertEquals(validTransaction.cryptoCurrencyPrice, 10000.0)
+        assertEquals(validTransaction.cryptoCurrencyPrice, 49.0)
         assertEquals(validTransaction.numberOfOperations, interestedUser.operations)
         assertEquals(validTransaction.userEmail, interestedUser.email)
         assertEquals(validTransaction.reputation, interestedUser.reputation)
