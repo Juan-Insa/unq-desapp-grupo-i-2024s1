@@ -22,23 +22,16 @@ class UserControllerREST {
 
     @PostMapping("/register")
     fun registerUser(
-        @RequestParam name: String,
-        @RequestParam lastName: String,
-        @RequestParam email: String,
-        @RequestParam address: String,
-        @RequestParam password: String,
-        @RequestParam cvu: String,
-        @RequestParam criptoWalletAddress: String
+        @RequestBody userRequest: UserRequest
     ): ResponseEntity<User> {
-
         val registeredUser = userService.registerUser(
-            name,
-            lastName,
-            email,
-            address,
-            password,
-            cvu,
-            criptoWalletAddress
+            userRequest.name,
+            userRequest.lastName,
+            userRequest.email,
+            userRequest.address,
+            userRequest.password,
+            userRequest.cvu,
+            userRequest.criptoWalletAddress
         )
 
         return ResponseEntity(registeredUser, HttpStatus.CREATED)
