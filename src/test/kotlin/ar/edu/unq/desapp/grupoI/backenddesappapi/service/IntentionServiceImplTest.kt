@@ -79,7 +79,18 @@ class IntentionServiceImplTest {
             )
         }
     }
-
+    @Test
+    fun `returns all the active intentions`() {
+        intentionService.createIntention(
+            user = intentionUser,
+            cryptoAsset = Asset.ALICEUSDT,
+            amount = 0.5,
+            operation = Operation.SELL,
+            price = 52.0
+        )
+        val intentions = intentionService.getAllIntentions()
+        Assertions.assertEquals(intentions.size, 1)
+    }
     @AfterEach
     fun deleteAll() {
         dataService.deleteAll()

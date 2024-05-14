@@ -2,6 +2,7 @@ package ar.edu.unq.desapp.grupoI.backenddesappapi.service.impl
 
 import ar.edu.unq.desapp.grupoI.backenddesappapi.exceptions.IntentionNotFoundException
 import ar.edu.unq.desapp.grupoI.backenddesappapi.exceptions.InvalidIntentionPriceException
+import ar.edu.unq.desapp.grupoI.backenddesappapi.model.ActiveIntentions
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.Intention
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.User
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Asset
@@ -49,4 +50,7 @@ class IntentionServiceImpl: IntentionService {
             .getOrNull() ?: throw IntentionNotFoundException("Could not find an intention with id: `${id}`")
     }
 
+    override fun getAllIntentions(): MutableList<Intention> {
+        return intentionRepository.findAll() as MutableList<Intention>
+    }
 }
