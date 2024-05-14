@@ -33,6 +33,7 @@ class TransactionServiceImplTest {
     lateinit var intention: Intention
     lateinit var intentionUser: User
     lateinit var interestedUser: User
+    lateinit var userName: String
 
     @BeforeEach
     fun init() {
@@ -58,9 +59,11 @@ class TransactionServiceImplTest {
             cvu = "9876543210987654321098",
             cryptoWalletAddress = "87654321"
         )
+        userName = intentionUser.name + " " + intentionUser.lastName
 
         intention = intentionService.createIntention(
-            user = intentionUser,
+            userName = userName,
+            userEmail = intentionUser.email,
             cryptoAsset = Asset.ALICEUSDT,
             amount = 0.5,
             operation = Operation.SELL,

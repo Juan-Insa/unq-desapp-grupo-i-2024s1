@@ -22,7 +22,7 @@ class IntentionServiceImpl: IntentionService {
     @Autowired lateinit var intentionRepository: IntentionRepository
     @Autowired lateinit var cryptoCurrencyServiceImpl: CryptoCurrencyService
 
-    override fun createIntention(user: User, cryptoAsset: Asset, amount: Double, operation: Operation, price: Double): Intention {
+    override fun createIntention(userName: String, userEmail: String, cryptoAsset: Asset, amount: Double, operation: Operation, price: Double): Intention {
         if (!cryptoCurrencyServiceImpl.isValidPrice(cryptoAsset.toString(), price)) {
             throw InvalidIntentionPriceException("The intention price value is not within a valid range for the `${cryptoAsset.toString()} market price`")
         }
@@ -31,8 +31,8 @@ class IntentionServiceImpl: IntentionService {
         val priceInPesos = price * 1000
 
         val intention = Intention(
-            userName  = user.name + " " + user.lastName,
-            userEmail = user.email,
+            userName  = userName, //+ " " + user.lastName,
+            userEmail = userEmail,
             cryptoAsset = cryptoAsset,
             amount = amount,
             operation = operation,

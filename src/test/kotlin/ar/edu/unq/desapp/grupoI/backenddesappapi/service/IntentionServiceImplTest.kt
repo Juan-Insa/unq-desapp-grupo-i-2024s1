@@ -30,6 +30,8 @@ class IntentionServiceImplTest {
 
     lateinit var intention: Intention
     lateinit var intentionUser: User
+    lateinit var userName: String
+
 
     @BeforeEach
     fun init() {
@@ -46,12 +48,14 @@ class IntentionServiceImplTest {
             cvu = "1234567890123456789012",
             cryptoWalletAddress = "12345678"
         )
+        userName = intentionUser.name + " " + intentionUser.lastName
     }
 
     @Test
     fun `createIntention persist the intention with valid attributes`() {
         var validIntention = intentionService.createIntention(
-            user = intentionUser,
+            userName = userName,
+            userEmail = intentionUser.email,
             cryptoAsset = Asset.ALICEUSDT,
             amount = 0.5,
             operation = Operation.SELL,
@@ -71,7 +75,8 @@ class IntentionServiceImplTest {
     fun `createIntention throws InvalidIntentionPriceException when price validation fails`() {
         assertThrows<InvalidIntentionPriceException> {
             intentionService.createIntention(
-                user = intentionUser,
+                userName = userName,
+                userEmail = intentionUser.email,
                 cryptoAsset = Asset.ALICEUSDT,
                 amount = 0.5,
                 operation = Operation.SELL,
@@ -82,7 +87,8 @@ class IntentionServiceImplTest {
     @Test
     fun `returns all the active intentions`() {
         intentionService.createIntention(
-            user = intentionUser,
+            userName = userName,
+            userEmail = intentionUser.email,
             cryptoAsset = Asset.ALICEUSDT,
             amount = 0.5,
             operation = Operation.SELL,
