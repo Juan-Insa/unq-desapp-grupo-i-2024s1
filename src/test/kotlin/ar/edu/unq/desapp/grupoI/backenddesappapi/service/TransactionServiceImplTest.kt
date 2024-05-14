@@ -62,7 +62,6 @@ class TransactionServiceImplTest {
         userName = intentionUser.name + " " + intentionUser.lastName
 
         intention = intentionService.createIntention(
-            userName = userName,
             userEmail = intentionUser.email,
             cryptoAsset = Asset.ALICEUSDT,
             amount = 0.5,

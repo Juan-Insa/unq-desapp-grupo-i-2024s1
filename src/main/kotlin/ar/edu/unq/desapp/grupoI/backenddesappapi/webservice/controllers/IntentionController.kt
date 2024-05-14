@@ -31,7 +31,7 @@ class IntentionController {
         } catch (ex: IllegalArgumentException) {
             return ResponseEntity.badRequest().build()
         }
-        val newIntention = intentionService.createIntention(intentionRequest.userName, intentionRequest.userEmail, asset, intentionRequest.amount, oper, intentionRequest.price)
+        val newIntention = intentionService.createIntention(intentionRequest.userEmail, asset, intentionRequest.amount, oper, intentionRequest.price)
         return ResponseEntity.ok().body(newIntention)
     }
     @GetMapping("/all")
