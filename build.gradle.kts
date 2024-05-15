@@ -1,15 +1,34 @@
-import org.gradle.kotlin.dsl.support.kotlinCompilerOptions
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
 	war
+	jacoco
+	id("org.sonarqube") version "3.5.0.2730"
 	id("org.springframework.boot") version "3.2.3"
 	id("io.spring.dependency-management") version "1.1.4"
 	kotlin("jvm") version "1.7.10"
 	kotlin("plugin.spring") version "1.8.20"
 	kotlin("plugin.jpa") version "1.7.10"
+
+}
+jacoco {
+	toolVersion = "0.8.11"
+
 }
 
+tasks.jacocoTestReport {
+	reports {
+		xml.required = true
+	}
+}
+
+sonar {
+	properties {
+		property("sonar.host.url", "https://sonarcloud.io")
+		property("sonar.organization", "juan-insa-124708")
+		property("sonar.projectKey", "Juan-Insa_unq-desapp-grupo-i-2024s1")
+	}
+}
 group = "ar.edu.unq.desapp.grupoI"
 version = "0.0.1-SNAPSHOT"
 

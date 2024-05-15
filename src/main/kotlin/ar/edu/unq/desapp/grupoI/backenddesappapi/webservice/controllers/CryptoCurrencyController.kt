@@ -1,6 +1,5 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers
 
-import ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers.dto.CryptoCurrencyDTO
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.CryptoCurrency
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.CryptoCurrency24hr
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.CryptoCurrencyList
