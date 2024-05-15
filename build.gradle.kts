@@ -28,6 +28,7 @@ sonar {
 		property("sonar.organization", "juan-insa-124708")
 		property("sonar.host.url", "https://sonarcloud.io")
 	}
+}
 group = "ar.edu.unq.desapp.grupoI"
 version = "0.0.1-SNAPSHOT"
 
