@@ -3,7 +3,7 @@ name: Test & Build
 
 on:
   push:
-    branches: [ "main", "ft/user_registration" ]
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
@@ -97,4 +97,9 @@ jobs:
 
       - name: Run tests
         run: ./gradlew test --no-daemon
+
+      - name: Build and analyze
+        env:
+          SONAR_TOKEN: eca16bf79078afd17cadc6608d6e13b94c029bf0
+        run: ./gradlew build jacocoTestReport sonar --info
 
