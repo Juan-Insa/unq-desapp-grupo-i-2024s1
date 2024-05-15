@@ -4,19 +4,14 @@ class ActiveIntentions {
 
     companion object {
 
-    val intentions: MutableList<Intention> = mutableListOf()
+        val intentions: MutableList<Intention> = mutableListOf()
 
-    fun addIntention(intention: Intention) {
-        intentions.add(intention)
-    }
+        fun addIntention(intention: Intention) {
+            intentions.add(intention)
+        }
 
-    fun removeIntention(intention: Intention) {
-        this.intentions.remove(intention)
-    }
-
-    fun getList():  MutableList<Intention>{
-        return intentions
-    }
-
+        fun removeIntention(intention: Intention) {
+            this.intentions.remove(intention)
+        }
     }
 }

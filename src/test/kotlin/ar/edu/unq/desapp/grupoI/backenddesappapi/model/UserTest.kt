@@ -30,11 +30,11 @@ class UserTest {
         val asset = Asset.ALICEUSDT
         val amount = 0.2
         val price = 20000.0
-        val priceInPesos = 50000.0f
+        val priceInPesos = 50000.0
         val operation = Operation.SELL
 
-        //val intention = validUser.postIntent(asset, amount, price, operation)
+        val intention = validUser.postIntent(asset, amount, price, priceInPesos, operation)
 
-        //assertTrue { ActiveIntentions.intentions.contains(intention) }
+        assertTrue { ActiveIntentions.intentions.contains(intention) }
     }
 }
