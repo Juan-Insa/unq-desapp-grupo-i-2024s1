@@ -35,14 +35,12 @@ jobs:
             distribution: 'adopt'
             java-version: '17'
 
-      - name: Read .env file
-        id: dotenv
-        run: |
-          echo "Reading .env file"
-          set -a
-          . .env
-          set +a
-        working-directory: ${{ github.workspace }}
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
 
       - name: Check dependencies
         run: ./gradlew dependencies
@@ -56,7 +54,12 @@ jobs:
           export INTEGRATION_BINANCE_API_URL="https://api1.binance.com/api/v3/"
           echo "Binance api env: $INTEGRATION_BINANCE_API_URL"
           ./gradlew build --no-daemon
-
+      - name: Build and analyze
+        env:
+          SONAR_TOKEN: d4d4929a1d859d52ed4c8e019ac84de829905900
+        run: |
+          ./gradlew build sonar --info
+          ./gradlew build jacocoTestReport sonar --info
   tests:
     needs: build
     runs-on: ubuntu-latest
@@ -98,8 +101,5 @@ jobs:
       - name: Run tests
         run: ./gradlew test --no-daemon
 
-      - name: Build and analyze
-        env:
-          SONAR_TOKEN: eca16bf79078afd17cadc6608d6e13b94c029bf0
-        run: ./gradlew build jacocoTestReport sonar --info
+        
 
