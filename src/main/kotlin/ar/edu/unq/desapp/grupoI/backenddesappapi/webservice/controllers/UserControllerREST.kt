@@ -1,6 +1,5 @@
-package ar.edu.unq.desapp.grupoI.backenddesappapi.controllers
+package ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers
 
-import ar.edu.unq.desapp.grupoI.backenddesappapi.controllers.dto.UserDTO
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.User
 import ar.edu.unq.desapp.grupoI.backenddesappapi.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,8 +19,18 @@ class UserControllerREST {
     @Autowired lateinit var  userService: UserService
 
     @PostMapping("/register")
-    fun registerUser(@RequestBody user: UserDTO): ResponseEntity<User> {
-        val registeredUser = userService.registerUser(user.aModelo())
+    fun registerUser(
+        @RequestBody userRequest: UserRequest
+    ): ResponseEntity<User> {
+        val registeredUser = userService.registerUser(
+            userRequest.name,
+            userRequest.lastName,
+            userRequest.email,
+            userRequest.address,
+            userRequest.password,
+            userRequest.cvu,
+            userRequest.criptoWalletAddress
+        )
 
         return ResponseEntity(registeredUser, HttpStatus.CREATED)
     }

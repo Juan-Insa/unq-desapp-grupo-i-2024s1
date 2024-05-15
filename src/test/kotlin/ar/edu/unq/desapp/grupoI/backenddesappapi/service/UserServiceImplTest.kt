@@ -20,33 +20,40 @@ class UserServiceImplTest {
 
     @Test
     fun `registerUser fails when trying to register user with invalid password`(){
-        val user = User(
-            "juancho",
-            "insa",
-            "lala@gmail.com",
-            "street123",
-            "xxxxx",
-            "1234567890123456789012",
-            "12345678")
-
-        assertThrows<IllegalArgumentException> { userService.registerUser(user) }
+        assertThrows<IllegalArgumentException> {
+            userService.registerUser(
+                name = "juancho",
+                lastName = "insa",
+                email = "juancho@gmail.com",
+                address = "validStreetAddress",
+                password = "xxxxx",
+                cvu = "1234567890123456789012",
+                cryptoWalletAddress = "12345678"
+            )
+        }
     }
 
     @Test
     fun `registerUser persist the user with valid credentials`(){
-        val user = User(
-            "juancho",
-            "insa",
-            "lala@gmail.com",
-            "validStreetAddress",
-            "Valid.Password",
-            "1234567890123456789012",
-            "12345678")
 
-        userService.registerUser(user)
+        userService.registerUser(
+            name = "juancho",
+            lastName = "insa",
+            email = "juancho@gmail.com",
+            address = "validStreetAddress",
+            password = "Valid.Password",
+            cvu = "1234567890123456789012",
+            cryptoWalletAddress = "12345678"
+        )
 
-        val userObtained = userService.getUserByName("juancho")
+        val userObtained = userService.getUserByEmail("juancho@gmail.com")
 
         assertEquals("juancho", userObtained.name)
+        assertEquals("insa", userObtained.lastName)
+        assertEquals("juancho@gmail.com", userObtained.email)
+        assertEquals("validStreetAddress", userObtained.address)
+        assertEquals("Valid.Password", userObtained.password)
+        assertEquals("1234567890123456789012", userObtained.cvu)
+        assertEquals("12345678", userObtained.criptoWalletAddress)
     }
 }

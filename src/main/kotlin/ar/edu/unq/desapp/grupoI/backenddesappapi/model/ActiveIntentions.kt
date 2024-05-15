@@ -1,13 +1,22 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.model
 
 class ActiveIntentions {
-    val intentions: MutableList<ActiveIntention> = mutableListOf()
 
-    fun addIntention(intention: ActiveIntention) {
+    companion object {
+
+    val intentions: MutableList<Intention> = mutableListOf()
+
+    fun addIntention(intention: Intention) {
         intentions.add(intention)
     }
 
-    fun getList():  MutableList<ActiveIntention>{
+    fun removeIntention(intention: Intention) {
+        this.intentions.remove(intention)
+    }
+
+    fun getList():  MutableList<Intention>{
         return intentions
+    }
+
     }
 }

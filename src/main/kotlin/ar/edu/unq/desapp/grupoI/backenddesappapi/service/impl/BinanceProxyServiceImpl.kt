@@ -19,7 +19,7 @@ class BinanceProxyServiceImpl(): BinanceProxyService {
     @Value("\${integration.binance.api.url:NONE}")
     lateinit var binanceApiURL: String
 
-    override fun getCryptoCurrencyValue(symbol: String): CryptoCurrency? {
+    override fun getCryptoCurrency(symbol: String): CryptoCurrency? {
 
         if (symbol.isBlank()) {
             throw IllegalArgumentException("The currency symbol must not be empty")

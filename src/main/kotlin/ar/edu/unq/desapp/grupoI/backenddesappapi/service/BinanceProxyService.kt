@@ -6,6 +6,6 @@ import org.springframework.stereotype.Service
 
 interface BinanceProxyService {
 
-    fun getCryptoCurrencyValue(symbol: String): CryptoCurrency?
+    fun getCryptoCurrency(symbol: String): CryptoCurrency?
     fun getCrypto24hrCurrencyValue(symbol: String): CryptoCurrency24hr?
 }

@@ -1,7 +1,6 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.service.impl
 
 import ar.edu.unq.desapp.grupoI.backenddesappapi.exceptions.UserNotFoundException
-import ar.edu.unq.desapp.grupoI.backenddesappapi.helpers.UserRegisterValidator
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.User
 import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.UserRepository
 import ar.edu.unq.desapp.grupoI.backenddesappapi.service.UserService
@@ -16,16 +15,20 @@ class UserServiceImpl(): UserService {
 
     @Autowired lateinit var userRepository: UserRepository
 
-    override fun getUserByName(name: String): User {
-        return userRepository.findByName(name)
-            .getOrNull() ?: throw UserNotFoundException("could not found user with name `${name}`")
+    override fun getUserByEmail(email: String): User {
+        return userRepository.findByEmail(email)
+            .getOrNull() ?: throw UserNotFoundException("could not find user with name `${email}`")
     }
 
-    override fun registerUser(user: User): User {
-        if (userRepository.existsByEmail(user.email)) {
+    override fun registerUser(name: String, lastName: String, email: String, address: String, password: String,
+        cvu: String, cwAddress: String): User {
+
+        if (userRepository.existsByEmail(email)) {
             throw IllegalArgumentException("Email is already registered");
         }
-        UserRegisterValidator.validateUser(user)
+
+        val user = User(name,lastName,email,address,password,cvu,cwAddress)
+
         return userRepository.save(user)
     }
 

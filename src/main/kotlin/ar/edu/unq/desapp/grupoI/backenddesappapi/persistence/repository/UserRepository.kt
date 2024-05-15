@@ -8,6 +8,6 @@ import java.util.Optional
 @Repository
 interface UserRepository: CrudRepository<User, Long> {
 
-    fun findByName(name: String): Optional<User>
+    fun findByEmail(email: String): Optional<User>
     fun existsByEmail(email: String): Boolean
 }
