@@ -3,7 +3,6 @@ package ar.edu.unq.desapp.grupoI.backenddesappapi.service.impl
 import ar.edu.unq.desapp.grupoI.backenddesappapi.exceptions.IntentionNotFoundException
 import ar.edu.unq.desapp.grupoI.backenddesappapi.exceptions.InvalidIntentionPriceException
 import ar.edu.unq.desapp.grupoI.backenddesappapi.exceptions.UserNotFoundException
-import ar.edu.unq.desapp.grupoI.backenddesappapi.model.ActiveIntentions
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.Intention
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.User
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Asset

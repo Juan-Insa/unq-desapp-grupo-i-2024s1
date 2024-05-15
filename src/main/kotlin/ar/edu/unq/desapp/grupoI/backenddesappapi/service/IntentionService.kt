@@ -1,8 +1,6 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.service
 
-import ar.edu.unq.desapp.grupoI.backenddesappapi.model.ActiveIntentions
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.Intention
-import ar.edu.unq.desapp.grupoI.backenddesappapi.model.User
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Asset
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Operation
 
