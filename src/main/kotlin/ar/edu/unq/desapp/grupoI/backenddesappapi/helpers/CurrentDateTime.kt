@@ -11,7 +11,7 @@ object CurrentDateTime {
         return Date()
     }
 
-    fun getNedDateString(): String {
+    fun getNewDateString(): String {
         val formatter = SimpleDateFormat(DATE_FORMAT)
         return formatter.format(getNewDate())
     }

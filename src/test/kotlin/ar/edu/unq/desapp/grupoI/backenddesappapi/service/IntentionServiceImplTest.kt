@@ -38,26 +38,27 @@ class IntentionServiceImplTest {
 
         Mockito.`when`(binanceProxyService.getCryptoCurrency("ALICEUSDT")).thenReturn(resultadoMockeado)
 
-        intentionUser = userService.registerUser(
+        intentionUser = User(
             name ="intentionUser",
             lastName = "user",
             email = "intentionUser@gmail.com",
             address = "intentionUserAddress",
             password = "Intention.User.Pass",
             cvu = "1234567890123456789012",
-            cryptoWalletAddress = "12345678"
-        )
+            cryptoWalletAddress = "12345678")
+
+        intentionUser = userService.registerUser(intentionUser)
     }
 
     @Test
     fun `createIntention persist the intention with valid attributes`() {
-        var validIntention = intentionService.createIntention(
-            userEmail = intentionUser.email,
+        val intention = Intention(
             cryptoAsset = Asset.ALICEUSDT,
             amount = 0.5,
             operation = Operation.SELL,
-            price = 52.0
-        )
+            price = 52.0)
+
+        var validIntention = intentionService.createIntention(intention, intentionUser.id!!)
 
         validIntention = intentionService.getIntentionById(validIntention.id!!)
 
@@ -65,30 +66,32 @@ class IntentionServiceImplTest {
         Assertions.assertEquals(validIntention.amount, 0.5)
         Assertions.assertEquals(validIntention.price, 52.0)
         Assertions.assertEquals(validIntention.operation, Operation.SELL)
-        Assertions.assertEquals(validIntention.userEmail, intentionUser.email)
+        Assertions.assertEquals(validIntention.user!!.id, intentionUser.id)
     }
 
     @Test
     fun `createIntention throws InvalidIntentionPriceException when price validation fails`() {
+        val intention = Intention(
+            cryptoAsset = Asset.ALICEUSDT,
+            amount = 0.5,
+            operation = Operation.SELL,
+            price = 60.0
+        )
+
         assertThrows<InvalidIntentionPriceException> {
-            intentionService.createIntention(
-                userEmail = intentionUser.email,
-                cryptoAsset = Asset.ALICEUSDT,
-                amount = 0.5,
-                operation = Operation.SELL,
-                price = 60.0
-            )
+            intentionService.createIntention(intention, intentionUser.id!!)
         }
     }
     @Test
     fun `returns all the active intentions`() {
-        intentionService.createIntention(
-            userEmail = intentionUser.email,
+        val intention = Intention(
             cryptoAsset = Asset.ALICEUSDT,
             amount = 0.5,
             operation = Operation.SELL,
             price = 52.0
         )
+
+        intentionService.createIntention(intention, intentionUser.id!!)
         val intentions = intentionService.getAllIntentions()
         Assertions.assertEquals(intentions.size, 1)
     }

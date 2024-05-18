@@ -11,4 +11,5 @@ interface CryptoCurrencyService {
     fun isValidPrice(symbol: String, price: Double): Boolean
     fun getAllCurrencyValues(): CryptoCurrencyList
     fun get24hrCurrencyQuoteFrom(symbol: String): CryptoCurrency24hr?
+    fun validatePrice(symbol: String, price: Double)
 }

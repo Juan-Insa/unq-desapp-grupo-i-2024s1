@@ -6,6 +6,9 @@ import ar.edu.unq.desapp.grupoI.backenddesappapi.model.User
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Action
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Asset
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Operation
+import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.OperationState
+import ar.edu.unq.desapp.grupoI.backenddesappapi.utils.DataService
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -26,6 +29,7 @@ class TransactionServiceImplTest {
     @Autowired lateinit var intentionService: IntentionService
     @Autowired lateinit var userService: UserService
     @Autowired lateinit var cryptoCurrencyService: CryptoCurrencyService
+    @Autowired lateinit var dataService: DataService
 
     @MockBean
     private lateinit var binanceProxyService: BinanceProxyService
@@ -40,17 +44,18 @@ class TransactionServiceImplTest {
         val resultadoMockeado = CryptoCurrency("ALICEUSDT", 50.0f, "2022-04-13 12:00:00")
         Mockito.`when`(binanceProxyService.getCryptoCurrency("ALICEUSDT")).thenReturn(resultadoMockeado)
 
-        intentionUser = userService.registerUser(
+        intentionUser = User(
             name ="intentionUser",
             lastName = "user",
             email = "intentionUser@gmail.com",
             address = "intentionUserAddress",
             password = "Intention.User.Pass",
             cvu = "1234567890123456789012",
-            cryptoWalletAddress = "12345678"
-        )
+            cryptoWalletAddress = "12345678")
 
-        interestedUser = userService.registerUser(
+        intentionUser = userService.registerUser(intentionUser)
+
+        interestedUser = User(
             name ="interestedUser",
             lastName = "user",
             email = "interestedUser@gmail.com",
@@ -59,31 +64,32 @@ class TransactionServiceImplTest {
             cvu = "9876543210987654321098",
             cryptoWalletAddress = "87654321"
         )
-        userName = intentionUser.name + " " + intentionUser.lastName
+        interestedUser = userService.registerUser(interestedUser)
 
-        intention = intentionService.createIntention(
-            userEmail = intentionUser.email,
+        intention = Intention(
             cryptoAsset = Asset.ALICEUSDT,
             amount = 0.5,
             operation = Operation.SELL,
             price = 49.0
         )
+        intention = intentionService.createIntention(intention, intentionUser.id!!)
 
     }
 
     @Test
     fun `createTransaction persist the transaction with valid attributes`() {
-        var validTransaction = transactionService.createTransaction(intention, interestedUser)
+        var validTransaction = transactionService.createTransaction(intention.id!!, interestedUser.id!!)
 
         validTransaction = transactionService.getTransactionById(validTransaction.id!!)
 
-        assertEquals(validTransaction.action, Action.AWAITING)
-        assertEquals(validTransaction.cryptoAsset, Asset.ALICEUSDT)
-        assertEquals(validTransaction.destinationAddress, intentionUser.cvu)
-        assertEquals(validTransaction.nominalAmount, 0.5)
-        assertEquals(validTransaction.cryptoCurrencyPrice, 49.0)
-        assertEquals(validTransaction.numberOfOperations, interestedUser.operations)
-        assertEquals(validTransaction.userEmail, interestedUser.email)
-        assertEquals(validTransaction.reputation, interestedUser.reputation)
+        assertEquals(validTransaction.action, Action.CONFIRMTRANSFER)
+        assertEquals(validTransaction.interestedUser.id, interestedUser.id)
+        assertEquals(validTransaction.state, OperationState.ACTIVE)
+        assertEquals(validTransaction.intention.id, intention.id)
+    }
+
+    @AfterEach
+    fun deleteAll() {
+        dataService.deleteAll()
     }
 }

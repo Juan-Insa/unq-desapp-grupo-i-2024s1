@@ -1,5 +1,6 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.service.impl
 
+import ar.edu.unq.desapp.grupoI.backenddesappapi.exceptions.InvalidIntentionPriceException
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.CryptoCurrency
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.CryptoCurrency24hr
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.CryptoCurrencyList
@@ -64,5 +65,9 @@ class CryptoCurrencyServiceImpl(): CryptoCurrencyService {
     }
     override fun get24hrCurrencyQuoteFrom(symbol: String): CryptoCurrency24hr? {
         return binanceProxyService.getCrypto24hrCurrencyValue(symbol)
+    }
+
+    override fun validatePrice(symbol: String, price: Double) {
+        if (!this.isValidPrice(symbol, price)) throw InvalidIntentionPriceException("Invalid intention price value range with crypto asset market price`")
     }
 }

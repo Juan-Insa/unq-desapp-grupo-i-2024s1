@@ -2,7 +2,6 @@ package ar.edu.unq.desapp.grupoI.backenddesappapi.model
 
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Asset
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Operation
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -21,7 +20,7 @@ class UserTest {
             address = "validStreetAddress",
             password = "Valid.Password",
             cvu = "1234567890123456789012",
-            criptoWalletAddress = "12345678")
+            cryptoWalletAddress = "12345678")
     }
 
 

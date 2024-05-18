@@ -18,18 +18,8 @@ class IntentionController {
     lateinit var  intentionService: IntentionService
 
     @PostMapping("/new")
-    fun postNewIntention(
-        @RequestBody intentionRequest: IntentionRequest
-    ): ResponseEntity<Intention> {
-        val asset: Asset
-        val oper: Operation
-        try {
-            asset = Asset.valueOf(intentionRequest.cryptoAsset)
-            oper = Operation.valueOf(intentionRequest.operation)
-        } catch (ex: IllegalArgumentException) {
-            return ResponseEntity.badRequest().build()
-        }
-        val newIntention = intentionService.createIntention(intentionRequest.userEmail, asset, intentionRequest.amount, oper, intentionRequest.price)
+    fun postNewIntention(@RequestBody intentionRequest: IntentionRequest): ResponseEntity<Intention> {
+        val newIntention = intentionService.createIntention(intentionRequest.intention, intentionRequest.userId)
         return ResponseEntity.ok().body(newIntention)
     }
     @GetMapping("/all")

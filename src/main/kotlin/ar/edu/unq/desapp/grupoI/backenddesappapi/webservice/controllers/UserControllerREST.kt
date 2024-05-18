@@ -19,18 +19,8 @@ class UserControllerREST {
     @Autowired lateinit var  userService: UserService
 
     @PostMapping("/register")
-    fun registerUser(
-        @RequestBody userRequest: UserRequest
-    ): ResponseEntity<User> {
-        val registeredUser = userService.registerUser(
-            userRequest.name,
-            userRequest.lastName,
-            userRequest.email,
-            userRequest.address,
-            userRequest.password,
-            userRequest.cvu,
-            userRequest.criptoWalletAddress
-        )
+    fun registerUser(@RequestBody userRequest: UserRequest): ResponseEntity<User> {
+        val registeredUser = userService.registerUser(userRequest.user)
 
         return ResponseEntity(registeredUser, HttpStatus.CREATED)
     }

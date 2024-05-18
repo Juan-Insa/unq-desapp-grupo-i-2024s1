@@ -5,7 +5,8 @@ import ar.edu.unq.desapp.grupoI.backenddesappapi.model.Transaction
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.User
 
 interface TransactionService {
-    fun createTransaction(intention: Intention, interestedUser: User): Transaction
+    fun createTransaction(intentionId: Long, interestedUserId: Long): Transaction
     fun getTransactionById(id: Long): Transaction
-
+    fun finishTransaction(transactionId: Long)
+    fun cancelTransaction(transactionId: Long, userId:Long)
 }

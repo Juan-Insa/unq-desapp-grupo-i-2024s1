@@ -31,7 +31,7 @@ class DataServiceImpl: DataService {
                 address = "123 Main Street",
                 password = "Password123!",
                 cvu = "1234567890123456789012",
-                criptoWalletAddress = "12345678",
+                cryptoWalletAddress = "12345678",
                 reputation = 80
             ))
 
@@ -42,7 +42,7 @@ class DataServiceImpl: DataService {
                 address = "456 Elm Street",
                 password = "Password456!",
                 cvu = "9876543210987654321098",
-                criptoWalletAddress = "87654321",
+                cryptoWalletAddress = "87654321",
                 reputation = 90
             ))
 
@@ -53,7 +53,7 @@ class DataServiceImpl: DataService {
                 address = "789 Oak Street",
                 password = "Password789!",
                 cvu = "2468135790246813579024",
-                criptoWalletAddress = "11111111",
+                cryptoWalletAddress = "11111111",
                 reputation = 85
             ))
 
@@ -64,7 +64,7 @@ class DataServiceImpl: DataService {
                 address = "1011 Pine Street",
                 password = "Password1011!",
                 cvu = "3692581470369258147036",
-                criptoWalletAddress = "22222222",
+                cryptoWalletAddress = "22222222",
                 reputation = 95
             ))
 
@@ -75,7 +75,7 @@ class DataServiceImpl: DataService {
                 address = "1213 Cedar Street",
                 password = "Password1213!",
                 cvu = "9876543210987654321012",
-                criptoWalletAddress = "33333333",
+                cryptoWalletAddress = "33333333",
                 reputation = 75
             ))
         }
@@ -84,48 +84,43 @@ class DataServiceImpl: DataService {
 
         val intentions = listOf(
             Intention(
-                userName = "John Doe",
-                userEmail = "john.doe@example.com",
+                //user = users[0],
                 cryptoAsset = Asset.BTCUSDT,
                 amount = 1.5,
                 operation = Operation.BUY,
-                priceInPesos = 75000.0,
+                //priceInPesos = 75000.0,
                 price = 50000.0
             ),
             Intention(
-                userName = "Jane Smith",
-                userEmail = "jane.smith@example.com",
+                //user = users[1],
                 cryptoAsset = Asset.ETHUSDT,
                 amount = 2.0,
                 operation = Operation.SELL,
-                priceInPesos = 60000.0,
+                //priceInPesos = 60000.0,
                 price = 30000.0
             ),
             Intention(
-                userName = "Alice Johnson",
-                userEmail = "alice.johnson@example.com",
+                //user = users[2],
                 cryptoAsset = Asset.BTCUSDT,
                 amount = 0.5,
                 operation = Operation.BUY,
-                priceInPesos = 35000.0,
+                //priceInPesos = 35000.0,
                 price = 70000.0
             ),
             Intention(
-                userName = "Bob Brown",
-                userEmail = "bob.brown@example.com",
+                //user = users[3],
                 cryptoAsset = Asset.ETHUSDT,
                 amount = 1.0,
                 operation = Operation.SELL,
-                priceInPesos = 55000.0,
+                //priceInPesos = 55000.0,
                 price = 55000.0
             ),
             Intention(
-                userName = "Eva Williams",
-                userEmail = "eva.williams@example.com",
+                //user = users[4],
                 cryptoAsset = Asset.BTCUSDT,
                 amount = 2.5,
                 operation = Operation.BUY,
-                priceInPesos = 80000.0,
+                //priceInPesos = 80000.0,
                 price = 40000.0
             )
         )
@@ -153,9 +148,11 @@ class DataServiceImpl: DataService {
     }
     override fun deleteAll() {
         cryptoCurrencyRepository.deleteAll()
-        intentionRepository.deleteAll()
         transactionRepository.deleteAll()
+        intentionRepository.deleteAll()
         userRepository.deleteAll()
     }
+
+
 
 }

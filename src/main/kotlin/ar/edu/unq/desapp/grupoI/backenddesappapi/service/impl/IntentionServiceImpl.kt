@@ -8,6 +8,7 @@ import ar.edu.unq.desapp.grupoI.backenddesappapi.model.User
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Asset
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Operation
 import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.IntentionRepository
+import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.UserRepository
 import ar.edu.unq.desapp.grupoI.backenddesappapi.service.CryptoCurrencyService
 import ar.edu.unq.desapp.grupoI.backenddesappapi.service.IntentionService
 import ar.edu.unq.desapp.grupoI.backenddesappapi.service.UserService
@@ -21,32 +22,18 @@ import kotlin.jvm.optionals.getOrNull
 class IntentionServiceImpl: IntentionService {
 
     @Autowired lateinit var intentionRepository: IntentionRepository
-    @Autowired lateinit var cryptoCurrencyServiceImpl: CryptoCurrencyService
+    @Autowired lateinit var cryptoCurrencyService: CryptoCurrencyService
     @Autowired lateinit var userService: UserService
 
-    override fun createIntention(userEmail: String, cryptoAsset: Asset, amount: Double, operation: Operation, price: Double): Intention {
-        if (!cryptoCurrencyServiceImpl.isValidPrice(cryptoAsset.toString(), price)) {
-            throw InvalidIntentionPriceException("The intention price value is not within a valid range for the `${cryptoAsset.toString()} market price`")
-        }
-        val user: User
-        try {
-            user = userService.getUserByEmail(userEmail)
-        } catch (ex: UserNotFoundException) {
-            throw UserNotFoundException("The user with email `${userEmail}` doesn´'t exists")
-        }
+    override fun createIntention(intention: Intention, userId: Long): Intention {
+        cryptoCurrencyService.validatePrice(intention.cryptoAsset.toString(), intention.price)
 
-        // acá falta la lógica que calcula el precio en pesos del crypto-activo por ahora queda así
-        val priceInPesos = price * 1000
+        // Falta la lógica que calcula el precio en pesos del crypto-activo
+        // val priceInPesos = ...
+        // intention.priceInPesos = priceInPesos
 
-        val intention = Intention(
-            userName  = user.name + " " + user.lastName,
-            userEmail = user.email,
-            cryptoAsset = cryptoAsset,
-            amount = amount,
-            operation = operation,
-            price = price,
-            priceInPesos = priceInPesos
-        )
+        val user = userService.getUserById(userId)
+        intention.user = user
 
         intentionRepository.save(intention)
 
@@ -60,5 +47,9 @@ class IntentionServiceImpl: IntentionService {
 
     override fun getAllIntentions(): MutableList<Intention> {
         return intentionRepository.findAll() as MutableList<Intention>
+    }
+
+    override fun saveIntention(intention: Intention): Intention {
+        return intentionRepository.save(intention)
     }
 }

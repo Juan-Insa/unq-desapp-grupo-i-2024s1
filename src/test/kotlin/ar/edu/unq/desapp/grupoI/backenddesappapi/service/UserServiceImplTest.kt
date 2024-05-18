@@ -1,6 +1,8 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.service
 
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.User
+import ar.edu.unq.desapp.grupoI.backenddesappapi.utils.DataService
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
@@ -17,26 +19,27 @@ import java.lang.IllegalArgumentException
 class UserServiceImplTest {
 
     @Autowired lateinit var userService: UserService
+    @Autowired lateinit var dataService: DataService
 
     @Test
     fun `registerUser fails when trying to register user with invalid password`(){
+        val user = User(
+            name = "juancho",
+            lastName = "insa",
+            email = "juancho@gmail.com",
+            address = "validStreetAddress",
+            password = "xxxxx",
+            cvu = "1234567890123456789012",
+            cryptoWalletAddress = "12345678"
+        )
         assertThrows<IllegalArgumentException> {
-            userService.registerUser(
-                name = "juancho",
-                lastName = "insa",
-                email = "juancho@gmail.com",
-                address = "validStreetAddress",
-                password = "xxxxx",
-                cvu = "1234567890123456789012",
-                cryptoWalletAddress = "12345678"
-            )
+            userService.registerUser(user)
         }
     }
 
     @Test
     fun `registerUser persist the user with valid credentials`(){
-
-        userService.registerUser(
+        val user = User(
             name = "juancho",
             lastName = "insa",
             email = "juancho@gmail.com",
@@ -45,6 +48,7 @@ class UserServiceImplTest {
             cvu = "1234567890123456789012",
             cryptoWalletAddress = "12345678"
         )
+        userService.registerUser(user)
 
         val userObtained = userService.getUserByEmail("juancho@gmail.com")
 
@@ -54,6 +58,11 @@ class UserServiceImplTest {
         assertEquals("validStreetAddress", userObtained.address)
         assertEquals("Valid.Password", userObtained.password)
         assertEquals("1234567890123456789012", userObtained.cvu)
-        assertEquals("12345678", userObtained.criptoWalletAddress)
+        assertEquals("12345678", userObtained.cryptoWalletAddress)
+    }
+
+    @AfterEach
+    fun deleteAll() {
+        dataService.deleteAll()
     }
 }
