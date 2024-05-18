@@ -18,7 +18,7 @@ import jakarta.persistence.Table
 @Entity
 @Table(name = "intention")
 class Intention(
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = true)
     var user: User? = null,
     @Enumerated(EnumType.STRING)

@@ -89,8 +89,11 @@ class TransactionServiceImpl: TransactionService {
         val user = userService.getUserById(userId)
 
         transaction.changeAction(Action.CANCEL)
+        transaction.changeState(OperationState.INACTIVE)
 
         user.modifyReputation({ a, b -> a - b}, 20)
+
+        transactionRepository.save(transaction)
     }
 
 

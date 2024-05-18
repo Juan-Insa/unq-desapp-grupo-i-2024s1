@@ -9,6 +9,7 @@ import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.CryptoCu
 import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.IntentionRepository
 import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.TransactionRepository
 import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.UserRepository
+import ar.edu.unq.desapp.grupoI.backenddesappapi.service.IntentionService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -23,7 +24,9 @@ class DataServiceImpl: DataService {
     @Autowired lateinit var userRepository: UserRepository
 
     override fun createTestData() {
-        val users = mutableListOf<User>().apply {
+        deleteAll()
+
+        var users = mutableListOf<User>().apply {
             add(User(
                 name = "John",
                 lastName = "Doe",
@@ -80,11 +83,10 @@ class DataServiceImpl: DataService {
             ))
         }
 
-        users.forEach { userRepository.save(it) }
+        val savedUsers = users.map { userRepository.save(it) }
 
         val intentions = listOf(
             Intention(
-                //user = users[0],
                 cryptoAsset = Asset.BTCUSDT,
                 amount = 1.5,
                 operation = Operation.BUY,
@@ -92,7 +94,6 @@ class DataServiceImpl: DataService {
                 price = 50000.0
             ),
             Intention(
-                //user = users[1],
                 cryptoAsset = Asset.ETHUSDT,
                 amount = 2.0,
                 operation = Operation.SELL,
@@ -100,7 +101,6 @@ class DataServiceImpl: DataService {
                 price = 30000.0
             ),
             Intention(
-                //user = users[2],
                 cryptoAsset = Asset.BTCUSDT,
                 amount = 0.5,
                 operation = Operation.BUY,
@@ -108,7 +108,6 @@ class DataServiceImpl: DataService {
                 price = 70000.0
             ),
             Intention(
-                //user = users[3],
                 cryptoAsset = Asset.ETHUSDT,
                 amount = 1.0,
                 operation = Operation.SELL,
@@ -116,7 +115,6 @@ class DataServiceImpl: DataService {
                 price = 55000.0
             ),
             Intention(
-                //user = users[4],
                 cryptoAsset = Asset.BTCUSDT,
                 amount = 2.5,
                 operation = Operation.BUY,
@@ -125,7 +123,10 @@ class DataServiceImpl: DataService {
             )
         )
 
-        intentions.forEach { intentionRepository.save(it) }
+        intentions.forEachIndexed { index, intention ->
+            intention.user = savedUsers[index]
+            intentionRepository.save(intention)
+        }
 
         val cryptoCurrencies = listOf(
             CryptoCurrency(symbol = "ALICEUSDT", marketPrice = 10.0f),

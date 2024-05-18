@@ -34,7 +34,8 @@ class TransactionServiceImplTest {
     @MockBean
     private lateinit var binanceProxyService: BinanceProxyService
 
-    lateinit var intention: Intention
+    lateinit var sellIntention: Intention
+    lateinit var buyIntention: Intention
     lateinit var intentionUser: User
     lateinit var interestedUser: User
     lateinit var userName: String
@@ -66,26 +67,46 @@ class TransactionServiceImplTest {
         )
         interestedUser = userService.registerUser(interestedUser)
 
-        intention = Intention(
+        sellIntention = Intention(
             cryptoAsset = Asset.ALICEUSDT,
             amount = 0.5,
             operation = Operation.SELL,
             price = 49.0
         )
-        intention = intentionService.createIntention(intention, intentionUser.id!!)
+        sellIntention = intentionService.createIntention(sellIntention, intentionUser.id!!)
+
+        buyIntention = Intention(
+            cryptoAsset = Asset.ALICEUSDT,
+            amount = 0.8,
+            operation = Operation.BUY,
+            price = 49.0
+        )
+        buyIntention = intentionService.createIntention(buyIntention, intentionUser.id!!)
 
     }
 
     @Test
-    fun `createTransaction persist the transaction with valid attributes`() {
-        var validTransaction = transactionService.createTransaction(intention.id!!, interestedUser.id!!)
+    fun `createTransaction persist a SELL transaction with valid attributes`() {
+        var validTransaction = transactionService.createTransaction(sellIntention.id!!, interestedUser.id!!)
 
         validTransaction = transactionService.getTransactionById(validTransaction.id!!)
 
         assertEquals(validTransaction.action, Action.CONFIRMTRANSFER)
         assertEquals(validTransaction.interestedUser.id, interestedUser.id)
         assertEquals(validTransaction.state, OperationState.ACTIVE)
-        assertEquals(validTransaction.intention.id, intention.id)
+        assertEquals(validTransaction.intention.id, sellIntention.id)
+    }
+
+    @Test
+    fun `createTransaction persist a BUY transaction wit valid attributes`() {
+        var validTransaction = transactionService.createTransaction(buyIntention.id!!, interestedUser.id!!)
+
+        validTransaction = transactionService.getTransactionById(validTransaction.id!!)
+
+        assertEquals(validTransaction.action, Action.TRANSFER)
+        assertEquals(validTransaction.interestedUser.id, interestedUser.id)
+        assertEquals(validTransaction.state, OperationState.ACTIVE)
+        assertEquals(validTransaction.intention.id, buyIntention.id)
     }
 
     @AfterEach
