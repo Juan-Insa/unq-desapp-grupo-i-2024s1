@@ -3,6 +3,7 @@ package ar.edu.unq.desapp.grupoI.backenddesappapi.service.impl
 import ar.edu.unq.desapp.grupoI.backenddesappapi.exceptions.IntentionNotFoundException
 import ar.edu.unq.desapp.grupoI.backenddesappapi.exceptions.InvalidIntentionPriceException
 import ar.edu.unq.desapp.grupoI.backenddesappapi.exceptions.UserNotFoundException
+import ar.edu.unq.desapp.grupoI.backenddesappapi.model.Dolar
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.Intention
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.User
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Asset
@@ -15,6 +16,7 @@ import ar.edu.unq.desapp.grupoI.backenddesappapi.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.client.RestTemplate
 import kotlin.jvm.optionals.getOrNull
 
 @Service
@@ -24,13 +26,14 @@ class IntentionServiceImpl: IntentionService {
     @Autowired lateinit var intentionRepository: IntentionRepository
     @Autowired lateinit var cryptoCurrencyService: CryptoCurrencyService
     @Autowired lateinit var userService: UserService
+    val restTemplate: RestTemplate = RestTemplate()
 
     override fun createIntention(intention: Intention, userId: Long): Intention {
         cryptoCurrencyService.validatePrice(intention.cryptoAsset.toString(), intention.price)
 
-        // Falta la lógica que calcula el precio en pesos del crypto-activo
-        // val priceInPesos = ...
-        // intention.priceInPesos = priceInPesos
+        val actualDolar = getCurrentDolarPrice()
+        val priceInPesos = getPriceInPesos(intention.price, actualDolar)
+        intention.priceInPesos = priceInPesos
 
         val user = userService.getUserById(userId)
         intention.user = user
@@ -39,7 +42,15 @@ class IntentionServiceImpl: IntentionService {
 
         return intention
     }
-
+    private fun getCurrentDolarPrice(): Dolar {
+        val apiUrl = "https://dolarapi.com/v1/dolares/blue"
+        return restTemplate.getForObject(apiUrl, Dolar::class.java)
+            ?: throw RuntimeException("No se pudo obtener el precio del dólar")
+    }
+    private fun getPriceInPesos(price: Double, dolar: Dolar): Double {
+        val dolarAvgPrice = (dolar.compra + dolar.venta) / 2.0
+        return price * dolarAvgPrice
+    }
     override fun getIntentionById(id: Long): Intention {
         return intentionRepository.findById(id)
             .getOrNull() ?: throw IntentionNotFoundException("Could not find an intention with id: `${id}`")
