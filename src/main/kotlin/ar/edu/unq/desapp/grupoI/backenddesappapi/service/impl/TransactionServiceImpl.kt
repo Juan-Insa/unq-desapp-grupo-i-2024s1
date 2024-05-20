@@ -52,7 +52,9 @@ class TransactionServiceImpl: TransactionService {
 
         val intentionUser = intention.user!!
         intentionUser.addTransaction(transaction)
+        interestedUser.addTransaction(transaction)
         userService.saveUser(intentionUser)
+        userService.saveUser(interestedUser)
 
         intention.deactivate()
         intentionService.saveIntention(intention)
@@ -65,7 +67,7 @@ class TransactionServiceImpl: TransactionService {
             .getOrNull() ?: throw TransactionNotFoundException("Could not find a transaction with id: `${id}`")
     }
 
-    override fun finishTransaction(transactionId: Long) {
+    override fun finishTransaction(transactionId: Long): Transaction {
         val transaction = getTransactionById(transactionId)
         val intentionUser = transaction.intentionUser()
         val interestedUser = transaction.interestedUser
@@ -81,10 +83,11 @@ class TransactionServiceImpl: TransactionService {
 
         userService.saveUser(intentionUser)
         userService.saveUser(interestedUser)
-        transactionRepository.save(transaction)
+
+        return transactionRepository.save(transaction)
     }
 
-    override fun cancelTransaction(transactionId: Long, userId: Long) {
+    override fun cancelTransaction(transactionId: Long, userId: Long): Transaction {
         val transaction = getTransactionById(transactionId)
         val user = userService.getUserById(userId)
 
@@ -93,11 +96,13 @@ class TransactionServiceImpl: TransactionService {
 
         user.modifyReputation({ a, b -> a - b}, 20)
 
-        transactionRepository.save(transaction)
+        userService.saveUser(user)
+
+        return transactionRepository.save(transaction)
     }
 
 
-    private fun isPast30Minutes(initTime: String): Boolean {
+    override fun isPast30Minutes(initTime: String): Boolean {
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.getDefault())
         val transactionTime: LocalDateTime = LocalDateTime.parse(initTime, formatter)
         val currentTime = LocalDateTime.now()

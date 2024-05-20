@@ -18,6 +18,7 @@ import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.boot.test.mock.mockito.SpyBean
 import org.springframework.test.context.junit.jupiter.SpringExtension
 
 @ExtendWith(SpringExtension::class)
@@ -25,7 +26,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class TransactionServiceImplTest {
 
-    @Autowired lateinit var transactionService: TransactionService
+    @SpyBean lateinit var transactionService: TransactionService
     @Autowired lateinit var intentionService: IntentionService
     @Autowired lateinit var userService: UserService
     @Autowired lateinit var cryptoCurrencyService: CryptoCurrencyService
@@ -34,16 +35,16 @@ class TransactionServiceImplTest {
     @MockBean
     private lateinit var binanceProxyService: BinanceProxyService
 
+
     lateinit var sellIntention: Intention
     lateinit var buyIntention: Intention
     lateinit var intentionUser: User
     lateinit var interestedUser: User
-    lateinit var userName: String
 
     @BeforeEach
     fun init() {
         val resultadoMockeado = CryptoCurrency("ALICEUSDT", 50.0f, "2022-04-13 12:00:00")
-        Mockito.`when`(binanceProxyService.getCryptoCurrency("ALICEUSDT")).thenReturn(resultadoMockeado)
+        Mockito.doReturn(resultadoMockeado).`when`(binanceProxyService).getCryptoCurrency("ALICEUSDT")
 
         intentionUser = User(
             name ="intentionUser",
@@ -53,7 +54,7 @@ class TransactionServiceImplTest {
             password = "Intention.User.Pass",
             cvu = "1234567890123456789012",
             cryptoWalletAddress = "12345678")
-
+        intentionUser.reputation = 50
         intentionUser = userService.registerUser(intentionUser)
 
         interestedUser = User(
@@ -65,6 +66,7 @@ class TransactionServiceImplTest {
             cvu = "9876543210987654321098",
             cryptoWalletAddress = "87654321"
         )
+        interestedUser.reputation = 80
         interestedUser = userService.registerUser(interestedUser)
 
         sellIntention = Intention(
@@ -83,6 +85,7 @@ class TransactionServiceImplTest {
         )
         buyIntention = intentionService.createIntention(buyIntention, intentionUser.id!!)
 
+        //transactionServiceSpy = Mockito.spy(transactionService)
     }
 
     @Test
@@ -107,6 +110,68 @@ class TransactionServiceImplTest {
         assertEquals(validTransaction.interestedUser.id, interestedUser.id)
         assertEquals(validTransaction.state, OperationState.ACTIVE)
         assertEquals(validTransaction.intention.id, buyIntention.id)
+    }
+
+    @Test
+    fun `canceling a transaction sets the transaction action and state to CANCEL and INACTIVE`() {
+        var validTransaction = transactionService.createTransaction(buyIntention.id!!, interestedUser.id!!)
+
+        val canceledTransaction = transactionService.cancelTransaction(validTransaction.id!!, interestedUser.id!!)
+
+        assertEquals(canceledTransaction.action, Action.CANCEL)
+        assertEquals(canceledTransaction.interestedUser.id, interestedUser.id)
+        assertEquals(canceledTransaction.state, OperationState.INACTIVE)
+        assertEquals(canceledTransaction.intention.id, buyIntention.id)
+    }
+
+    @Test
+    fun `canceling a transaction takes 20 reputation points from the canceling user`() {
+        var validTransaction = transactionService.createTransaction(buyIntention.id!!, interestedUser.id!!)
+
+        transactionService.cancelTransaction(validTransaction.id!!, interestedUser.id!!)
+
+        val cancelingUser = userService.getUserById(interestedUser.id!!)
+
+        assertEquals(60, cancelingUser.reputation)
+    }
+
+    @Test
+    fun `finishing a transaction within the first 30 min adds users involved 10 reputation points`() {
+        var validTransaction = transactionService.createTransaction(buyIntention.id!!, interestedUser.id!!)
+
+        transactionService.finishTransaction(validTransaction.id!!)
+
+        intentionUser = userService.getUserById(intentionUser.id!!)
+        interestedUser = userService.getUserById(interestedUser.id!!)
+
+        assertEquals(60, intentionUser.reputation)
+        assertEquals(90, interestedUser.reputation)
+    }
+
+    @Test
+    fun `finishing a transaction after the first 30 min adds users involved 5 reputation points`() {
+        var validTransaction = transactionService.createTransaction(buyIntention.id!!, interestedUser.id!!)
+
+        val date = validTransaction.initTime
+
+        Mockito.`when`(transactionService.isPast30Minutes(date)).thenReturn(true)
+
+        transactionService.finishTransaction(validTransaction.id!!)
+
+        intentionUser = userService.getUserById(intentionUser.id!!)
+        interestedUser = userService.getUserById(interestedUser.id!!)
+
+        assertEquals(55, intentionUser.reputation)
+        assertEquals(85, interestedUser.reputation)
+    }
+
+    @Test
+    fun `finishing a transaction sets its state to inactive`() {
+        var validTransaction = transactionService.createTransaction(buyIntention.id!!, interestedUser.id!!)
+
+        val finishedTransaction = transactionService.finishTransaction(validTransaction.id!!)
+
+        assertEquals(OperationState.INACTIVE, finishedTransaction.state)
     }
 
     @AfterEach
