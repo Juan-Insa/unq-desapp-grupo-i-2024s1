@@ -1,8 +1,8 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.model
 
 class OperatedVolume (
-    requestDate: String,
-    totalAmountUSD: Double,
-    totalAmountPesos: Double,
-    assets: List<CryptoCurrency>
+    var requestDate: String,
+    var totalAmountUSD: Double,
+    var totalAmountPesos: Double,
+    var assets: List<OperatedAsset>
 )

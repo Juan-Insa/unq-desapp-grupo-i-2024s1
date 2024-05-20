@@ -2,7 +2,9 @@ package ar.edu.unq.desapp.grupoI.backenddesappapi.utils
 
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.CryptoCurrency
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.Intention
+import ar.edu.unq.desapp.grupoI.backenddesappapi.model.Transaction
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.User
+import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Action
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Asset
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Operation
 import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.CryptoCurrencyRepository
@@ -127,7 +129,30 @@ class DataServiceImpl: DataService {
             intention.user = savedUsers[index]
             intentionRepository.save(intention)
         }
+        val transactions = listOf(
+            Transaction(
+                interestedUser = savedUsers[0],
+                action = Action.TRANSFER
+            ).apply { intention = intentions[0] },
+            Transaction(
+                interestedUser = savedUsers[1],
+                action = Action.CONFIRMTRANSFER
+            ).apply { intention = intentions[1] },
+            Transaction(
+                interestedUser = savedUsers[2],
+                action = Action.CANCEL
+            ).apply { intention = intentions[2] },
+            Transaction(
+                interestedUser = savedUsers[3],
+                action = Action.TRANSFER
+            ).apply { intention = intentions[3] },
+            Transaction(
+                interestedUser = savedUsers[4],
+                action = Action.CONFIRMTRANSFER
+            ).apply { intention = intentions[4] }
+        )
 
+        transactions.forEach { transactionRepository.save(it) }
         val cryptoCurrencies = listOf(
             CryptoCurrency(symbol = "ALICEUSDT", marketPrice = 10.0f),
             CryptoCurrency(symbol = "MATICUSDT", marketPrice = 5.0f),
