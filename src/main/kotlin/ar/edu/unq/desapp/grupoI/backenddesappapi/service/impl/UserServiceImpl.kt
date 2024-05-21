@@ -1,6 +1,7 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.service.impl
 
 import ar.edu.unq.desapp.grupoI.backenddesappapi.exceptions.UserNotFoundException
+import ar.edu.unq.desapp.grupoI.backenddesappapi.helpers.UserRegisterValidator
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.User
 import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.UserRepository
 import ar.edu.unq.desapp.grupoI.backenddesappapi.service.UserService
@@ -17,18 +18,26 @@ class UserServiceImpl(): UserService {
 
     override fun getUserByEmail(email: String): User {
         return userRepository.findByEmail(email)
-            .getOrNull() ?: throw UserNotFoundException("could not find user with name `${email}`")
+            .getOrNull() ?: throw UserNotFoundException("could not find user with email `${email}`")
     }
 
-    override fun registerUser(name: String, lastName: String, email: String, address: String, password: String,
-        cvu: String, cwAddress: String): User {
+    override fun getUserById(id: Long): User {
+        return userRepository.findById(id)
+            .getOrNull() ?: throw UserNotFoundException("could not find user with id `${id}`")
+    }
 
-        if (userRepository.existsByEmail(email)) {
+    override fun registerUser(user: User): User {
+
+        if (userRepository.existsByEmail(user.email)) {
             throw IllegalArgumentException("Email is already registered");
         }
 
-        val user = User(name,lastName,email,address,password,cvu,cwAddress)
+        UserRegisterValidator.validateUserData(user)
 
+        return userRepository.save(user)
+    }
+
+    override fun saveUser(user: User): User {
         return userRepository.save(user)
     }
 

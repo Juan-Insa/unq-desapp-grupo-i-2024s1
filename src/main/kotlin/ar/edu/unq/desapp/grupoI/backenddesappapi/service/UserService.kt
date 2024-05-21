@@ -4,9 +4,8 @@ import ar.edu.unq.desapp.grupoI.backenddesappapi.model.User
 
 interface UserService {
 
-    fun getUserByEmail(name: String): User
-    fun registerUser(name: String, lastName: String, email: String, address: String, password: String, cvu: String,
-                     cryptoWalletAddress: String): User
-
-
+    fun getUserByEmail(email: String): User
+    fun getUserById(id: Long): User
+    fun registerUser(user:User): User
+    fun saveUser(user: User): User
 }

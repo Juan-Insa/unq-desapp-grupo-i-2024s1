@@ -1,12 +1,10 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.service.impl
 
 import ar.edu.unq.desapp.grupoI.backenddesappapi.exceptions.IntentionNotFoundException
-import ar.edu.unq.desapp.grupoI.backenddesappapi.exceptions.InvalidIntentionPriceException
 import ar.edu.unq.desapp.grupoI.backenddesappapi.exceptions.UserNotFoundException
+import ar.edu.unq.desapp.grupoI.backenddesappapi.model.Dolar
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.Intention
-import ar.edu.unq.desapp.grupoI.backenddesappapi.model.User
-import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Asset
-import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Operation
+import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.OperationState
 import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.IntentionRepository
 import ar.edu.unq.desapp.grupoI.backenddesappapi.service.CryptoCurrencyService
 import ar.edu.unq.desapp.grupoI.backenddesappapi.service.IntentionService
@@ -14,6 +12,7 @@ import ar.edu.unq.desapp.grupoI.backenddesappapi.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.client.RestTemplate
 import kotlin.jvm.optionals.getOrNull
 
 @Service
@@ -21,38 +20,33 @@ import kotlin.jvm.optionals.getOrNull
 class IntentionServiceImpl: IntentionService {
 
     @Autowired lateinit var intentionRepository: IntentionRepository
-    @Autowired lateinit var cryptoCurrencyServiceImpl: CryptoCurrencyService
+    @Autowired lateinit var cryptoCurrencyService: CryptoCurrencyService
     @Autowired lateinit var userService: UserService
+    val restTemplate: RestTemplate = RestTemplate()
 
-    override fun createIntention(userEmail: String, cryptoAsset: Asset, amount: Double, operation: Operation, price: Double): Intention {
-        if (!cryptoCurrencyServiceImpl.isValidPrice(cryptoAsset.toString(), price)) {
-            throw InvalidIntentionPriceException("The intention price value is not within a valid range for the `${cryptoAsset.toString()} market price`")
-        }
-        val user: User
-        try {
-            user = userService.getUserByEmail(userEmail)
-        } catch (ex: UserNotFoundException) {
-            throw UserNotFoundException("The user with email `${userEmail}` doesn´'t exists")
-        }
+    override fun createIntention(intention: Intention, userId: Long): Intention {
+        cryptoCurrencyService.validatePrice(intention.cryptoAsset.toString(), intention.price)
 
-        // acá falta la lógica que calcula el precio en pesos del crypto-activo por ahora queda así
-        val priceInPesos = price * 1000
+        val actualDolar = getCurrentDolarPrice()
+        val priceInPesos = getPriceInPesos(intention.price, actualDolar)
+        intention.priceInPesos = priceInPesos
 
-        val intention = Intention(
-            userName  = user.name + " " + user.lastName,
-            userEmail = user.email,
-            cryptoAsset = cryptoAsset,
-            amount = amount,
-            operation = operation,
-            price = price,
-            priceInPesos = priceInPesos
-        )
+        val user = userService.getUserById(userId)
+        intention.user = user
 
         intentionRepository.save(intention)
 
         return intention
     }
-
+    private fun getCurrentDolarPrice(): Dolar {
+        val apiUrl = "https://dolarapi.com/v1/dolares/blue"
+        return restTemplate.getForObject(apiUrl, Dolar::class.java)
+            ?: throw RuntimeException("No se pudo obtener el precio del dólar")
+    }
+    private fun getPriceInPesos(price: Double, dolar: Dolar): Double {
+        val dolarAvgPrice = (dolar.compra + dolar.venta) / 2.0
+        return price * dolarAvgPrice
+    }
     override fun getIntentionById(id: Long): Intention {
         return intentionRepository.findById(id)
             .getOrNull() ?: throw IntentionNotFoundException("Could not find an intention with id: `${id}`")
@@ -60,5 +54,22 @@ class IntentionServiceImpl: IntentionService {
 
     override fun getAllIntentions(): MutableList<Intention> {
         return intentionRepository.findAll() as MutableList<Intention>
+    }
+
+    override fun getActiveIntentions(): List<Intention> {
+        return intentionRepository.findByState(OperationState.ACTIVE)
+    }
+
+    override fun getActiveIntentionsFrom(userId: Long): List<Intention> {
+        try {
+            userService.getUserById(userId)
+        } catch (e: UserNotFoundException) {
+            throw UserNotFoundException("User with $userId not found")
+        }
+        return intentionRepository.findByUserIdAndState(userId, OperationState.ACTIVE)
+    }
+
+    override fun saveIntention(intention: Intention): Intention {
+        return intentionRepository.save(intention)
     }
 }

@@ -18,7 +18,7 @@ jacoco {
 
 tasks.jacocoTestReport {
 	reports {
-		xml.required = true
+		xml.required.set(true)
 	}
 }
 
@@ -27,6 +27,7 @@ sonar {
 		property("sonar.projectKey", "Juan-Insa_unq-desapp-grupo-i-2024s1")
 		property("sonar.organization", "juan-insa-124708")
 		property("sonar.host.url", "https://sonarcloud.io")
+		property("sonar.gradle.skipCompile", System.getProperty("sonar.gradle.skipCompile", "false"))
 	}
 }
 group = "ar.edu.unq.desapp.grupoI"

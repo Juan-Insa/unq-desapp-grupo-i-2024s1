@@ -1,9 +1,8 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers
 
+import ar.edu.unq.desapp.grupoI.backenddesappapi.model.Intention
+
 data class IntentionRequest(
-    val userEmail: String,
-    val cryptoAsset: String,
-    val amount: Double,
-    val operation: String,
-    val price: Double
+    val intention: Intention,
+    val userId: Long,
 )

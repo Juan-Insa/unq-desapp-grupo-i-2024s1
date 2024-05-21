@@ -1,11 +1,9 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.model
 
-import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Asset
-import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Operation
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.Assertions.assertEquals
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class UserTest {
@@ -21,20 +19,24 @@ class UserTest {
             address = "validStreetAddress",
             password = "Valid.Password",
             cvu = "1234567890123456789012",
-            criptoWalletAddress = "12345678")
+            cryptoWalletAddress = "12345678")
     }
 
+    @Test
+    fun `modifyReputation modifies the user reputation`() {
+        validUser.modifyReputation({ a, b -> a + b}, 10)
+        assertEquals(10, validUser.reputation)
+    }
 
     @Test
-    fun `when a User posts an intention it gets added to the ActiveIntentions list`() {
-        val asset = Asset.ALICEUSDT
-        val amount = 0.2
-        val price = 20000.0
-        val priceInPesos = 50000.0f
-        val operation = Operation.SELL
+    fun `when adding points the reputation does not get higher than 100`() {
+        validUser.modifyReputation({ a, b -> a + b}, 120)
+        assertEquals(100, validUser.reputation)
+    }
 
-        //val intention = validUser.postIntent(asset, amount, price, operation)
-
-        //assertTrue { ActiveIntentions.intentions.contains(intention) }
+    @Test
+    fun `when reducing points the reputation does not get lower than 0`() {
+        validUser.modifyReputation({ a, b -> a - b}, 20)
+        assertEquals(0, validUser.reputation)
     }
 }
