@@ -22,18 +22,4 @@ class UserTest {
             cvu = "1234567890123456789012",
             cryptoWalletAddress = "12345678")
     }
-
-
-    @Test
-    fun `when a User posts an intention it gets added to the ActiveIntentions list`() {
-        val asset = Asset.ALICEUSDT
-        val amount = 0.2
-        val price = 20000.0
-        val priceInPesos = 50000.0f
-        val operation = Operation.SELL
-
-        //val intention = validUser.postIntent(asset, amount, price, operation)
-
-        //assertTrue { ActiveIntentions.intentions.contains(intention) }
-    }
 }

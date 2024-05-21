@@ -4,6 +4,7 @@ import ar.edu.unq.desapp.grupoI.backenddesappapi.model.Transaction
 import ar.edu.unq.desapp.grupoI.backenddesappapi.service.IntentionService
 import ar.edu.unq.desapp.grupoI.backenddesappapi.service.TransactionService
 import ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers.dto.TransactionDTO
+import io.swagger.v3.oas.annotations.Operation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.transaction.annotation.Transactional
@@ -23,6 +24,9 @@ class TransactionController {
     @Autowired
     lateinit var transactionService: TransactionService
 
+    @Operation(
+        summary = "Post a new transaction",
+        description = "Generates a transaction from a provided intention and interested user id's")
     @PostMapping("/create")
     fun createTransaction(@RequestBody transactionRequest: TransactionRequest): ResponseEntity<TransactionDTO> {
         val transaction = transactionService.createTransaction(transactionRequest.intentionId, transactionRequest.userId)
@@ -30,6 +34,9 @@ class TransactionController {
         return ResponseEntity.ok().body(transactionDTO)
     }
 
+    @Operation(
+        summary = "Retrieve a transaction",
+        description = "Retrieves a transaction correspondig to the given id")
     @GetMapping("/{id}")
     fun getTransactionById(@PathVariable id: Long): ResponseEntity<TransactionDTO> {
         val transaction = transactionService.getTransactionById(id)
@@ -37,6 +44,9 @@ class TransactionController {
         return ResponseEntity.ok().body(transactionDTO)
     }
 
+    @Operation(
+        summary = "Finish the transaction",
+        description = "Finishes the transaction by the given id setting its state to inactive and adding the corresponding reputation points to users")
     @PutMapping("/{id}/finish")
     fun finishTransaction(@PathVariable id: Long): ResponseEntity<TransactionDTO> {
         val transaction = transactionService.finishTransaction(id)
@@ -44,6 +54,9 @@ class TransactionController {
         return ResponseEntity.ok().body(transactionDTO)
     }
 
+    @Operation(
+        summary = "Cancels a transaction",
+        description = "Cancel the transaction by the given id setting its state to inactive and resting the corresponding reputation points to users")
     @PutMapping("/{transactionId}/{userId}/cancel")
     fun cancelTransaction(
         @PathVariable transactionId: Long,
