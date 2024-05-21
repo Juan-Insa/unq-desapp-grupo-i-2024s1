@@ -61,9 +61,10 @@ class TransactionController {
     fun cancelTransaction(
         @PathVariable transactionId: Long,
         @PathVariable userId: Long
-    ): ResponseEntity<Transaction> {
+    ): ResponseEntity<TransactionDTO> {
         val transaction = transactionService.cancelTransaction(transactionId, userId)
-        return ResponseEntity.ok().body(transaction)
+        val transactionDTO = TransactionDTO.fromModel(transaction)
+        return ResponseEntity.ok().body(transactionDTO)
     }
 
 

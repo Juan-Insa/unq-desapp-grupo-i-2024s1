@@ -13,6 +13,7 @@ import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.Intentio
 import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.TransactionRepository
 import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.UserRepository
 import ar.edu.unq.desapp.grupoI.backenddesappapi.service.IntentionService
+import ar.edu.unq.desapp.grupoI.backenddesappapi.service.TransactionService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -154,25 +155,17 @@ class DataServiceImpl: DataService {
 
         val transactions = listOf(
             Transaction(
-                interestedUser = savedUsers[0],
-                action = Action.TRANSFER
-            ).apply { intention = intentions[0] },
-            Transaction(
                 interestedUser = savedUsers[1],
-                action = Action.CONFIRMTRANSFER
+                action = Action.TRANSFER
             ).apply { intention = intentions[1] },
             Transaction(
                 interestedUser = savedUsers[2],
-                action = Action.CANCEL
+                action = Action.CONFIRMTRANSFER
             ).apply { intention = intentions[2] },
             Transaction(
                 interestedUser = savedUsers[3],
-                action = Action.TRANSFER
-            ).apply { intention = intentions[3] },
-            Transaction(
-                interestedUser = savedUsers[4],
-                action = Action.CONFIRMTRANSFER
-            ).apply { intention = intentions[4] }
+                action = Action.CANCEL
+            ).apply { intention = intentions[3] }
         )
 
         intentions.forEach { intentionRepository.save(it) }
