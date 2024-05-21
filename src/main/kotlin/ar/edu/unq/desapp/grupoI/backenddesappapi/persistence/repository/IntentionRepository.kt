@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository
 @Repository
 interface IntentionRepository: CrudRepository<Intention, Long> {
     fun findByState(state: OperationState): List<Intention>
+    fun findByUserIdAndState(userId: Long, state: OperationState): List<Intention>
 }

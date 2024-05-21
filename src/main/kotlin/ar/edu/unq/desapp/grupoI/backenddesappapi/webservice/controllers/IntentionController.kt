@@ -50,4 +50,13 @@ class IntentionController {
         val activeIntentionsDTO = activeIntentions.map { IntentionDTO.fromModel(it) }
         return ResponseEntity.ok().body(activeIntentionsDTO)
     }
+
+    @Operation(
+        summary = "Get all active intentions from an user",
+        description = "returns a list with the active intentions by the user with the given id")
+    @GetMapping("/user/{userId}/active")
+    fun getActiveIntentionsByUserId(@PathVariable userId: Long): ResponseEntity<List<Intention>> {
+        val activeIntentions = intentionService.getActiveIntentionsFrom(userId)
+        return ResponseEntity.ok().body(activeIntentions)
+    }
 }

@@ -50,12 +50,6 @@ class TransactionServiceImpl: TransactionService {
         transaction.intention = intention
         transactionRepository.save(transaction)
 
-        val intentionUser = intention.user!!
-        intentionUser.addTransaction(transaction)
-        interestedUser.addTransaction(transaction)
-        userService.saveUser(intentionUser)
-        userService.saveUser(interestedUser)
-
         intention.deactivate()
         intentionService.saveIntention(intention)
 

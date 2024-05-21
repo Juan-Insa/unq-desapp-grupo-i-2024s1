@@ -27,20 +27,22 @@ class User(
     ) {
     var operations: Int = 0
 
-    @OneToMany(mappedBy = "interestedUser", cascade = [CascadeType.ALL], fetch = FetchType.LAZY, orphanRemoval = true)
-    var transactions: MutableList<Transaction> = mutableListOf()
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
 
     fun modifyReputation(op: (Int, Int) -> Int, num: Int) {
-        reputation = op(reputation, num)
+        val newReputation = op(reputation, num)
+        reputation = when {
+            newReputation < 0 -> 0
+            newReputation > 100 -> 100
+            else -> newReputation
+        }
     }
 
-    fun addTransaction(transaction: Transaction) {
-        transactions.add(transaction)
-    }
+    //fun addTransaction(transaction: Transaction) {
+    //    transactions.add(transaction)
+    //}
 
 }
 

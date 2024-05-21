@@ -10,4 +10,5 @@ interface IntentionService {
     fun getAllIntentions(): MutableList<Intention>
     fun saveIntention(intention: Intention): Intention
     fun getActiveIntentions(): List<Intention>
+    fun getActiveIntentionsFrom(userId: Long): List<Intention>
 }

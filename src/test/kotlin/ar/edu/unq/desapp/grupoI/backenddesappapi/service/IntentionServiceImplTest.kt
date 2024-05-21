@@ -1,6 +1,7 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.service
 
 import ar.edu.unq.desapp.grupoI.backenddesappapi.exceptions.InvalidIntentionPriceException
+import ar.edu.unq.desapp.grupoI.backenddesappapi.exceptions.UserNotFoundException
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.CryptoCurrency
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.Intention
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.User
@@ -109,6 +110,38 @@ class IntentionServiceImplTest {
         val intentions = intentionService.getActiveIntentions()
 
         Assertions.assertEquals(5, intentions.size)
+    }
+
+    @Test
+    fun `returns all the active intentions from an user`() {
+        var intention1 = Intention(
+            cryptoAsset = Asset.ALICEUSDT,
+            amount = 0.5,
+            operation = Operation.SELL,
+            price = 50.0
+        )
+        var intention2 = Intention(
+            cryptoAsset = Asset.ALICEUSDT,
+            amount = 1.0,
+            operation = Operation.BUY,
+            price = 50.0
+        )
+
+        intention1 = intentionService.createIntention(intention1, intentionUser.id!!)
+        intention2 = intentionService.createIntention(intention2, intentionUser.id!!)
+
+        val userActiveIntentions = intentionService.getActiveIntentionsFrom(intentionUser.id!!)
+
+        Assertions.assertEquals(2, userActiveIntentions.size)
+        Assertions.assertEquals(intention1.id, userActiveIntentions[0].id)
+        Assertions.assertEquals(intention2.id, userActiveIntentions[1].id)
+    }
+
+    @Test
+    fun `trying to get all the active intentions from an invalid user throws an error`() {
+        assertThrows<UserNotFoundException> {
+            intentionService.getActiveIntentionsFrom(121232)
+        }
     }
 
 

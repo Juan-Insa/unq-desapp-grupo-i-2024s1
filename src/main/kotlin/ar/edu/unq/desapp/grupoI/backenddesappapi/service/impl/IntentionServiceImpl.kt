@@ -65,6 +65,15 @@ class IntentionServiceImpl: IntentionService {
         return intentionRepository.findByState(OperationState.ACTIVE)
     }
 
+    override fun getActiveIntentionsFrom(userId: Long): List<Intention> {
+        try {
+            userService.getUserById(userId)
+        } catch (e: UserNotFoundException) {
+            throw UserNotFoundException("User with $userId not found")
+        }
+        return intentionRepository.findByUserIdAndState(userId, OperationState.ACTIVE)
+    }
+
     override fun saveIntention(intention: Intention): Intention {
         return intentionRepository.save(intention)
     }
