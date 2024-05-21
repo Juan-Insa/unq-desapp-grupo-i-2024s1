@@ -1,14 +1,11 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.service.impl
 
-import ar.edu.unq.desapp.grupoI.backenddesappapi.exceptions.InvalidTransactionAction
 import ar.edu.unq.desapp.grupoI.backenddesappapi.exceptions.TransactionNotFoundException
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.*
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Action
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Operation
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.OperationState
-import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.IntentionRepository
 import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.TransactionRepository
-import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.UserRepository
 import ar.edu.unq.desapp.grupoI.backenddesappapi.service.CryptoCurrencyService
 import ar.edu.unq.desapp.grupoI.backenddesappapi.service.IntentionService
 import ar.edu.unq.desapp.grupoI.backenddesappapi.service.TransactionService

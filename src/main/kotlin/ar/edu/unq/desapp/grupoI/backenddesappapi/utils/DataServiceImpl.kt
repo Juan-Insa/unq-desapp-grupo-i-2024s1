@@ -12,8 +12,6 @@ import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.CryptoCu
 import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.IntentionRepository
 import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.TransactionRepository
 import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.UserRepository
-import ar.edu.unq.desapp.grupoI.backenddesappapi.service.IntentionService
-import ar.edu.unq.desapp.grupoI.backenddesappapi.service.TransactionService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -197,7 +195,5 @@ class DataServiceImpl: DataService {
         intentionRepository.deleteAll()
         userRepository.deleteAll()
     }
-
-
 
 }

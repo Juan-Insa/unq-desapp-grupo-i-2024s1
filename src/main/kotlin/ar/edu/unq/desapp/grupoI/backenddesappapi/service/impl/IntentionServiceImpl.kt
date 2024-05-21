@@ -1,16 +1,11 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.service.impl
 
 import ar.edu.unq.desapp.grupoI.backenddesappapi.exceptions.IntentionNotFoundException
-import ar.edu.unq.desapp.grupoI.backenddesappapi.exceptions.InvalidIntentionPriceException
 import ar.edu.unq.desapp.grupoI.backenddesappapi.exceptions.UserNotFoundException
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.Dolar
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.Intention
-import ar.edu.unq.desapp.grupoI.backenddesappapi.model.User
-import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Asset
-import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Operation
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.OperationState
 import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.IntentionRepository
-import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.UserRepository
 import ar.edu.unq.desapp.grupoI.backenddesappapi.service.CryptoCurrencyService
 import ar.edu.unq.desapp.grupoI.backenddesappapi.service.IntentionService
 import ar.edu.unq.desapp.grupoI.backenddesappapi.service.UserService

@@ -2,8 +2,6 @@ package ar.edu.unq.desapp.grupoI.backenddesappapi.model
 
 import ar.edu.unq.desapp.grupoI.backenddesappapi.helpers.CurrentDateTime
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Action
-import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Asset
-import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Operation
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.OperationState
 import jakarta.persistence.*
 

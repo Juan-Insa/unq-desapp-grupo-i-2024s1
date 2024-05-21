@@ -1,8 +1,5 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers
 
-import ar.edu.unq.desapp.grupoI.backenddesappapi.model.Intention
-import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Asset
-import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Operation as IntentionOperation
 import ar.edu.unq.desapp.grupoI.backenddesappapi.service.IntentionService
 import ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers.dto.IntentionDTO
 import io.swagger.v3.oas.annotations.tags.Tag
