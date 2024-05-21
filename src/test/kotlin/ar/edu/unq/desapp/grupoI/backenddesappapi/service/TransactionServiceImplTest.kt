@@ -2,6 +2,7 @@ package ar.edu.unq.desapp.grupoI.backenddesappapi.service
 
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.CryptoCurrency
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.Intention
+import ar.edu.unq.desapp.grupoI.backenddesappapi.model.OperatedVolume
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.User
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Action
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Asset
@@ -14,6 +15,8 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -29,9 +32,10 @@ class TransactionServiceImplTest {
     @SpyBean lateinit var transactionService: TransactionService
     @Autowired lateinit var intentionService: IntentionService
     @Autowired lateinit var userService: UserService
-    @Autowired lateinit var cryptoCurrencyService: CryptoCurrencyService
     @Autowired lateinit var dataService: DataService
 
+    @MockBean
+    private lateinit var cryptoCurrencyService: CryptoCurrencyService
     @MockBean
     private lateinit var binanceProxyService: BinanceProxyService
 
@@ -45,6 +49,7 @@ class TransactionServiceImplTest {
     fun init() {
         val resultadoMockeado = CryptoCurrency("ALICEUSDT", 50.0f, "2022-04-13 12:00:00")
         Mockito.doReturn(resultadoMockeado).`when`(binanceProxyService).getCryptoCurrency("ALICEUSDT")
+
 
         intentionUser = User(
             name ="intentionUser",
@@ -172,6 +177,18 @@ class TransactionServiceImplTest {
         val finishedTransaction = transactionService.finishTransaction(validTransaction.id!!)
 
         assertEquals(OperationState.INACTIVE, finishedTransaction.state)
+    }
+
+    @Test
+    fun `getOperatedVolume for all transactions of interested user`() {
+        Mockito.`when`(cryptoCurrencyService.getCurrencyValue(anyString())).thenReturn(10.0f)
+        val transaction = transactionService.createTransaction(sellIntention.id!!, interestedUser.id!!)
+        val transactions: OperatedVolume = transactionService.getOperatedVolumeFor(interestedUser.id!!, "19/05/2024 15:30:00", "19/05/2024 23:30:00")
+
+        assertEquals(49.0, transaction.intention.price)
+        assertEquals(0.5, transaction.intention.amount)
+
+        assertEquals(24.5, transactions.totalAmountUSD)
     }
 
     @AfterEach

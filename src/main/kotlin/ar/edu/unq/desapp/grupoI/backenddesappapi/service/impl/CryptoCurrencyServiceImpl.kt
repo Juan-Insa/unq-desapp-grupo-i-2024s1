@@ -21,7 +21,7 @@ class CryptoCurrencyServiceImpl(): CryptoCurrencyService {
     @Autowired lateinit var cryptoCurrencyRepository: CryptoCurrencyRepository
     @Autowired lateinit var binanceProxyService: BinanceProxyService
     override fun getCurrencyValue(symbol: String): Float? {
-        TODO("Not yet implemented")
+        return getCryptoCurrency(symbol)!!.marketPrice
     }
 
     override fun getCryptoCurrency(symbol: String): CryptoCurrency? {
