@@ -1,7 +1,5 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers
 
-import ar.edu.unq.desapp.grupoI.backenddesappapi.model.Transaction
-import ar.edu.unq.desapp.grupoI.backenddesappapi.service.IntentionService
 import ar.edu.unq.desapp.grupoI.backenddesappapi.service.TransactionService
 import ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers.dto.TransactionDTO
 import io.swagger.v3.oas.annotations.Operation

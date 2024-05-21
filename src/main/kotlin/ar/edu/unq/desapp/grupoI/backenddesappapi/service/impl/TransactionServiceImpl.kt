@@ -62,7 +62,7 @@ class TransactionServiceImpl: TransactionService {
         val transaction = getTransactionById(transactionId)
         val intentionUser = transaction.intentionUser()
         val interestedUser = transaction.interestedUser
-        var reputation = 0
+        var reputation: Int
 
         if (this.isPast30Minutes(transaction.initTime)) reputation = 5
         else reputation = 10
