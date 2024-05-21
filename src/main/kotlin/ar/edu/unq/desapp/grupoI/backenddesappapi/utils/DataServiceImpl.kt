@@ -5,6 +5,7 @@ import ar.edu.unq.desapp.grupoI.backenddesappapi.model.Intention
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.User
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Asset
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Operation
+import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.OperationState
 import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.CryptoCurrencyRepository
 import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.IntentionRepository
 import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.TransactionRepository
@@ -85,13 +86,13 @@ class DataServiceImpl: DataService {
 
         val savedUsers = users.map { userRepository.save(it) }
 
-        val intentions = listOf(
+        var intentions = mutableListOf(
             Intention(
                 cryptoAsset = Asset.BTCUSDT,
                 amount = 1.5,
                 operation = Operation.BUY,
                 //priceInPesos = 75000.0,
-                price = 50000.0
+                price = 70995.59000000
             ),
             Intention(
                 cryptoAsset = Asset.ETHUSDT,
@@ -105,7 +106,7 @@ class DataServiceImpl: DataService {
                 amount = 0.5,
                 operation = Operation.BUY,
                 //priceInPesos = 35000.0,
-                price = 70000.0
+                price = 70995.59000000
             ),
             Intention(
                 cryptoAsset = Asset.ETHUSDT,
@@ -119,14 +120,37 @@ class DataServiceImpl: DataService {
                 amount = 2.5,
                 operation = Operation.BUY,
                 //priceInPesos = 80000.0,
-                price = 40000.0
+                price = 70995.59000000
+            ),
+            Intention(
+                cryptoAsset = Asset.ALICEUSDT,
+                amount = 2.5,
+                operation = Operation.BUY,
+                //priceInPesos = 80000.0,
+                price = 1.26200000
+            ),
+            Intention(
+                cryptoAsset = Asset.ALICEUSDT,
+                amount = 1.0,
+                operation = Operation.SELL,
+                //priceInPesos = 80000.0,
+                price = 1.26200000
             )
         )
 
-        intentions.forEachIndexed { index, intention ->
-            intention.user = savedUsers[index]
-            intentionRepository.save(intention)
+        intentions.forEach {
+            if(it.cryptoAsset == Asset.ALICEUSDT) {
+                it.state = OperationState.INACTIVE
+                it.user = users[0]
+            }
         }
+
+        users.forEachIndexed { index, user ->
+            val intention = intentions[index]
+            intention.user = savedUsers[index]
+        }
+
+        intentions.forEach { intentionRepository.save(it) }
 
         val cryptoCurrencies = listOf(
             CryptoCurrency(symbol = "ALICEUSDT", marketPrice = 10.0f),

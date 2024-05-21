@@ -7,6 +7,7 @@ import ar.edu.unq.desapp.grupoI.backenddesappapi.model.Intention
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.User
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Asset
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Operation
+import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.OperationState
 import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.IntentionRepository
 import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.UserRepository
 import ar.edu.unq.desapp.grupoI.backenddesappapi.service.CryptoCurrencyService
@@ -47,6 +48,10 @@ class IntentionServiceImpl: IntentionService {
 
     override fun getAllIntentions(): MutableList<Intention> {
         return intentionRepository.findAll() as MutableList<Intention>
+    }
+
+    override fun getActiveIntentions(): List<Intention> {
+        return intentionRepository.findByState(OperationState.ACTIVE)
     }
 
     override fun saveIntention(intention: Intention): Intention {

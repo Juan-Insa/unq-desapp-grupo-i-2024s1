@@ -6,6 +6,7 @@ import ar.edu.unq.desapp.grupoI.backenddesappapi.model.Intention
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.User
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Asset
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Operation
+import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.OperationState
 import ar.edu.unq.desapp.grupoI.backenddesappapi.utils.DataService
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.extension.ExtendWith
@@ -34,6 +35,8 @@ class IntentionServiceImplTest {
 
     @BeforeEach
     fun init() {
+        dataService.createTestData()
+
         val resultadoMockeado = CryptoCurrency("ALICEUSDT", 50.0f, "2022-04-13 12:00:00")
 
         Mockito.`when`(binanceProxyService.getCryptoCurrency("ALICEUSDT")).thenReturn(resultadoMockeado)
@@ -66,6 +69,7 @@ class IntentionServiceImplTest {
         Assertions.assertEquals(validIntention.amount, 0.5)
         Assertions.assertEquals(validIntention.price, 52.0)
         Assertions.assertEquals(validIntention.operation, Operation.SELL)
+        Assertions.assertEquals(validIntention.state, OperationState.ACTIVE)
         Assertions.assertEquals(validIntention.user!!.id, intentionUser.id)
     }
 
@@ -82,19 +86,32 @@ class IntentionServiceImplTest {
             intentionService.createIntention(intention, intentionUser.id!!)
         }
     }
+
     @Test
-    fun `returns all the active intentions`() {
-        val intention = Intention(
+    fun `returns all the intentions from the dataset`() {
+        val intentions = intentionService.getAllIntentions()
+
+        Assertions.assertEquals(7, intentions.size)
+    }
+
+    @Test
+    fun `returns all the active intentions from the dataset`() {
+        var intention = Intention(
             cryptoAsset = Asset.ALICEUSDT,
             amount = 0.5,
             operation = Operation.SELL,
             price = 52.0
         )
+        intention = intentionService.createIntention(intention, intentionUser.id!!)
+        intention.state = OperationState.INACTIVE
+        intentionService.saveIntention(intention)
 
-        intentionService.createIntention(intention, intentionUser.id!!)
-        val intentions = intentionService.getAllIntentions()
-        Assertions.assertEquals(intentions.size, 1)
+        val intentions = intentionService.getActiveIntentions()
+
+        Assertions.assertEquals(5, intentions.size)
     }
+
+
     @AfterEach
     fun deleteAll() {
         dataService.deleteAll()
