@@ -100,13 +100,10 @@ class TransactionServiceImpl: TransactionService {
 
         return differenceInMinutes > 30
     }
-    override fun getOperatedVolumeFor(userId: Long, startDate: String, endDate: String): OperatedVolume {
+    override fun getOperatedVolumeFor(userId: Long, startDate: LocalDateTime, endDate: LocalDateTime): OperatedVolume {
         // queda ver como hacer la consulta entre fechas
         //val transactions = transactionRepository.findByUserIdAndDateBetween(userId, startDate, endDate)
-        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.getDefault())
-        val start = LocalDateTime.parse(startDate, formatter)
-        val end = LocalDateTime.parse(endDate, formatter)
-        val transactions = transactionRepository.findByInterestedUserIdAndDate(userId, start, end)
+        val transactions = transactionRepository.findByInterestedUserIdAndDate(userId, startDate, endDate)
         var totalUSD = 0.0
         var totalARS = 0.0
         val operatedAssetsMap = mutableMapOf<String, OperatedAsset>()

@@ -10,6 +10,6 @@ interface TransactionService {
     fun finishTransaction(transactionId: Long): Transaction
     fun cancelTransaction(transactionId: Long, userId:Long): Transaction
     fun isPast30Minutes(initTime: LocalDateTime): Boolean
-    fun getOperatedVolumeFor(userId: Long, startDate: String, endDate: String): OperatedVolume
+    fun getOperatedVolumeFor(userId: Long, startDate: LocalDateTime, endDate: LocalDateTime): OperatedVolume
 
 }
