@@ -1,7 +1,9 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.helpers
 
 import java.text.SimpleDateFormat
-import java.util.Date
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 object CurrentDateTime {
 
@@ -18,5 +20,10 @@ object CurrentDateTime {
 
     fun getNewDateFormatter(): SimpleDateFormat {
         return SimpleDateFormat(DATE_FORMAT)
+    }
+
+    fun getNewLocalDateTime(): LocalDateTime {
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.getDefault())
+        return LocalDateTime.parse(this.getNewDateString(), formatter)
     }
 }

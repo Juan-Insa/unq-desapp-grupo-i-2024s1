@@ -93,19 +93,20 @@ class TransactionServiceImpl: TransactionService {
     }
 
 
-    override fun isPast30Minutes(initTime: String): Boolean {
-        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.getDefault())
-        val transactionTime: LocalDateTime = LocalDateTime.parse(initTime, formatter)
+    override fun isPast30Minutes(initTime: LocalDateTime): Boolean {
         val currentTime = LocalDateTime.now()
 
-        val differenceInMinutes = ChronoUnit.MINUTES.between(transactionTime, currentTime)
+        val differenceInMinutes = ChronoUnit.MINUTES.between(initTime, currentTime)
 
         return differenceInMinutes > 30
     }
     override fun getOperatedVolumeFor(userId: Long, startDate: String, endDate: String): OperatedVolume {
         // queda ver como hacer la consulta entre fechas
         //val transactions = transactionRepository.findByUserIdAndDateBetween(userId, startDate, endDate)
-        val transactions = transactionRepository.findByInterestedUserId(userId)
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.getDefault())
+        val start = LocalDateTime.parse(startDate, formatter)
+        val end = LocalDateTime.parse(endDate, formatter)
+        val transactions = transactionRepository.findByInterestedUserIdAndDate(userId, start, end)
         var totalUSD = 0.0
         var totalARS = 0.0
         val operatedAssetsMap = mutableMapOf<String, OperatedAsset>()
