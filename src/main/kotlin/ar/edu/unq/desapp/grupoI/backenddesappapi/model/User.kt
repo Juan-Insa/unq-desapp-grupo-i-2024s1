@@ -16,9 +16,9 @@ class User(
     var password: String,
     var cvu: String,
     var cryptoWalletAddress: String,
-    var reputation: Int = 0,
 
     ) {
+    var reputation: Int = 0
     var operations: Int = 0
 
     @Id

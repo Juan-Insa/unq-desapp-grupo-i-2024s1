@@ -4,11 +4,12 @@ import ar.edu.unq.desapp.grupoI.backenddesappapi.model.Intention
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.Transaction
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Action
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.OperationState
+import java.time.LocalDateTime
 
 class TransactionDTO(
     val interestedUserEmail: String,
     val action: Action,
-    val initTime: String,
+    val initTime: LocalDateTime,
     val state: OperationState,
     val intention: Intention
 ) {

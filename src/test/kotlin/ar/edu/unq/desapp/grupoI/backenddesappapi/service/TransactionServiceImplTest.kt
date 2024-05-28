@@ -1,5 +1,6 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.service
 
+import ar.edu.unq.desapp.grupoI.backenddesappapi.helpers.CurrentDateTime.getNewLocalDateTime
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.CryptoCurrency
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.Intention
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.OperatedVolume
@@ -23,6 +24,9 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.boot.test.mock.mockito.SpyBean
 import org.springframework.test.context.junit.jupiter.SpringExtension
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
@@ -183,7 +187,7 @@ class TransactionServiceImplTest {
     fun `getOperatedVolume for all transactions of interested user`() {
         Mockito.`when`(cryptoCurrencyService.getCurrencyValue(anyString())).thenReturn(10.0f)
         val transaction = transactionService.createTransaction(sellIntention.id!!, interestedUser.id!!)
-        val transactions: OperatedVolume = transactionService.getOperatedVolumeFor(interestedUser.id!!, "19/05/2024 15:30:00", "19/05/2024 23:30:00")
+        val transactions: OperatedVolume = transactionService.getOperatedVolumeFor(interestedUser.id!!, getNewLocalDateTime(), getNewLocalDateTime().plusHours(1))
 
         assertEquals(49.0, transaction.intention.price)
         assertEquals(0.5, transaction.intention.amount)

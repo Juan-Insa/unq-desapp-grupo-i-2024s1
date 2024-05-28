@@ -37,7 +37,6 @@ class DataServiceImpl: DataService {
                 password = "Password123!",
                 cvu = "1234567890123456789012",
                 cryptoWalletAddress = "12345678",
-                reputation = 80
             ))
 
             add(User(
@@ -48,7 +47,6 @@ class DataServiceImpl: DataService {
                 password = "Password456!",
                 cvu = "9876543210987654321098",
                 cryptoWalletAddress = "87654321",
-                reputation = 90
             ))
 
             add(User(
@@ -59,7 +57,6 @@ class DataServiceImpl: DataService {
                 password = "Password789!",
                 cvu = "2468135790246813579024",
                 cryptoWalletAddress = "11111111",
-                reputation = 85
             ))
 
             add(User(
@@ -70,7 +67,6 @@ class DataServiceImpl: DataService {
                 password = "Password1011!",
                 cvu = "3692581470369258147036",
                 cryptoWalletAddress = "22222222",
-                reputation = 95
             ))
 
             add(User(
@@ -81,7 +77,6 @@ class DataServiceImpl: DataService {
                 password = "Password1213!",
                 cvu = "9876543210987654321012",
                 cryptoWalletAddress = "33333333",
-                reputation = 75
             ))
         }
 
