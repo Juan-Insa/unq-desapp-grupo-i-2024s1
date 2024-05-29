@@ -1,4 +1,4 @@
-/*package ar.edu.unq.desapp.grupoI.backenddesappapi
+package ar.edu.unq.desapp.grupoI.backenddesappapi.config/*package ar.edu.unq.desapp.grupoI.backenddesappapi
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

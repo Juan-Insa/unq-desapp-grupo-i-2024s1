@@ -1,6 +1,6 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.model
-
-class CryptoCurrencyList {
+import java.io.Serializable
+class CryptoCurrencyList: Serializable {
     val cryptos: MutableList<CryptoCurrency> = mutableListOf()
 
     fun addCrypto(cripto: CryptoCurrency) {

@@ -10,6 +10,7 @@ import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.CryptoCu
 import ar.edu.unq.desapp.grupoI.backenddesappapi.service.BinanceProxyService
 import ar.edu.unq.desapp.grupoI.backenddesappapi.service.CryptoCurrencyService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -51,6 +52,10 @@ class CryptoCurrencyServiceImpl(): CryptoCurrencyService {
         return cryptoCurrencyRepository.save(cryptoCurrency)
     }
 
+
+    @Cacheable(
+        value = ["allQuotesCache"]
+    )
     override fun getAllCurrencyValues(): CryptoCurrencyList {
         val cryptos = CryptoCurrencyList()
         for(crypto in Asset.values()) {

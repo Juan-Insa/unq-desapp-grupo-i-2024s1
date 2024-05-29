@@ -3,7 +3,7 @@ package ar.edu.unq.desapp.grupoI.backenddesappapi.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.persistence.*
-
+import java.io.Serializable
 @Entity
 @Table(name = "crypto_currency")
 class CryptoCurrency(
@@ -12,7 +12,7 @@ class CryptoCurrency(
     @JsonProperty("price")
     var marketPrice: Float,
     var lastUpdateDateAndTime: String? = null
-) {
+): Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
