@@ -48,7 +48,6 @@ dependencies {
 	//implementation("org.springframework.boot:spring-boot-starter-security")
 	//implementation("org.hibernate:hibernate-core:5.6.4.Final")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	runtimeOnly("com.mysql:mysql-connector-j")
 	implementation("mysql:mysql-connector-java:8.0.33")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("com.h2database:h2")
@@ -59,6 +58,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-cache:3.1.5")
 	implementation("javax.cache:cache-api:1.1.1")
 	implementation("org.ehcache:ehcache:3.10.8:jakarta")
+
 }
 
 tasks.withType<KotlinCompile> {
