@@ -2,6 +2,7 @@ package ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers
 
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.User
 import ar.edu.unq.desapp.grupoI.backenddesappapi.service.UserService
+import ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers.request.UserRequest
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.beans.factory.annotation.Autowired

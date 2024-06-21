@@ -1,6 +1,6 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.service
 
-import ar.edu.unq.desapp.grupoI.backenddesappapi.helpers.CurrentDateTime.getNewLocalDateTime
+import ar.edu.unq.desapp.grupoI.backenddesappapi.utils.CurrentDateTime.getNewLocalDateTime
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.CryptoCurrency
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.Intention
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.OperatedVolume
@@ -16,7 +16,6 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
@@ -24,9 +23,6 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.boot.test.mock.mockito.SpyBean
 import org.springframework.test.context.junit.jupiter.SpringExtension
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.util.*
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest

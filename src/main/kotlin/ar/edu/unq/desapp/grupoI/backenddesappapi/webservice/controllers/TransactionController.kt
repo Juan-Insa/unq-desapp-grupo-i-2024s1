@@ -3,11 +3,11 @@ package ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.OperatedVolume
 import ar.edu.unq.desapp.grupoI.backenddesappapi.service.TransactionService
 import ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers.dto.TransactionDTO
+import ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers.request.TransactionRequest
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.repository.query.Param
 import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.http.ResponseEntity
 import org.springframework.transaction.annotation.Transactional

@@ -59,6 +59,15 @@ dependencies {
 	implementation("javax.cache:cache-api:1.1.1")
 	implementation("org.ehcache:ehcache:3.10.8:jakarta")
 
+	// log4j
+	implementation("org.apache.logging.log4j:log4j-api:2.23.1")
+	implementation("org.apache.logging.log4j:log4j-core:2.23.1")
+	implementation("org.springframework.boot:spring-boot-starter-aop")
+	implementation("org.springframework.boot:spring-boot-starter-logging")
+
+	// AOP
+	implementation("org.springframework.boot:spring-boot-starter-aop")
+
 }
 
 tasks.withType<KotlinCompile> {

@@ -1,7 +1,7 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.service.impl
 
 import ar.edu.unq.desapp.grupoI.backenddesappapi.exceptions.UserNotFoundException
-import ar.edu.unq.desapp.grupoI.backenddesappapi.helpers.UserRegisterValidator
+import ar.edu.unq.desapp.grupoI.backenddesappapi.utils.UserRegisterValidator
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.User
 import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.UserRepository
 import ar.edu.unq.desapp.grupoI.backenddesappapi.service.UserService
