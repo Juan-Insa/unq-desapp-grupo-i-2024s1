@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
 import java.security.Key
 import java.util.*
+import javax.crypto.SecretKey
 
 @Service
 class JwtService(): JwtService {
@@ -48,11 +49,11 @@ class JwtService(): JwtService {
         expiration: Long
     ): String {
         return Jwts.builder()
-            .setClaims(extraClaims)
-            .setSubject(userDetails.username)
-            .setIssuedAt(Date(System.currentTimeMillis()))
-            .setExpiration(Date(System.currentTimeMillis() + expiration))
-            .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+            .claims(extraClaims)
+            .subject(userDetails.username)
+            .issuedAt(Date(System.currentTimeMillis()))
+            .expiration(Date(System.currentTimeMillis() + expiration))
+            .signWith(getSignInKey() as SecretKey, Jwts.SIG.HS256)
             .compact()
     }
 
@@ -70,11 +71,11 @@ class JwtService(): JwtService {
     }
 
     private fun extractAllClaims(token: String): Claims {
-        return Jwts.parserBuilder()
-            .setSigningKey(getSignInKey())
+        return Jwts.parser()
+            .verifyWith(getSignInKey() as SecretKey)
             .build()
-            .parseClaimsJws(token)
-            .body
+            .parseSignedClaims(token)
+            .payload
     }
 
     private fun getSignInKey(): Key {

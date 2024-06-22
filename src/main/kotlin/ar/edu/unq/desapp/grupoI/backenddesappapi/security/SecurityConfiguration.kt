@@ -1,4 +1,5 @@
-import ar.edu.unq.desapp.grupoI.backenddesappapi.security.JwtAuthenticationFilter
+package ar.edu.unq.desapp.grupoI.backenddesappapi.security
+
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -14,7 +15,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
 @Configuration
 @EnableWebSecurity
-class SecurityConfig() {
+class SecurityConfiguration() {
 
     @Autowired lateinit var jwtAuthenticationFilter: JwtAuthenticationFilter
     @Autowired lateinit var authenticationProvider: AuthenticationProvider
@@ -23,8 +24,8 @@ class SecurityConfig() {
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http.csrf { it.disable() }
             .authorizeHttpRequests { authz ->
-                authz.requestMatchers("/api/user/register", "/api/user/login", "api/intention/all").permitAll()
-                authz.anyRequest().authenticated()
+                authz.requestMatchers("/api/user/**", "swagger-ui/**", "/api-docs/**").permitAll()
+                //authz.anyRequest().authenticated()
             }
             .sessionManagement { session ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)

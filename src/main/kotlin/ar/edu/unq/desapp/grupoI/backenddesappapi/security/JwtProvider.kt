@@ -22,38 +22,38 @@ class JwtProvider {
 
     fun generateToken(userDetails: UserDetails): String {
         return Jwts.builder()
-            .setSubject(userDetails.username)
+            .subject(userDetails.username)
             .claim("roles", userDetails.authorities)
-            .setIssuedAt(Date())
-            .setExpiration(Date(Date().time + expiration!!))
+            .issuedAt(Date())
+            .expiration(Date(Date().time + expiration!!))
             .signWith(getKey(secret))
             .compact()
     }
 
     fun getClaims(token: String?): Claims {
-        return Jwts.parserBuilder()
-            .setSigningKey(getKey(secret))
+        return Jwts.parser()
+            .verifyWith(getKey(secret))
             .build()
-            .parseClaimsJwt(token)
-            .body
+            .parseUnsecuredClaims(token)
+            .payload
     }
 
     fun getSubject(token: String?): String {
-        return Jwts.parserBuilder()
-            .setSigningKey(getKey(secret))
+        return Jwts.parser()
+            .verifyWith(getKey(secret))
             .build()
-            .parseClaimsJwt(token)
-            .body
+            .parseUnsecuredClaims(token)
+            .payload
             .subject
     }
 
     fun validate(token: String?): Boolean {
         try {
-            Jwts.parserBuilder()
-                .setSigningKey(getKey(secret))
+            Jwts.parser()
+                .verifyWith(getKey(secret))
                 .build()
-                .parseClaimsJwt(token)
-                .body
+                .parseUnsecuredClaims(token)
+                .payload
                 .subject
             return true
         } catch (e: ExpiredJwtException) {

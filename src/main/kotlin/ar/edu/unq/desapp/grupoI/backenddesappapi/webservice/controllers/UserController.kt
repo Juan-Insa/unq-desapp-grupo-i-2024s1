@@ -3,6 +3,7 @@ package ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.User
 import ar.edu.unq.desapp.grupoI.backenddesappapi.security.JwtService
 import ar.edu.unq.desapp.grupoI.backenddesappapi.service.UserService
+import ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers.dto.LoginResponse
 import ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers.dto.LoginUserDTO
 import ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers.request.UserRequest
 import io.swagger.v3.oas.annotations.Operation
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController
 @Transactional
 @RequestMapping("api/user")
 @Tag(name = "User")
-class UserControllerREST {
+class UserController {
 
     @Autowired lateinit var userService: UserService
     @Autowired lateinit var jwtService: JwtService
@@ -48,4 +49,3 @@ class UserControllerREST {
 
 }
 
-class LoginResponse(val token: String,val expiresIn: Long) {}

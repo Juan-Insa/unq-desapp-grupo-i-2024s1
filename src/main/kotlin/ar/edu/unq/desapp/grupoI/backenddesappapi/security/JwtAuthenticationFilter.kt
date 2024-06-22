@@ -4,6 +4,7 @@ import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.lang.NonNull
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
@@ -21,41 +22,37 @@ class JwtAuthenticationFilter() : OncePerRequestFilter() {
     @Autowired lateinit var handlerExceptionResolver: HandlerExceptionResolver
 
     override fun doFilterInternal(
-        request: HttpServletRequest,
-        response: HttpServletResponse,
-        filterChain: FilterChain
+        @NonNull request: HttpServletRequest,
+        @NonNull response: HttpServletResponse,
+        @NonNull filterChain: FilterChain
     ) {
-        val authHeader = request.getHeader("Authorization")
+    val authHeader = request.getHeader("Authorization")
 
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response)
-            return
-        }
+    if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+        filterChain.doFilter(request, response)
+        return
+    }
 
-        try {
-            val jwt = authHeader.substring(7)
-            val userEmail = jwtService.extractUsername(jwt)
 
-            val authentication = SecurityContextHolder.getContext().authentication
+        val jwt = authHeader.substring(7)
+        val userEmail = jwtService.extractUsername(jwt)
 
-            if (userEmail != null && authentication == null) {
-                val userDetails: UserDetails = userDetailsService.loadUserByUsername(userEmail)
+        val authentication = SecurityContextHolder.getContext().authentication
 
-                if (jwtService.isTokenValid(jwt, userDetails)) {
-                    val authToken = UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        userDetails.authorities
-                    )
+        if (userEmail != null && authentication == null) {
+            val userDetails: UserDetails = userDetailsService.loadUserByUsername(userEmail)
 
-                    authToken.details = WebAuthenticationDetailsSource().buildDetails(request)
-                    SecurityContextHolder.getContext().authentication = authToken
-                }
+            if (jwtService.isTokenValid(jwt, userDetails)) {
+                val authToken = UsernamePasswordAuthenticationToken(
+                    userDetails,
+                    null,
+                    userDetails.authorities
+                )
+
+                authToken.details = WebAuthenticationDetailsSource().buildDetails(request)
+                SecurityContextHolder.getContext().authentication = authToken
             }
-
-            filterChain.doFilter(request, response)
-        } catch (exception: Exception) {
-            handlerExceptionResolver.resolveException(request, response, null, exception)
         }
+        filterChain.doFilter(request, response)
     }
 }

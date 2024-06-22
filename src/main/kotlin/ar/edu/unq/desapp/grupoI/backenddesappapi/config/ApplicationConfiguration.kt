@@ -13,7 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
 @Configuration
-class ApplicationConfig {
+class ApplicationConfiguration {
 
     @Autowired private lateinit var userRepository: UserRepository
 
