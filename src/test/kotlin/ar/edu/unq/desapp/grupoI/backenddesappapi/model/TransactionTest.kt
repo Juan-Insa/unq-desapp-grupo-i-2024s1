@@ -71,7 +71,7 @@ class TransactionTest {
         Assertions.assertEquals("insa", intentionUser.lastName)
         Assertions.assertEquals("lala@gmail.com", intentionUser.email)
         Assertions.assertEquals("validStreetAddress", intentionUser.address)
-        Assertions.assertEquals("Valid.Password", intentionUser.password)
+        Assertions.assertEquals("Valid.Password", intentionUser.temporaryPassword)
         Assertions.assertEquals("12345678", intentionUser.cryptoWalletAddress)
         Assertions.assertEquals("1234567890123456789012", intentionUser.cvu)
     }

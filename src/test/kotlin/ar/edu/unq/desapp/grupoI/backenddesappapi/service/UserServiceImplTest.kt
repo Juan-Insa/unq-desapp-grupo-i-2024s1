@@ -56,7 +56,7 @@ class UserServiceImplTest {
         assertEquals("insa", userObtained.lastName)
         assertEquals("juancho@gmail.com", userObtained.email)
         assertEquals("validStreetAddress", userObtained.address)
-        assertEquals("Valid.Password", userObtained.password)
+        assertEquals("Valid.Password", userObtained.temporaryPassword)
         assertEquals("1234567890123456789012", userObtained.cvu)
         assertEquals("12345678", userObtained.cryptoWalletAddress)
     }

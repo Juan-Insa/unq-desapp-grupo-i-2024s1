@@ -5,7 +5,12 @@ import ar.edu.unq.desapp.grupoI.backenddesappapi.utils.UserRegisterValidator
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.User
 import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.UserRepository
 import ar.edu.unq.desapp.grupoI.backenddesappapi.service.UserService
+import ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers.dto.LoginUserDTO
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.ReactiveAuthenticationManager
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import kotlin.jvm.optionals.getOrNull
@@ -15,6 +20,8 @@ import kotlin.jvm.optionals.getOrNull
 class UserServiceImpl(): UserService {
 
     @Autowired lateinit var userRepository: UserRepository
+    @Autowired lateinit var passwordEncoder: PasswordEncoder
+    @Autowired lateinit var authenticationManager: AuthenticationManager
 
     override fun getUserByEmail(email: String): User {
         return userRepository.findByEmail(email)
@@ -34,7 +41,27 @@ class UserServiceImpl(): UserService {
 
         UserRegisterValidator.validateUserData(user)
 
-        return userRepository.save(user)
+        val userToRegister = User(
+            name = user.name ,
+            lastName = user.lastName ,
+            email = user.email,
+            address = user.address,
+            cvu = user.cvu,
+            cryptoWalletAddress = user.cryptoWalletAddress,
+            password = passwordEncoder.encode(user.password)
+        )
+        return userRepository.save(userToRegister)
+    }
+
+    override fun authenticate(loginUserDTO: LoginUserDTO): User {
+        authenticationManager.authenticate(
+            UsernamePasswordAuthenticationToken(
+                loginUserDTO.email,
+                loginUserDTO.password
+            )
+        )
+
+        return userRepository.findByEmail(loginUserDTO.email!!).orElseThrow()
     }
 
     override fun saveUser(user: User): User {
