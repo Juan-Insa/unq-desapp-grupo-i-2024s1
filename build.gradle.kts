@@ -65,6 +65,10 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-aop")
 	implementation("org.springframework.boot:spring-boot-starter-logging")
 
+	//prometheus
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
+	implementation("io.micrometer:micrometer-registry-prometheus")
+
 	// AOP
 	implementation("org.springframework.boot:spring-boot-starter-aop")
 
