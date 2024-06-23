@@ -5,6 +5,7 @@ import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
 import java.security.Key
@@ -21,7 +22,7 @@ class JwtService() {
         return Jwts.builder()
             .subject(user.email)
             .issuedAt(Date(System.currentTimeMillis()))
-            .expiration(Date(System.currentTimeMillis() + expirationTime))
+            .expiration(Date(System.currentTimeMillis() + expirationTime!!))
             .signWith(getSignInKey() as SecretKey, Jwts.SIG.HS256)
             .compact()
     }
@@ -36,7 +37,7 @@ class JwtService() {
     }
 
     fun getExpirationTime(): Long {
-        return expirationTime
+        return expirationTime!!
     }
 
     fun isTokenValid(token: String, userDetails: UserDetails): Boolean {

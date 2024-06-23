@@ -33,37 +33,6 @@ class UserServiceImpl(): UserService {
             .getOrNull() ?: throw UserNotFoundException("could not find user with id `${id}`")
     }
 
-    override fun registerUser(user: User): User {
-
-        if (userRepository.existsByEmail(user.email)) {
-            throw IllegalArgumentException("Email is already registered");
-        }
-
-        UserRegisterValidator.validateUserData(user)
-
-        val userToRegister = User(
-            name = user.name ,
-            lastName = user.lastName ,
-            email = user.email,
-            address = user.address,
-            cvu = user.cvu,
-            cryptoWalletAddress = user.cryptoWalletAddress,
-            password = passwordEncoder.encode(user.password)
-        )
-        return userRepository.save(userToRegister)
-    }
-
-    override fun authenticate(loginUserDTO: LoginUserDTO): User {
-        authenticationManager.authenticate(
-            UsernamePasswordAuthenticationToken(
-                loginUserDTO.email,
-                loginUserDTO.password
-            )
-        )
-
-        return userRepository.findByEmail(loginUserDTO.email!!).orElseThrow()
-    }
-
     override fun saveUser(user: User): User {
         return userRepository.save(user)
     }

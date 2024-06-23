@@ -15,10 +15,10 @@ import org.springframework.web.filter.OncePerRequestFilter
 import org.springframework.web.servlet.HandlerExceptionResolver
 
 @Component
-class JwtAuthenticationFilter() : OncePerRequestFilter() {
+class JwtAuthenticationFilter(    private val jwtService: JwtService,
+                                  private val userDetailsService: UserDetailsService) : OncePerRequestFilter() {
 
-    @Autowired lateinit var jwtService: JwtService
-    @Autowired lateinit var userDetailsService: UserDetailsService
+
 
     override fun doFilterInternal(
         @NonNull request: HttpServletRequest,
