@@ -19,36 +19,26 @@ class JwtAuthenticationFilter() : OncePerRequestFilter() {
 
     @Autowired lateinit var jwtService: JwtService
     @Autowired lateinit var userDetailsService: UserDetailsService
-    @Autowired lateinit var handlerExceptionResolver: HandlerExceptionResolver
 
     override fun doFilterInternal(
         @NonNull request: HttpServletRequest,
         @NonNull response: HttpServletResponse,
         @NonNull filterChain: FilterChain
     ) {
-    val authHeader = request.getHeader("Authorization")
-
-    if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-        filterChain.doFilter(request, response)
-        return
-    }
-
+        val authHeader = request.getHeader("Authorization")
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            filterChain.doFilter(request, response)
+            return
+        }
 
         val jwt = authHeader.substring(7)
-        val userEmail = jwtService.extractUsername(jwt)
-
+        val username = jwtService.extractUsername(jwt)
         val authentication = SecurityContextHolder.getContext().authentication
 
-        if (userEmail != null && authentication == null) {
-            val userDetails: UserDetails = userDetailsService.loadUserByUsername(userEmail)
-
+        if (authentication == null) {
+            val userDetails: UserDetails = userDetailsService.loadUserByUsername(username)
             if (jwtService.isTokenValid(jwt, userDetails)) {
-                val authToken = UsernamePasswordAuthenticationToken(
-                    userDetails,
-                    null,
-                    userDetails.authorities
-                )
-
+                val authToken = UsernamePasswordAuthenticationToken(userDetails, null, userDetails.authorities)
                 authToken.details = WebAuthenticationDetailsSource().buildDetails(request)
                 SecurityContextHolder.getContext().authentication = authToken
             }

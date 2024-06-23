@@ -46,6 +46,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+	implementation("jakarta.servlet:jakarta.servlet-api")
 	//implementation("org.hibernate:hibernate-core:5.6.4.Final")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("mysql:mysql-connector-java:8.0.33")
@@ -60,7 +61,7 @@ dependencies {
 	implementation("org.ehcache:ehcache:3.10.8:jakarta")
 
 	// security/jwt
-
+	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
 	implementation("io.jsonwebtoken:jjwt-api:0.12.5")
 	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.5")
 
@@ -71,8 +72,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-aop")
 	implementation("org.springframework.boot:spring-boot-starter-logging")
 
-	// AOP
-	implementation("org.springframework.boot:spring-boot-starter-aop")
+
 
 }
 

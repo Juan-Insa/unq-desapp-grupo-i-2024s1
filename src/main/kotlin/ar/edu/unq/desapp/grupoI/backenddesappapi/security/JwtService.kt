@@ -1,12 +1,10 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.security
 
-import ar.edu.unq.desapp.grupoI.backenddesappapi.service.JwtService
+import ar.edu.unq.desapp.grupoI.backenddesappapi.model.User
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
 import java.security.Key
@@ -14,50 +12,34 @@ import java.util.*
 import javax.crypto.SecretKey
 
 @Service
-class JwtService(): JwtService {
+class JwtService() {
 
-    @Value("\${security.jwt.secret-key}")
-    private lateinit var secretKey: String
+    private val secretKey = "3cfa76ef14937c1c0ea519f8fc057a80fcd04a7420f8e8bcd0a7567c272e007b"
+    private val expirationTime: Long = 3600000
 
-    @Value("\${security.jwt.expiration-time}")
-    private var jwtExpiration: Long = 0
-
-    override fun extractUsername(token: String): String {
-        return extractClaim(token, Claims::getSubject)
-    }
-
-    override fun <T> extractClaim(token: String, claimsResolver: (Claims) -> T): T {
-        val claims = extractAllClaims(token)
-        return claimsResolver.invoke(claims)
-    }
-
-    override fun generateToken(userDetails: UserDetails): String {
-        return generateToken(HashMap(), userDetails)
-    }
-
-    override fun generateToken(extraClaims: Map<String, Any>, userDetails: UserDetails): String {
-        return buildToken(extraClaims, userDetails, jwtExpiration)
-    }
-
-    override fun getExpirationTime(): Long {
-        return jwtExpiration
-    }
-
-    private fun buildToken(
-        extraClaims: Map<String, Any>,
-        userDetails: UserDetails,
-        expiration: Long
-    ): String {
+    fun generateToken(user: User): String {
         return Jwts.builder()
-            .claims(extraClaims)
-            .subject(userDetails.username)
+            .subject(user.email)
             .issuedAt(Date(System.currentTimeMillis()))
-            .expiration(Date(System.currentTimeMillis() + expiration))
+            .expiration(Date(System.currentTimeMillis() + expirationTime))
             .signWith(getSignInKey() as SecretKey, Jwts.SIG.HS256)
             .compact()
     }
 
-    override fun isTokenValid(token: String, userDetails: UserDetails): Boolean {
+    fun extractUsername(token: String): String {
+        return extractClaim(token, Claims::getSubject)
+    }
+
+    fun <T> extractClaim(token: String, claimsResolver: (Claims) -> T): T {
+        val claims = extractAllClaims(token)
+        return claimsResolver.invoke(claims)
+    }
+
+    fun getExpirationTime(): Long {
+        return expirationTime
+    }
+
+    fun isTokenValid(token: String, userDetails: UserDetails): Boolean {
         val username = extractUsername(token)
         return username == userDetails.username && !isTokenExpired(token)
     }

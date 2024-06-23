@@ -48,8 +48,8 @@ class CryptoCurrencyServiceImpl(): CryptoCurrencyService {
     }
 
 
-    override fun createCryptoCurrency(cryptoCurrency: CryptoCurrency): CryptoCurrency {
-        return cryptoCurrencyRepository.save(cryptoCurrency)
+    override fun createCryptoCurrency(currency: CryptoCurrency): CryptoCurrency {
+        return cryptoCurrencyRepository.save(currency)
     }
 
 
