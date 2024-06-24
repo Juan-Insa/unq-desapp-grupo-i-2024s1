@@ -24,7 +24,7 @@ class IntentionServiceImplTest {
 
 
     @Autowired lateinit var intentionService: IntentionService
-    @Autowired lateinit var userService: UserService
+    @Autowired lateinit var authenticationService: AuthenticationService
     @Autowired lateinit var dataService: DataService
 
     @MockBean
@@ -51,7 +51,7 @@ class IntentionServiceImplTest {
             cvu = "1234567890123456789012",
             cryptoWalletAddress = "12345678")
 
-        intentionUser = userService.registerUser(intentionUser)
+        intentionUser = authenticationService.signup(intentionUser)
     }
 
     @Test

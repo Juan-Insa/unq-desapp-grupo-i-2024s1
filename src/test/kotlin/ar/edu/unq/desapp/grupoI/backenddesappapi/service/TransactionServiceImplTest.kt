@@ -1,6 +1,6 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.service
 
-import ar.edu.unq.desapp.grupoI.backenddesappapi.helpers.CurrentDateTime.getNewLocalDateTime
+import ar.edu.unq.desapp.grupoI.backenddesappapi.utils.CurrentDateTime.getNewLocalDateTime
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.CryptoCurrency
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.Intention
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.OperatedVolume
@@ -16,7 +16,6 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
@@ -24,9 +23,6 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.boot.test.mock.mockito.SpyBean
 import org.springframework.test.context.junit.jupiter.SpringExtension
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.util.*
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
@@ -36,6 +32,7 @@ class TransactionServiceImplTest {
     @SpyBean lateinit var transactionService: TransactionService
     @Autowired lateinit var intentionService: IntentionService
     @Autowired lateinit var userService: UserService
+    @Autowired lateinit var authenticationService: AuthenticationService
     @Autowired lateinit var dataService: DataService
 
     @MockBean
@@ -64,7 +61,7 @@ class TransactionServiceImplTest {
             cvu = "1234567890123456789012",
             cryptoWalletAddress = "12345678")
         intentionUser.reputation = 50
-        intentionUser = userService.registerUser(intentionUser)
+        intentionUser = authenticationService.signup(intentionUser)
 
         interestedUser = User(
             name ="interestedUser",
@@ -76,7 +73,7 @@ class TransactionServiceImplTest {
             cryptoWalletAddress = "87654321"
         )
         interestedUser.reputation = 80
-        interestedUser = userService.registerUser(interestedUser)
+        interestedUser = authenticationService.signup(interestedUser)
 
         sellIntention = Intention(
             cryptoAsset = Asset.ALICEUSDT,

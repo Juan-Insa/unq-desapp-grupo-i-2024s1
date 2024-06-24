@@ -1,4 +1,4 @@
-package ar.edu.unq.desapp.grupoI.backenddesappapi.helpers
+package ar.edu.unq.desapp.grupoI.backenddesappapi.utils
 
 import ar.edu.unq.desapp.grupoI.backenddesappapi.exceptions.*
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.User

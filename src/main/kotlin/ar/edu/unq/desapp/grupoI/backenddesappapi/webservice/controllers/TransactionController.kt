@@ -2,12 +2,13 @@ package ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers
 
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.OperatedVolume
 import ar.edu.unq.desapp.grupoI.backenddesappapi.service.TransactionService
+import ar.edu.unq.desapp.grupoI.backenddesappapi.utils.MetricsRegister
 import ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers.dto.TransactionDTO
+import ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers.request.TransactionRequest
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.repository.query.Param
 import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.http.ResponseEntity
 import org.springframework.transaction.annotation.Transactional
@@ -26,8 +27,8 @@ import java.time.LocalDateTime
 @Tag(name = "Transactions")
 class TransactionController {
 
-    @Autowired
-    lateinit var transactionService: TransactionService
+    @Autowired lateinit var transactionService: TransactionService
+    @Autowired lateinit var metricsRegister: MetricsRegister
 
     @Operation(
         summary = "Post a new transaction",
@@ -54,6 +55,7 @@ class TransactionController {
         description = "Finishes the transaction by the given id setting its state to inactive and adding the corresponding reputation points to users")
     @PutMapping("/{id}/finish")
     fun finishTransaction(@PathVariable id: Long): ResponseEntity<TransactionDTO> {
+        metricsRegister.transactionsCounter.increment()
         val transaction = transactionService.finishTransaction(id)
         val transactionDTO = TransactionDTO.fromModel(transaction)
         return ResponseEntity.ok().body(transactionDTO)

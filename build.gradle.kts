@@ -44,21 +44,41 @@ repositories {
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-	//implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("jakarta.servlet:jakarta.servlet-api")
 	//implementation("org.hibernate:hibernate-core:5.6.4.Final")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	runtimeOnly("com.mysql:mysql-connector-j")
 	implementation("mysql:mysql-connector-java:8.0.33")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("com.h2database:h2")
 	providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	//testImplementation("org.springframework.security:spring-security-test")
+	testImplementation("org.springframework.security:spring-security-test")
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
 	implementation("org.springframework.boot:spring-boot-starter-cache:3.1.5")
 	implementation("javax.cache:cache-api:1.1.1")
 	implementation("org.ehcache:ehcache:3.10.8:jakarta")
+
+	// security/jwt
+	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+	implementation("io.jsonwebtoken:jjwt-api:0.12.5")
+	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.5")
+	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.5")
+
+	// log4j
+	implementation("org.apache.logging.log4j:log4j-api:2.23.1")
+	implementation("org.apache.logging.log4j:log4j-core:2.23.1")
+	implementation("org.springframework.boot:spring-boot-starter-aop")
+	implementation("org.springframework.boot:spring-boot-starter-logging")
+
+	//prometheus
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
+	implementation("io.micrometer:micrometer-registry-prometheus")
+
+	// AOP
+	implementation("org.springframework.boot:spring-boot-starter-aop")
+
 }
 
 tasks.withType<KotlinCompile> {

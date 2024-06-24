@@ -11,7 +11,7 @@ class TransactionDTO(
     val action: Action,
     val initTime: LocalDateTime,
     val state: OperationState,
-    val intention: Intention
+    val intention: IntentionDTO
 ) {
 
     companion object {
@@ -21,7 +21,7 @@ class TransactionDTO(
                 action = transaction.action,
                 initTime = transaction.initTime,
                 state = transaction.state,
-                intention = transaction.intention
+                intention = IntentionDTO.fromModel(transaction.intention)
             )
         }
     }
