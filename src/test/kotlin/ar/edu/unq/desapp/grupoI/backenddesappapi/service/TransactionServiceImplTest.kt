@@ -32,6 +32,7 @@ class TransactionServiceImplTest {
     @SpyBean lateinit var transactionService: TransactionService
     @Autowired lateinit var intentionService: IntentionService
     @Autowired lateinit var userService: UserService
+    @Autowired lateinit var authenticationService: AuthenticationService
     @Autowired lateinit var dataService: DataService
 
     @MockBean
@@ -60,7 +61,7 @@ class TransactionServiceImplTest {
             cvu = "1234567890123456789012",
             cryptoWalletAddress = "12345678")
         intentionUser.reputation = 50
-        intentionUser = userService.registerUser(intentionUser)
+        intentionUser = authenticationService.signup(intentionUser)
 
         interestedUser = User(
             name ="interestedUser",
@@ -72,7 +73,7 @@ class TransactionServiceImplTest {
             cryptoWalletAddress = "87654321"
         )
         interestedUser.reputation = 80
-        interestedUser = userService.registerUser(interestedUser)
+        interestedUser = authenticationService.signup(interestedUser)
 
         sellIntention = Intention(
             cryptoAsset = Asset.ALICEUSDT,

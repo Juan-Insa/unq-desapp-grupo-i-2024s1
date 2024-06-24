@@ -16,8 +16,9 @@ import java.lang.IllegalArgumentException
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class UserServiceImplTest {
+class AuthenticationServiceImplTest {
 
+    @Autowired lateinit var authenticationService: AuthenticationService
     @Autowired lateinit var userService: UserService
     @Autowired lateinit var dataService: DataService
 
@@ -33,7 +34,7 @@ class UserServiceImplTest {
             cryptoWalletAddress = "12345678"
         )
         assertThrows<IllegalArgumentException> {
-            userService.registerUser(user)
+            authenticationService.signup(user)
         }
     }
 
@@ -48,7 +49,7 @@ class UserServiceImplTest {
             cvu = "1234567890123456789012",
             cryptoWalletAddress = "12345678"
         )
-        userService.registerUser(user)
+        authenticationService.signup(user)
 
         val userObtained = userService.getUserByEmail("juancho@gmail.com")
 
