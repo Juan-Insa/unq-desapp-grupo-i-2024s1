@@ -66,14 +66,18 @@ dependencies {
 	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.5")
 	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.5")
 
-
 	// log4j
 	implementation("org.apache.logging.log4j:log4j-api:2.23.1")
 	implementation("org.apache.logging.log4j:log4j-core:2.23.1")
 	implementation("org.springframework.boot:spring-boot-starter-aop")
 	implementation("org.springframework.boot:spring-boot-starter-logging")
 
+	//prometheus
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
+	implementation("io.micrometer:micrometer-registry-prometheus")
 
+	// AOP
+	implementation("org.springframework.boot:spring-boot-starter-aop")
 
 }
 
