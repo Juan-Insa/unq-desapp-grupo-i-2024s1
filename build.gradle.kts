@@ -59,6 +59,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-cache:3.1.5")
 	implementation("javax.cache:cache-api:1.1.1")
 	implementation("org.ehcache:ehcache:3.10.8:jakarta")
+	testImplementation("com.tngtech.archunit:archunit:1.3.0")
 
 	// security/jwt
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
