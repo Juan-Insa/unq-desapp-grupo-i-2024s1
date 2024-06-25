@@ -24,7 +24,7 @@ class LoggingAspect {
         val params = joinPoint.args.joinToString()
 
         val authentication = SecurityContextHolder.getContext().authentication
-        val user = authentication.name
+        val user = authentication?.name
 
         val result = joinPoint.proceed()
 
