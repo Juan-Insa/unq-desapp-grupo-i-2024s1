@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.lang.IllegalArgumentException
 
@@ -21,6 +22,7 @@ class AuthenticationServiceImplTest {
     @Autowired lateinit var authenticationService: AuthenticationService
     @Autowired lateinit var userService: UserService
     @Autowired lateinit var dataService: DataService
+    @Autowired lateinit var passwordEncoder: PasswordEncoder
 
     @Test
     fun `registerUser fails when trying to register user with invalid password`(){
@@ -57,8 +59,11 @@ class AuthenticationServiceImplTest {
         assertEquals("insa", userObtained.lastName)
         assertEquals("juancho@gmail.com", userObtained.email)
         assertEquals("validStreetAddress", userObtained.address)
+        assertTrue(passwordEncoder.matches("Valid.Password", userObtained.password))
         assertEquals("1234567890123456789012", userObtained.cvu)
         assertEquals("12345678", userObtained.cryptoWalletAddress)
+        assertEquals(0, userObtained.reputation)
+        assertEquals(0, userObtained.operations)
     }
 
     @AfterEach

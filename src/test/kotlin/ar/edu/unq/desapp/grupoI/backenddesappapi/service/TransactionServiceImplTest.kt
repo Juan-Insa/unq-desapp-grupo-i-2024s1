@@ -59,7 +59,8 @@ class TransactionServiceImplTest {
             address = "intentionUserAddress",
             password = "Intention.User.Pass",
             cvu = "1234567890123456789012",
-            cryptoWalletAddress = "12345678")
+            cryptoWalletAddress = "12345678"
+        )
         intentionUser = authenticationService.signup(intentionUser)
         intentionUser.reputation = 50
         userService.saveUser(intentionUser)
@@ -136,6 +137,8 @@ class TransactionServiceImplTest {
     fun `canceling a transaction takes 20 reputation points from the canceling user`() {
         var validTransaction = transactionService.createTransaction(buyIntention.id!!, interestedUser.id!!)
 
+        interestedUser.reputation = 80
+
         transactionService.cancelTransaction(validTransaction.id!!, interestedUser.id!!)
 
         val cancelingUser = userService.getUserById(interestedUser.id!!)
@@ -165,6 +168,9 @@ class TransactionServiceImplTest {
         Mockito.`when`(transactionService.isPast30Minutes(date)).thenReturn(true)
 
         transactionService.finishTransaction(validTransaction.id!!)
+
+        intentionUser
+        interestedUser
 
         intentionUser = userService.getUserById(intentionUser.id!!)
         interestedUser = userService.getUserById(interestedUser.id!!)

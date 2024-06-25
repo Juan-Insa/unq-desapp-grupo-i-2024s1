@@ -2,6 +2,7 @@ package ar.edu.unq.desapp.grupoI.backenddesappapi
 
 import com.tngtech.archunit.core.domain.JavaClasses
 import com.tngtech.archunit.core.importer.ClassFileImporter
+import com.tngtech.archunit.core.importer.ImportOption
 import com.tngtech.archunit.lang.ArchRule
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses
@@ -10,7 +11,9 @@ import org.junit.jupiter.api.Test
 
 
 class ArchitectureTests {
-    private val importedClasses: JavaClasses = ClassFileImporter().importPackages("ar.edu.unq.desapp.grupoI.backenddesappapi")
+    private val importedClasses: JavaClasses = ClassFileImporter()
+        .withImportOption(ImportOption.DoNotIncludeTests())
+        .importPackages("ar.edu.unq.desapp.grupoI.backenddesappapi")
     @Test
     fun `Check no dependency from controllers to persistence`() {
         val rule: ArchRule = noClasses()
