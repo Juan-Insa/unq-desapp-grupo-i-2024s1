@@ -1,15 +1,11 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.service.impl
 
 import ar.edu.unq.desapp.grupoI.backenddesappapi.exceptions.UserNotFoundException
-import ar.edu.unq.desapp.grupoI.backenddesappapi.utils.UserRegisterValidator
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.User
 import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.UserRepository
 import ar.edu.unq.desapp.grupoI.backenddesappapi.service.UserService
-import ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers.dto.LoginUserDTO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.authentication.ReactiveAuthenticationManager
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

@@ -15,7 +15,7 @@ class Transaction (
 
     var action: Action,
 ){
-    val initTime: LocalDateTime = getNewLocalDateTime() //CurrentDateTime.getNewDateString()
+    val initTime: LocalDateTime = getNewLocalDateTime()
 
     var state = OperationState.ACTIVE
 

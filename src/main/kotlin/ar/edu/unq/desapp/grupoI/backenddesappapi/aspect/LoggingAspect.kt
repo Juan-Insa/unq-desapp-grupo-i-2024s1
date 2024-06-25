@@ -35,16 +35,4 @@ class LoggingAspect {
 
         return result
     }
-
-    private fun getUserIdFromArgs(args: Array<Any>): Long? {
-        for (arg in args) {
-            when (arg) {
-                is IntentionRequest   -> return arg.userId
-                is TransactionRequest -> return arg.userId
-                is UserRequest        -> return arg.user.id
-                is Long               -> return arg
-            }
-        }
-        return null
-    }
 }

@@ -1,6 +1,5 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers.dto
 
-import ar.edu.unq.desapp.grupoI.backenddesappapi.model.Intention
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.Transaction
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Action
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.OperationState

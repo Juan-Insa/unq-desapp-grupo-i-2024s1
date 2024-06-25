@@ -41,35 +41,43 @@ repositories {
 	mavenCentral()
 }
 
+val archVersion = "1.3.0"
+val jwtVersion  = "0.12.5"
+val log4jVersion = "2.23.1"
+val mySQLVersion = "8.0.33"
+val springDocVersion = "2.2.0"
+val springCacheVersion = "3.1.5"
+val javaxCacheVersion = "1.1.1"
+val ehCacheVersion = "3.10.8"
+
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("jakarta.servlet:jakarta.servlet-api")
-	//implementation("org.hibernate:hibernate-core:5.6.4.Final")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	implementation("mysql:mysql-connector-java:8.0.33")
+	implementation("mysql:mysql-connector-java:${mySQLVersion}")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("com.h2database:h2")
 	providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
-	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
-	implementation("org.springframework.boot:spring-boot-starter-cache:3.1.5")
-	implementation("javax.cache:cache-api:1.1.1")
-	implementation("org.ehcache:ehcache:3.10.8:jakarta")
-	testImplementation("com.tngtech.archunit:archunit:1.3.0")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${springDocVersion}")
+	implementation("org.springframework.boot:spring-boot-starter-cache:${springCacheVersion}")
+	implementation("javax.cache:cache-api:${javaxCacheVersion}")
+	implementation("org.ehcache:ehcache:${ehCacheVersion}:jakarta")
+	testImplementation("com.tngtech.archunit:archunit:${archVersion}")
 
 	// security/jwt
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
-	implementation("io.jsonwebtoken:jjwt-api:0.12.5")
-	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.5")
-	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.5")
+	implementation("io.jsonwebtoken:jjwt-api:${jwtVersion}")
+	runtimeOnly("io.jsonwebtoken:jjwt-impl:${jwtVersion}")
+	runtimeOnly("io.jsonwebtoken:jjwt-jackson:${jwtVersion}")
 
 	// log4j
-	implementation("org.apache.logging.log4j:log4j-api:2.23.1")
-	implementation("org.apache.logging.log4j:log4j-core:2.23.1")
+	implementation("org.apache.logging.log4j:log4j-api:${log4jVersion}")
+	implementation("org.apache.logging.log4j:log4j-core:${log4jVersion}")
 	implementation("org.springframework.boot:spring-boot-starter-aop")
 	implementation("org.springframework.boot:spring-boot-starter-logging")
 
