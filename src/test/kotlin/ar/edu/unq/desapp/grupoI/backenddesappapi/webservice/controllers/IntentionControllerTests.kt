@@ -1,11 +1,13 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers
 
+import ar.edu.unq.desapp.grupoI.backenddesappapi.model.CryptoCurrency
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.Intention
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.User
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Asset
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Operation
 import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.IntentionRepository
 import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.TransactionRepository
+import ar.edu.unq.desapp.grupoI.backenddesappapi.service.BinanceProxyService
 import ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers.dto.LoginUserDTO
 import ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers.request.IntentionRequest
 import ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers.request.UserRequest
@@ -24,7 +26,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import org.hamcrest.Matchers.`is`
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.TestInstance
+import org.mockito.Mockito
 import org.springframework.boot.actuate.autoconfigure.wavefront.WavefrontProperties
+import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.web.servlet.ResultActions
 
 @SpringBootTest
@@ -50,6 +54,8 @@ class IntentionControllerTests {
     @Autowired
     private lateinit var authenticationController: AuthenticationController
 
+    @MockBean
+    private lateinit var binanceProxyService: BinanceProxyService
 
     lateinit var testSellUser: User
     lateinit var testBuyUser: User
@@ -131,12 +137,15 @@ class IntentionControllerTests {
             operation = operation,
             cryptoAsset = Asset.BTCUSDT,
             amount = 10.0,
-            price = 60478.01
+            price = 60000.00
         )
         val intentionRequest = IntentionRequest(
             intention = intention,
             userId = user.id!!
         )
+        val resultadoMockeado = CryptoCurrency("BTCUSDT", 60000.0f, "2022-06-25 12:00:00")
+
+        Mockito.`when`(binanceProxyService.getCryptoCurrency("BTCUSDT")).thenReturn(resultadoMockeado)
         return mvc.perform(
             post("/api/intention/new")
                 .contentType(MediaType.APPLICATION_JSON)
