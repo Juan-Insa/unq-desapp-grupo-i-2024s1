@@ -21,7 +21,7 @@ class JwtService() {
         return Jwts.builder()
             .subject(user.email)
             .issuedAt(Date(System.currentTimeMillis()))
-            .expiration(Date(System.currentTimeMillis() + expirationTime!!))
+            .expiration(Date(System.currentTimeMillis() + expirationTime))
             .signWith(getSignInKey() as SecretKey, Jwts.SIG.HS256)
             .compact()
     }

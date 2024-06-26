@@ -83,6 +83,7 @@ dependencies {
 
 	//prometheus
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
+	implementation("io.micrometer:micrometer-core")
 	implementation("io.micrometer:micrometer-registry-prometheus")
 
 	// AOP

@@ -1,8 +1,5 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.aspect
 
-import ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers.request.IntentionRequest
-import ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers.request.TransactionRequest
-import ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers.request.UserRequest
 import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.Around
 import org.aspectj.lang.annotation.Aspect
@@ -31,7 +28,12 @@ class LoggingAspect {
         val elapsedTime = System.currentTimeMillis() - startTime
         val timestamp = java.time.Instant.ofEpochMilli(startTime).toString()
 
-        logger.info("timestamp=$timestamp, user=$user, method=$methodName, params=$params, elapsedTime=${elapsedTime}ms")
+        logger.info("" +
+                "Timestamp => $timestamp, " +
+                "User => $user, " +
+                "Method => $methodName, " +
+                "Params => $params, " +
+                "ElapsedTime => $elapsedTime ms")
 
         return result
     }

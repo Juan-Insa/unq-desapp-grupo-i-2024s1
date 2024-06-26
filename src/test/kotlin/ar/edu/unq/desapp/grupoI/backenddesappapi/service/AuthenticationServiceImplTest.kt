@@ -117,7 +117,7 @@ class AuthenticationServiceImplTest {
     fun `authenticating an unregistered user throws an exception`() {
         val logingUserDTO = LoginUserDTO("juancho@gmail.com", "Valid.Password")
 
-        assertThrows<UserNotFoundException> { authenticationService.authenticate(logingUserDTO) }
+        assertThrows<BadCredentialsException> { authenticationService.authenticate(logingUserDTO) }
     }
 
     @AfterEach

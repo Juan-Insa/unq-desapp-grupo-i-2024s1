@@ -22,9 +22,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
 @Configuration
 @EnableWebSecurity
-class SecurityConfiguration(    private val userRepository: UserRepository,
-                                private val jwtService: JwtService) {
-
+class SecurityConfiguration(
+    private val userRepository: UserRepository,
+    private val jwtService: JwtService
+    ) {
 
     @Bean
     fun userDetailsService(): UserDetailsService {
@@ -34,6 +35,21 @@ class SecurityConfiguration(    private val userRepository: UserRepository,
                     UsernameNotFoundException("User not found")
                 }
         }
+    }
+    @Bean
+    fun securityFilterChain(http: HttpSecurity, jwtAuthenticationFilter: JwtAuthenticationFilter, authenticationProvider: AuthenticationProvider): SecurityFilterChain {
+        return http.csrf { it.disable() }
+            .headers { header -> header.frameOptions { it.disable() }}
+            .authorizeHttpRequests {
+                it.requestMatchers("/metrics", "/api/auth/**", "api/auth/login/**", "swagger-ui/**", "/api-docs/**", "/h2-console/**", "/" , "/actuator/**",  ).permitAll()
+            }
+            .authorizeHttpRequests { it.anyRequest().authenticated() }
+            .sessionManagement {
+                it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            }
+            .authenticationProvider(authenticationProvider)
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .build()
     }
 
     @Bean
@@ -59,21 +75,6 @@ class SecurityConfiguration(    private val userRepository: UserRepository,
         return JwtAuthenticationFilter(jwtService, userDetailsService)
     }
 
-    @Bean
-    fun securityFilterChain(http: HttpSecurity, jwtAuthenticationFilter: JwtAuthenticationFilter, authenticationProvider: AuthenticationProvider): SecurityFilterChain {
-        return http.csrf { it.disable() }
-            .headers { header -> header.frameOptions { it.disable() }}
-            .authorizeHttpRequests {
-                it.requestMatchers("/api/auth/**", "api/auth/login/**", "swagger-ui/**", "/api-docs/**", "/h2-console/**", "/").permitAll()
-            }
-            .authorizeHttpRequests { it.anyRequest().authenticated() }
-            .sessionManagement {
-                it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            }
-            .authenticationProvider(authenticationProvider)
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
-            .build()
-    }
 
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource {

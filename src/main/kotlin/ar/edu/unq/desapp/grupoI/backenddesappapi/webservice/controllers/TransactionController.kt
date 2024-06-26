@@ -65,10 +65,7 @@ class TransactionController {
         summary = "Cancels a transaction",
         description = "Cancel the transaction by the given id setting its state to inactive and resting the corresponding reputation points to users")
     @PutMapping("/{transactionId}/{userId}/cancel")
-    fun cancelTransaction(
-        @PathVariable transactionId: Long,
-        @PathVariable userId: Long
-    ): ResponseEntity<TransactionDTO> {
+    fun cancelTransaction(@PathVariable transactionId: Long, @PathVariable userId: Long): ResponseEntity<TransactionDTO> {
         val transaction = transactionService.cancelTransaction(transactionId, userId)
         val transactionDTO = TransactionDTO.fromModel(transaction)
         return ResponseEntity.ok().body(transactionDTO)

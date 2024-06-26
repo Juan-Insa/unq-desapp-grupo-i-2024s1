@@ -16,8 +16,6 @@ import kotlin.jvm.optionals.getOrNull
 class UserServiceImpl(): UserService {
 
     @Autowired lateinit var userRepository: UserRepository
-    @Autowired lateinit var passwordEncoder: PasswordEncoder
-    @Autowired lateinit var authenticationManager: AuthenticationManager
 
     override fun getUserByEmail(email: String): User {
         return userRepository.findByEmail(email)
