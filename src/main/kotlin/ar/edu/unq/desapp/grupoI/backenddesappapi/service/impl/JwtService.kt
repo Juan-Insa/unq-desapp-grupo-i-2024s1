@@ -1,4 +1,4 @@
-package ar.edu.unq.desapp.grupoI.backenddesappapi.security
+package ar.edu.unq.desapp.grupoI.backenddesappapi.service.impl
 
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.User
 import io.jsonwebtoken.Claims
@@ -15,7 +15,7 @@ import javax.crypto.SecretKey
 class JwtService() {
 
     private val secretKey = "3cfa76ef14937c1c0ea519f8fc057a80fcd04a7420f8e8bcd0a7567c272e007b"
-    private val expirationTime: Long = 3600000
+    val expirationTime: Long = 3600000
 
     fun generateToken(user: User): String {
         return Jwts.builder()
@@ -33,10 +33,6 @@ class JwtService() {
     fun <T> extractClaim(token: String, claimsResolver: (Claims) -> T): T {
         val claims = extractAllClaims(token)
         return claimsResolver.invoke(claims)
-    }
-
-    fun getExpirationTime(): Long {
-        return expirationTime
     }
 
     fun isTokenValid(token: String, userDetails: UserDetails): Boolean {

@@ -29,11 +29,11 @@ class LoggingAspect {
         val timestamp = java.time.Instant.ofEpochMilli(startTime).toString()
 
         logger.info("" +
-                "Timestamp => $timestamp, " +
-                "User => $user, " +
-                "Method => $methodName, " +
-                "Params => $params, " +
-                "ElapsedTime => $elapsedTime ms")
+                "\nTimestamp => $timestamp, " +
+                "\nUser => $user, " +
+                "\nMethod => $methodName, " +
+                "\nParams => $params, " +
+                "\nElapsedTime => $elapsedTime ms")
 
         return result
     }

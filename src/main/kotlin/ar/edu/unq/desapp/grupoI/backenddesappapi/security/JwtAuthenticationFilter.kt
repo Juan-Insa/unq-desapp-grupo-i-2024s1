@@ -1,5 +1,6 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.security
 
+import ar.edu.unq.desapp.grupoI.backenddesappapi.service.impl.JwtService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -13,10 +14,8 @@ import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 
 @Component
-class JwtAuthenticationFilter(    private val jwtService: JwtService,
-                                  private val userDetailsService: UserDetailsService) : OncePerRequestFilter() {
-
-
+class JwtAuthenticationFilter(private val jwtService: JwtService,
+                              private val userDetailsService: UserDetailsService) : OncePerRequestFilter() {
 
     override fun doFilterInternal(
         @NonNull request: HttpServletRequest,

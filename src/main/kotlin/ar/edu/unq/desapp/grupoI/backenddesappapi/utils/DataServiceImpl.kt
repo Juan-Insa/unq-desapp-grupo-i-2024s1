@@ -28,8 +28,20 @@ class DataServiceImpl: DataService {
     override fun createTestData() {
         deleteAll()
 
-        var users = mutableListOf<User>().apply {
-            add(User(
+        val users = createUsers()
+        val savedUsers = users.map { userRepository.save(it) }
+
+        val intentions = createIntentions(savedUsers)
+        val transactions = createTransactions(savedUsers, intentions)
+
+        intentions.forEach { intentionRepository.save(it) }
+        transactions.forEach { transactionRepository.save(it) }
+        createCryptoCurrencies().forEach { cryptoCurrencyRepository.save(it) }
+    }
+
+    private fun createUsers(): List<User> {
+        return listOf(
+            User(
                 name = "John",
                 lastName = "Doe",
                 email = "john.doe@example.com",
@@ -37,9 +49,8 @@ class DataServiceImpl: DataService {
                 password = "Password123!",
                 cvu = "1234567890123456789012",
                 cryptoWalletAddress = "12345678",
-            ))
-
-            add(User(
+            ),
+            User(
                 name = "Jane",
                 lastName = "Smith",
                 email = "jane.smith@example.com",
@@ -47,9 +58,8 @@ class DataServiceImpl: DataService {
                 password = "Password456!",
                 cvu = "9876543210987654321098",
                 cryptoWalletAddress = "87654321",
-            ))
-
-            add(User(
+            ),
+            User(
                 name = "Alice",
                 lastName = "Johnson",
                 email = "alice.johnson@example.com",
@@ -57,9 +67,8 @@ class DataServiceImpl: DataService {
                 password = "Password789!",
                 cvu = "2468135790246813579024",
                 cryptoWalletAddress = "11111111",
-            ))
-
-            add(User(
+            ),
+            User(
                 name = "Bob",
                 lastName = "Brown",
                 email = "bob.brown@example.com",
@@ -67,9 +76,8 @@ class DataServiceImpl: DataService {
                 password = "Password1011!",
                 cvu = "3692581470369258147036",
                 cryptoWalletAddress = "22222222",
-            ))
-
-            add(User(
+            ),
+            User(
                 name = "Eva",
                 lastName = "Williams",
                 email = "eva.williams@example.com",
@@ -77,76 +85,74 @@ class DataServiceImpl: DataService {
                 password = "Password1213!",
                 cvu = "9876543210987654321012",
                 cryptoWalletAddress = "33333333",
-            ))
-        }
+            )
+        )
+    }
 
-        val savedUsers = users.map { userRepository.save(it) }
-
-        var intentions = mutableListOf(
+    private fun createIntentions(savedUsers: List<User>): List<Intention> {
+        val intentions = mutableListOf(
             Intention(
                 cryptoAsset = Asset.BTCUSDT,
                 amount = 1.5,
                 operation = Operation.BUY,
-                //priceInPesos = 75000.0,
                 price = 70995.59000000
             ),
             Intention(
                 cryptoAsset = Asset.ETHUSDT,
                 amount = 2.0,
                 operation = Operation.SELL,
-                //priceInPesos = 60000.0,
                 price = 30000.0
             ),
             Intention(
                 cryptoAsset = Asset.BTCUSDT,
                 amount = 0.5,
                 operation = Operation.BUY,
-                //priceInPesos = 35000.0,
                 price = 70995.59000000
             ),
             Intention(
                 cryptoAsset = Asset.ETHUSDT,
                 amount = 1.0,
                 operation = Operation.SELL,
-                //priceInPesos = 55000.0,
                 price = 55000.0
             ),
             Intention(
                 cryptoAsset = Asset.BTCUSDT,
                 amount = 2.5,
                 operation = Operation.BUY,
-                //priceInPesos = 80000.0,
                 price = 70995.59000000
             ),
             Intention(
                 cryptoAsset = Asset.ALICEUSDT,
                 amount = 2.5,
                 operation = Operation.BUY,
-                //priceInPesos = 80000.0,
                 price = 1.26200000
             ),
             Intention(
                 cryptoAsset = Asset.ALICEUSDT,
                 amount = 1.0,
                 operation = Operation.SELL,
-                //priceInPesos = 80000.0,
                 price = 1.26200000
             )
         )
 
         intentions.forEach {
-            if(it.cryptoAsset == Asset.ALICEUSDT) {
+            if (it.cryptoAsset == Asset.ALICEUSDT) {
                 it.state = OperationState.INACTIVE
-                it.user = users[0]
+                it.user = savedUsers[0]
             }
         }
 
-        users.forEachIndexed { index, user ->
-            val intention = intentions[index]
-            intention.user = savedUsers[index]
+        savedUsers.forEachIndexed { index, user ->
+            if (index < intentions.size) {
+                intentions[index].user = user
+            }
         }
 
-        val transactions = listOf(
+        return intentions
+    }
+
+    private fun createTransactions(savedUsers: List<User>, intentions: List<Intention>): List<Transaction> {
+        return listOf(
             Transaction(
                 interestedUser = savedUsers[1],
                 action = Action.TRANSFER
@@ -160,12 +166,10 @@ class DataServiceImpl: DataService {
                 action = Action.CANCEL
             ).apply { intention = intentions[3] }
         )
+    }
 
-        intentions.forEach { intentionRepository.save(it) }
-
-        transactions.forEach { transactionRepository.save(it) }
-
-        val cryptoCurrencies = listOf(
+    private fun createCryptoCurrencies(): List<CryptoCurrency> {
+        return listOf(
             CryptoCurrency(symbol = "ALICEUSDT", marketPrice = 10.0f),
             CryptoCurrency(symbol = "MATICUSDT", marketPrice = 5.0f),
             CryptoCurrency(symbol = "AXSUSDT", marketPrice = 15.0f),
@@ -181,8 +185,6 @@ class DataServiceImpl: DataService {
             CryptoCurrency(symbol = "TRXUSDT", marketPrice = 0.1f),
             CryptoCurrency(symbol = "AUDIOUSDT", marketPrice = 3.0f)
         )
-
-        cryptoCurrencies.forEach { cryptoCurrencyRepository.save(it) }
     }
     override fun deleteAll() {
         cryptoCurrencyRepository.deleteAll()

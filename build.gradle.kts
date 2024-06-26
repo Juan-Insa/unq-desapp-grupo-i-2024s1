@@ -58,36 +58,27 @@ dependencies {
 	implementation("jakarta.servlet:jakarta.servlet-api")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("mysql:mysql-connector-java:${mySQLVersion}")
-	developmentOnly("org.springframework.boot:spring-boot-devtools")
-	runtimeOnly("com.h2database:h2")
-	providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testImplementation("org.springframework.security:spring-security-test")
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${springDocVersion}")
 	implementation("org.springframework.boot:spring-boot-starter-cache:${springCacheVersion}")
 	implementation("javax.cache:cache-api:${javaxCacheVersion}")
 	implementation("org.ehcache:ehcache:${ehCacheVersion}:jakarta")
-	testImplementation("com.tngtech.archunit:archunit:${archVersion}")
-
-	// security/jwt
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
 	implementation("io.jsonwebtoken:jjwt-api:${jwtVersion}")
-	runtimeOnly("io.jsonwebtoken:jjwt-impl:${jwtVersion}")
-	runtimeOnly("io.jsonwebtoken:jjwt-jackson:${jwtVersion}")
-
-	// log4j
 	implementation("org.apache.logging.log4j:log4j-api:${log4jVersion}")
 	implementation("org.apache.logging.log4j:log4j-core:${log4jVersion}")
 	implementation("org.springframework.boot:spring-boot-starter-aop")
 	implementation("org.springframework.boot:spring-boot-starter-logging")
-
-	//prometheus
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("io.micrometer:micrometer-core")
 	implementation("io.micrometer:micrometer-registry-prometheus")
-
-	// AOP
-	implementation("org.springframework.boot:spring-boot-starter-aop")
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.springframework.security:spring-security-test")
+	testImplementation("com.tngtech.archunit:archunit:${archVersion}")
+	developmentOnly("org.springframework.boot:spring-boot-devtools")
+	runtimeOnly("com.h2database:h2")
+	runtimeOnly("io.jsonwebtoken:jjwt-impl:${jwtVersion}")
+	runtimeOnly("io.jsonwebtoken:jjwt-jackson:${jwtVersion}")
+	providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 
 }
 
