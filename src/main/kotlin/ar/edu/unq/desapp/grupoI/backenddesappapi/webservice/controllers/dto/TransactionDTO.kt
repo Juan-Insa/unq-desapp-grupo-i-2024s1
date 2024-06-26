@@ -6,6 +6,7 @@ import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.OperationState
 import java.time.LocalDateTime
 
 class TransactionDTO(
+    val id: Long,
     val interestedUserEmail: String,
     val action: Action,
     val initTime: LocalDateTime,
@@ -16,6 +17,7 @@ class TransactionDTO(
     companion object {
         fun fromModel(transaction: Transaction): TransactionDTO {
             return TransactionDTO(
+                id = transaction.id!!,
                 interestedUserEmail = transaction.interestedUser.email,
                 action = transaction.action,
                 initTime = transaction.initTime,
