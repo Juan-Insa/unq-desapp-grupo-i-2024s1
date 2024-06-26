@@ -55,7 +55,7 @@ class TransactionController {
         description = "Finishes the transaction by the given id setting its state to inactive and adding the corresponding reputation points to users")
     @PutMapping("/{id}/finish")
     fun finishTransaction(@PathVariable id: Long): ResponseEntity<TransactionDTO> {
-        metricsRegister.transactionsCounter.increment()
+        metricsRegister.finishedTransactionsCounter.increment()
         val transaction = transactionService.finishTransaction(id)
         val transactionDTO = TransactionDTO.fromModel(transaction)
         return ResponseEntity.ok().body(transactionDTO)
@@ -66,6 +66,7 @@ class TransactionController {
         description = "Cancel the transaction by the given id setting its state to inactive and resting the corresponding reputation points to users")
     @PutMapping("/{transactionId}/{userId}/cancel")
     fun cancelTransaction(@PathVariable transactionId: Long, @PathVariable userId: Long): ResponseEntity<TransactionDTO> {
+        metricsRegister.canceledTransactionsCounter.increment()
         val transaction = transactionService.cancelTransaction(transactionId, userId)
         val transactionDTO = TransactionDTO.fromModel(transaction)
         return ResponseEntity.ok().body(transactionDTO)

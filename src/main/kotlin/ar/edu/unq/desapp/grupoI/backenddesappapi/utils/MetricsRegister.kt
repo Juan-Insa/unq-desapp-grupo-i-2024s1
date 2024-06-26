@@ -7,5 +7,6 @@ import org.springframework.stereotype.Component
 @Component
 class MetricsRegister(private val meterRegistry: MeterRegistry) {
 
-    val transactionsCounter: Counter = meterRegistry.counter("transactions")
+    val finishedTransactionsCounter: Counter = meterRegistry.counter("finished_transactions")
+    val canceledTransactionsCounter: Counter = meterRegistry.counter("canceled_transactions")
 }
