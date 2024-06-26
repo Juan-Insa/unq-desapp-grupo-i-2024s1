@@ -60,7 +60,7 @@ class AuthenticationController {
 
         val jwtToken: String = jwtService.generateToken(authenticatedUser)
 
-        val loginResponse = LoginResponse(jwtToken, jwtService.getExpirationTime())
+        val loginResponse = LoginResponse(jwtToken, jwtService.expirationTime)
 
         return ResponseEntity.ok(loginResponse)
     }
