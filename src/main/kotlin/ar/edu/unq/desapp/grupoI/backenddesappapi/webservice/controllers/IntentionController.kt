@@ -2,6 +2,7 @@ package ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers
 
 import ar.edu.unq.desapp.grupoI.backenddesappapi.service.IntentionService
 import ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers.dto.IntentionDTO
+import ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers.request.IntentionRequest
 import io.swagger.v3.oas.annotations.tags.Tag
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.beans.factory.annotation.Autowired

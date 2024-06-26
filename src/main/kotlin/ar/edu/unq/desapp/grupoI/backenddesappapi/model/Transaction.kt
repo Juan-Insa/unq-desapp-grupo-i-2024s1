@@ -1,11 +1,9 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.model
 
-import ar.edu.unq.desapp.grupoI.backenddesappapi.helpers.CurrentDateTime
-import ar.edu.unq.desapp.grupoI.backenddesappapi.helpers.CurrentDateTime.getNewLocalDateTime
+import ar.edu.unq.desapp.grupoI.backenddesappapi.utils.CurrentDateTime.getNewLocalDateTime
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.Action
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.enums.OperationState
 import jakarta.persistence.*
-import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Entity
@@ -17,7 +15,7 @@ class Transaction (
 
     var action: Action,
 ){
-    val initTime: LocalDateTime = getNewLocalDateTime() //CurrentDateTime.getNewDateString()
+    val initTime: LocalDateTime = getNewLocalDateTime()
 
     var state = OperationState.ACTIVE
 

@@ -1,6 +1,6 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.service
 
-import ar.edu.unq.desapp.grupoI.backenddesappapi.helpers.CurrentDateTime.getNewLocalDateTime
+import ar.edu.unq.desapp.grupoI.backenddesappapi.utils.CurrentDateTime.getNewLocalDateTime
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.CryptoCurrency
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.Intention
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.OperatedVolume
@@ -16,7 +16,6 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
@@ -24,9 +23,6 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.boot.test.mock.mockito.SpyBean
 import org.springframework.test.context.junit.jupiter.SpringExtension
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.util.*
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest
@@ -36,6 +32,7 @@ class TransactionServiceImplTest {
     @SpyBean lateinit var transactionService: TransactionService
     @Autowired lateinit var intentionService: IntentionService
     @Autowired lateinit var userService: UserService
+    @Autowired lateinit var authenticationService: AuthenticationService
     @Autowired lateinit var dataService: DataService
 
     @MockBean
@@ -62,9 +59,11 @@ class TransactionServiceImplTest {
             address = "intentionUserAddress",
             password = "Intention.User.Pass",
             cvu = "1234567890123456789012",
-            cryptoWalletAddress = "12345678")
+            cryptoWalletAddress = "12345678"
+        )
+        intentionUser = authenticationService.signup(intentionUser)
         intentionUser.reputation = 50
-        intentionUser = userService.registerUser(intentionUser)
+        userService.saveUser(intentionUser)
 
         interestedUser = User(
             name ="interestedUser",
@@ -75,8 +74,9 @@ class TransactionServiceImplTest {
             cvu = "9876543210987654321098",
             cryptoWalletAddress = "87654321"
         )
+        interestedUser = authenticationService.signup(interestedUser)
         interestedUser.reputation = 80
-        interestedUser = userService.registerUser(interestedUser)
+        userService.saveUser(interestedUser)
 
         sellIntention = Intention(
             cryptoAsset = Asset.ALICEUSDT,
@@ -137,6 +137,8 @@ class TransactionServiceImplTest {
     fun `canceling a transaction takes 20 reputation points from the canceling user`() {
         var validTransaction = transactionService.createTransaction(buyIntention.id!!, interestedUser.id!!)
 
+        interestedUser.reputation = 80
+
         transactionService.cancelTransaction(validTransaction.id!!, interestedUser.id!!)
 
         val cancelingUser = userService.getUserById(interestedUser.id!!)
@@ -166,6 +168,9 @@ class TransactionServiceImplTest {
         Mockito.`when`(transactionService.isPast30Minutes(date)).thenReturn(true)
 
         transactionService.finishTransaction(validTransaction.id!!)
+
+        intentionUser
+        interestedUser
 
         intentionUser = userService.getUserById(intentionUser.id!!)
         interestedUser = userService.getUserById(interestedUser.id!!)

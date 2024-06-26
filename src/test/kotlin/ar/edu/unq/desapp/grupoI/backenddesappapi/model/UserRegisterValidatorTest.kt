@@ -1,7 +1,7 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.model
 
 import ar.edu.unq.desapp.grupoI.backenddesappapi.exceptions.*
-import ar.edu.unq.desapp.grupoI.backenddesappapi.helpers.UserRegisterValidator
+import ar.edu.unq.desapp.grupoI.backenddesappapi.utils.UserRegisterValidator
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
