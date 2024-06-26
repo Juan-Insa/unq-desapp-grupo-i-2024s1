@@ -22,9 +22,7 @@ class AuthenticationServiceImpl(): AuthenticationService {
 
     override fun signup(user: User): User {
 
-        if (userRepository.existsByEmail(user.email)) {
-            throw IllegalArgumentException("Email is already registered");
-        }
+        require(!(userRepository.existsByEmail(user.email))) { "Email is already registered" }
 
         UserRegisterValidator.validateUserData(user)
 

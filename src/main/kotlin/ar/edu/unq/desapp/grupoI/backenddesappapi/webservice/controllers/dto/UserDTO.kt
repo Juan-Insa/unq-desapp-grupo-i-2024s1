@@ -1,6 +1,5 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.webservice.controllers.dto
 
-import ar.edu.unq.desapp.grupoI.backenddesappapi.model.Transaction
 import ar.edu.unq.desapp.grupoI.backenddesappapi.model.User
 
 class UserDTO(

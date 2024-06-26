@@ -1,6 +1,7 @@
 package ar.edu.unq.desapp.grupoI.backenddesappapi.security
 
 import ar.edu.unq.desapp.grupoI.backenddesappapi.persistence.repository.UserRepository
+import ar.edu.unq.desapp.grupoI.backenddesappapi.service.impl.JwtService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
